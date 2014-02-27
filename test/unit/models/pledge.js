@@ -21,4 +21,23 @@ describe('Pledge', function () {
     expect(pledge.validate()).to.be.null;
   });
 
+  describe('#toFirebase', function () {
+
+    it('includes the donor name', function () {
+      pledge.related('donor').set('name', 'Ben');
+      expect(pledge.toFirebase()).to.have.deep.property('donor.name', 'Ben');
+    });
+
+    it('includes the anonymous flag', function () {
+      pledge.set('anonymous', true);
+      expect(pledge.toFirebase()).to.have.property('anonymous', true);
+    });
+
+    it('includes the pledge amount', function () {
+      pledge.set('amount', 5);
+      expect(pledge.toFirebase()).to.have.property('amount', 5);
+    });
+
+  });
+
 });
