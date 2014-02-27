@@ -11,13 +11,13 @@ gulp.task('lint', function () {
 });
 
 gulp.task('cover', function () {
-  return gulp.src('src/**')
-    .pipe(plugins.instabul());
+  return gulp.src('src/**/*.js')
+    .pipe(plugins.istanbul());
 });
 
-gulp.task('test', function () {
+gulp.task('test', ['cover'], function () {
   require('./test/setup');
-  return gulp.src(['test/unit/**', 'test/integration/**'])
+  return gulp.src(['test/unit/**/*.js', 'test/integration/**/*.js'])
     .pipe(plugins.mocha())
-    .pipe(plugins.instabul.writeReports());
+    .pipe(plugins.istanbul.writeReports());
 });
