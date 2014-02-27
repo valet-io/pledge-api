@@ -15,6 +15,7 @@ var Pledge = Model.extend({
     id: Joi.number().integer().min(0).required(),
     amount: Joi.number().integer().min(1).required(),
     donor_id: Joi.number().integer().min(0).required(),
+    campaign_id: Joi.number().integer().min(0).required(),
     payment_id: Joi.number().integer().min(0),
     started_at: Joi.date(),
     submitted_at: Joi.date()
