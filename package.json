@@ -29,7 +29,8 @@
     "gulp-util": "~2.2.14",
     "gulp": "~3.5.2",
     "gulp-jshint": "~1.5.0",
-    "gulp-istanbul": "~0.1.1"
+    "gulp-istanbul": "~0.1.1",
+    "mockery": "~1.4.0"
   },
   "dependencies": {
     "bookshelf-authorization": "0.0.5",
