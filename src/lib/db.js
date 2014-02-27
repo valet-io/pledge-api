@@ -12,7 +12,6 @@ var Bookshelf = Bookshelf.initialize({
 });
 
 Bookshelf
-  .plugin('registry')
-  .plugin(require('bookshelf-authorization'));
+  .plugin('registry');
 
 module.exports = Bookshelf;

@@ -7,8 +7,4 @@ describe('Database', function () {
     expect(DB).to.itself.respondTo('model');
   });
 
-  it('uses the authorization plugin', function () {
-    expect(DB).to.have.property('User');
-  });
-
 });

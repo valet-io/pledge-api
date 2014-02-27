@@ -1,13 +1,17 @@
 var expect = require('chai').expect;
 var sinon  = require('sinon');
 var Joi    = require('joi');
-var Model  = require('../../../src/lib/model');
+var Model  = require('../../../src/lib/model').Model;
 
 describe('Model', function () {
 
   var model;
   beforeEach(function () {
     model = new Model();
+  });
+
+  it('uses the authorization plugin', function () {
+    expect(Model).to.have.a.property('authorize');
   });
 
   describe('events', function () {

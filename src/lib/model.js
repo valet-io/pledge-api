@@ -18,8 +18,12 @@ var Model = DB.Model.extend({
   }
 });
 
-DB.plugin(require('bookshelf-authorization'), {
-  base: Model
+var base = {
+  Model: Model
+};
+
+require('bookshelf-authorization')(DB, {
+  base: base
 });
 
-module.exports = Model;
+module.exports = base;
