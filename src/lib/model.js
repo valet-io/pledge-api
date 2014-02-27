@@ -13,7 +13,7 @@ var Model = DB.Model.extend({
 
   validate: function () {
     if (this.schema) {
-      Joi.validate(this.toJSON(), this.schema);
+      return Joi.validate(this.toJSON(), this.schema);
     }
   }
 });

@@ -28,10 +28,11 @@ describe('Model', function () {
   describe('#validate', function () {
 
     it('validates the schema using Joi', function () {
-      sinon.stub(Joi, 'validate');
+      sinon.stub(Joi, 'validate').returns('validated');
       model.schema = {};
-      model.validate();
+      var validate = model.validate();
       expect(Joi.validate).to.have.been.calledWith(model.toJSON(), model.schema);
+      expect(validate).to.equal('validated');
       Joi.validate.restore();
     });
 
