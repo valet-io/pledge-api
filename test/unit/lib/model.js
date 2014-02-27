@@ -16,7 +16,7 @@ describe('Model', function () {
 
       it('validates the model', function () {
         sinon.spy(model, 'validate');
-        model.triggerThen('saving').finally(function () {
+        return model.triggerThen('saving').finally(function () {
           expect(model.validate).to.have.been.called;
         });
       });

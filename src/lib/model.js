@@ -3,9 +3,12 @@
 var DB  = require('./db');
 var Joi = require('joi');
 
-module.exports = DB.Model.extend({
+var Model = DB.Model.extend({
   constructor: function () {
-    this.on('saving', this.validate, this);
+    DB.Model.apply(this, arguments);
+    this.on('saving', function () {
+      return this.validate();
+    }, this);
   },
 
   validate: function () {
@@ -14,3 +17,9 @@ module.exports = DB.Model.extend({
     }
   }
 });
+
+DB.plugin(require('bookshelf-authorization'), {
+  base: Model
+});
+
+module.exports = Model;
