@@ -1,0 +1,19 @@
+{
+  "name": "pledge-api",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Valet.io Pledge API",
+  "main": "app.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/valet-io/pledge-api.git"
+  },
+  "author": "Ben Drucker <bvdrucker@gmail.com> (http://www.bendrucker.me/)",
+  "bugs": {
+    "url": "https://github.com/valet-io/pledge-api/issues"
+  },
+  "homepage": "https://github.com/valet-io/pledge-api"
+}
