@@ -16,6 +16,7 @@ gulp.task('cover', function () {
 });
 
 gulp.task('test', function () {
+  require('./test/setup');
   return gulp.src(['test/unit/**', 'test/integration/**'])
     .pipe(plugins.mocha())
     .pipe(plugins.instabul.writeReports());
