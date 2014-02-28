@@ -1,22 +1,35 @@
-var Firebase = require('firebase');
+'use strict';
 
-var Campaign = function (id) {
-  this._ref = new Firebase('https://valet-io-events.firebaseio.com/campaigns' + id);
-};
+var Pledge = require('../models/pledge');
 
-Campaign.prototype.pledges = {
-  _ref: this._ref.child('pledges'),
-  create: function (pledge) {
-    this._ref.child(pledge.id).set(pledge.data, function () {
+module.exports = function (Firebase) {
 
-    }.bind(this));
-  },
-  destroy: function (pledge) {
-    this._ref.child(pledge.id).remove();
-  }
-};
+  var internals = {};
 
-Campaign.prototype.aggregates = {
-  total: this._ref.child('total'),
-  count: this._ref.child('count')
+  internals.firebase = new Firebase('https://valet-io-events.firebaseio.com/campaigns/');
+
+  internals.Campaign = function (campaign) {
+    var campaignRef = internals.firebase.child(campaign.id);
+    return {
+      pledges: campaignRef.child('pledges'),
+      aggregates: {
+        total: campaignRef.child('aggregates/total'),
+        count: campaignRef.child('aggregates/count')
+      }
+    };
+  };
+
+  Pledge.on('created', function (pledge) {
+    var campaign = new internals.Campaign(pledge.related('campaign'));
+    campaign.pledges.child(pledge.id).set(pledge.toFirebase());
+    campaign.aggregtes.total.transaction(function (total) {
+      return total + pledge.get('amount');
+    });
+    campaign.aggregates.count.transaction(function (count) {
+      return count + 1;
+    });
+  });
+
+  return;
+
 };

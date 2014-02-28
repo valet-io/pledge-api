@@ -1,4 +1,5 @@
 var Joi   = require('joi');
+var _     = require('lodash');
 var Model = require('../lib/model').Model;
 
 var Pledge = Model.extend({
@@ -21,5 +22,7 @@ var Pledge = Model.extend({
     submitted_at: Joi.date()
   }
 });
+
+_.extend(Pledge, require('bookshelf/dialects/base/events').Events);
 
 module.exports = Pledge;
