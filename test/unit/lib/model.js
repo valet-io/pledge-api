@@ -30,6 +30,27 @@ describe('Model', function () {
         });
       });
 
+      it('permits saving if validation returns no errors', function () {
+        return model.triggerThen('saving');
+      });
+
+      it('throws validation errors to halt saving', function () {
+        var err = new Error();
+        sinon.stub(model, 'validate').throws(err);
+        return expect(model.triggerThen('saving'))
+          .to.be.rejectedWith(err);
+      });
+
+      it('can disable validation', function () {
+        sinon.spy(model, 'validate');
+        return model.triggerThen('saving', null, null, {
+          validate: false
+        })
+        .finally(function () {
+          expect(model.validate).to.not.have.been.called;
+        });
+      });
+
     });
 
   });

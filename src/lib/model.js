@@ -7,8 +7,15 @@ var _   = require('lodash');
 var Model = DB.Model.extend({
   constructor: function () {
     DB.Model.apply(this, arguments);
-    this.on('saving', function () {
-      return this.validate();
+    this.on('saving', function (model, attrs, options) {
+      options = options || {};
+      if (options.validate !== false) {
+        var err = this.validate();
+        /* istanbul ignore if  */
+        if (err) {
+          throw err;
+        }
+      }
     }, this);
   },
 
