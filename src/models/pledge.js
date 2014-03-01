@@ -6,7 +6,7 @@ var Pledge = Model.extend({
   tableName: 'pledges',
 
   schema: {
-    id: Joi.number().integer().min(0).required(),
+    id: Joi.number().integer().min(0),
     amount: Joi.number().integer().min(1).required(),
     donor_id: Joi.number().integer().min(0).required(),
     campaign_id: Joi.number().integer().min(0).required(),
@@ -16,7 +16,7 @@ var Pledge = Model.extend({
   },
 
   donor: function () {
-    return this.hasOne(require('./donor'));
+    return this.belongsTo(require('./donor'));
   },
 
   toFirebase: function () {
