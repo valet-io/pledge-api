@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var sinon  = require('sinon');
+var _      = require('lodash');
 var Joi    = require('joi');
 var Model  = require('../../../src/lib/model').Model;
 
@@ -46,9 +47,16 @@ describe('Model', function () {
 
     it('appends timestampts to the schema if used', function () {
       model.schema = {};
-      model.hasTimestamps = true;
       model.validate();
       expect(model.schema).to.have.keys('created_at', 'updated_at');
+    });
+
+    it('does not overwrite the timestamp fields', function () {
+      model.schema = {};
+      sinon.spy(_, 'extend');
+      model.schema['created_at'] = Joi.date();
+      model.validate();
+      expect(_.extend).to.not.have.been.called;
     });
 
     it('is a noop if there is no schema', function () {
