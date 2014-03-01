@@ -58,24 +58,37 @@ describe('Model', function () {
 
   describe('#validate', function () {
 
-    it('validates the schema using Joi', function () {
-      sinon.stub(Joi, 'validate').returns(null);
+    beforeEach(function () {
+      sinon.stub(Joi, 'validate');
       model.schema = {};
-      return model.validate().finally(function () {
+    });
+
+    afterEach(function () {
+      Joi.validate.restore();
+    });
+
+    it('validates the schema using Joi', function () {
+      Joi.validate.returns(null);
+      return model.validate().then(function (response) {
+        expect(response).to.be.null;
         expect(Joi.validate).to.have.been.calledWith(model.toJSON(), model.schema);
-        Joi.validate.restore();
       });
     });
 
+    it('rejects when Joi.validate returns an error', function () {
+      var err = new Error();
+      Joi.validate.returns(err);
+      return expect(model.validate())
+        .to.be.rejectedWith(err);
+    });
+
     it('appends timestamps to the schema if used', function () {
-      model.schema = {};
       return model.validate().finally(function () {
         expect(model.schema).to.have.keys('created_at', 'updated_at');
       });
     });
 
     it('does not overwrite the timestamp fields', function () {
-      model.schema = {};
       sinon.spy(_, 'extend');
       model.schema['created_at'] = Joi.date();
       return model.validate().finally(function () {
@@ -85,6 +98,7 @@ describe('Model', function () {
     });
 
     it('is a noop if there is no schema', function () {
+      model.schema = null;
       return model.validate();
     });
 
