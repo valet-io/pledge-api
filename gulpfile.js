@@ -19,5 +19,6 @@ gulp.task('test', ['cover'], function () {
   require('./test/setup');
   return gulp.src(['test/unit/**/*.js', 'test/integration/**/*.js'])
     .pipe(plugins.mocha())
-    .pipe(plugins.istanbul.writeReports());
+    .pipe(plugins.istanbul.writeReports())
+    .on('end', process.exit);
 });
