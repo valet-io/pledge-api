@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 var Pledge = require('../../../src/models/pledge');
-var Donor  = require('../../../src/models/donor');
+
 
 describe('Pledge', function () {
 
@@ -39,26 +39,6 @@ describe('Pledge', function () {
       expect(pledge.toFirebase()).to.have.property('amount', 5);
     });
 
-  });
-
-  describe('#donor', function () {
-
-    it('belongsTo a donor', function () {
-      return new Donor()
-        .save(null, {validate: false})
-        .bind({})
-        .then(function (donor) {
-          this.donor = donor;
-          return new Pledge({donor_id: donor.id}).save(null, {validate: false});
-        })
-        .then(function (pledge) {
-          return pledge.load('donor');
-        })
-        .then(function (pledge) {
-          expect(pledge.related('donor')).to.have.property('id', this.donor.id);
-        });
-    });
-    
   });
 
 });

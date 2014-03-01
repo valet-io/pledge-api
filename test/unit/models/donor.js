@@ -19,27 +19,5 @@ describe('Donor', function () {
     });
     return donor.validate();
   });
-
-  describe('#pledges', function () {
-
-    it('hasMany pledges', function () {
-      return new Donor().save(null, {validate: false})
-        .bind({})
-        .then(function (donor) {
-          this.donor = donor;
-          return Promise.all([
-            new Pledge({donor_id: donor.id}).save(null, {validate: false}),
-            new Pledge({donor_id: donor.id}).save(null, {validate: false})
-          ]);
-        })
-        .then(function () {
-          return this.donor.load('pledges');
-        })
-        .then(function (donor) {
-          expect(donor.related('pledges')).to.have.length(2);
-        });
-    });
-
-  });
-
+  
 });
