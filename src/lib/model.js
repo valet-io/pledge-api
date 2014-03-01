@@ -1,37 +1,33 @@
 'use strict';
 
-var DB  = require('./db');
-var Joi = require('joi');
-var _   = require('lodash');
+var DB      = require('./db');
+var Joi     = require('joi');
+var Promise = require('bluebird');
+var _       = require('lodash');
 
 var Model = DB.Model.extend({
   constructor: function () {
     DB.Model.apply(this, arguments);
     this.on('saving', function (model, attrs, options) {
       options = options || {};
-      if (options.validate !== false) {
-        var err = this.validate();
-        /* istanbul ignore if  */
-        if (err) {
-          throw err;
-        }
-      }
+      if (options.validate === false) return;
+      return this.validate();
     }, this);
   },
 
   hasTimestamps: true,
 
-  validate: function () {
-    if (this.schema) {
-      if (this.hasTimestamps && !this.schema['created_at']) {
-        _.extend(this.schema, {
-          'created_at': Joi.date(),
-          'updated_at': Joi.date()
-        });
-      }
-      return Joi.validate(this.toJSON(), this.schema);
+  validate: Promise.method(function () {
+    if (!this.schema) return;
+    if (this.hasTimestamps && !this.schema.created_at) {
+      _.extend(this.schema, {
+        'created_at': Joi.date(),
+        'updated_at': Joi.date()
+      });
     }
-  }
+    var err = Joi.validate(this.toJSON(), this.schema);
+    return err ? Promise.reject(err) : err;
+  })
 });
 
 var base = {

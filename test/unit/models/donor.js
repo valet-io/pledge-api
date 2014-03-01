@@ -17,7 +17,7 @@ describe('Donor', function () {
       phone: '9739856070',
       email: 'ben@valet.io'
     });
-    expect(donor.validate()).to.be.null;
+    return donor.validate();
   });
 
   describe('#pledges', function () {

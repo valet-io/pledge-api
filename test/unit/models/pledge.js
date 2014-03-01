@@ -19,7 +19,7 @@ describe('Pledge', function () {
       started_at: new Date(),
       submitted_at: new Date()
     });
-    expect(pledge.validate()).to.be.null;
+    return pledge.validate();
   });
 
   describe('#toFirebase', function () {
