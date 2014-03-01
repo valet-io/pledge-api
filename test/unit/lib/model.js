@@ -14,6 +14,10 @@ describe('Model', function () {
     expect(Model).to.have.a.property('authorize');
   });
 
+  it('has timestamps', function () {
+    expect(model.hasTimestamps).to.be.ok;
+  });
+
   describe('events', function () {
 
     describe('saving', function () {
@@ -38,6 +42,13 @@ describe('Model', function () {
       expect(Joi.validate).to.have.been.calledWith(model.toJSON(), model.schema);
       expect(validate).to.equal('validated');
       Joi.validate.restore();
+    });
+
+    it('appends timestampts to the schema if used', function () {
+      model.schema = {};
+      model.hasTimestamps = true;
+      model.validate();
+      expect(model.schema).to.have.keys('created_at', 'updated_at');
     });
 
     it('is a noop if there is no schema', function () {

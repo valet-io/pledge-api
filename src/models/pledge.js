@@ -4,7 +4,6 @@ var Model = require('../lib/model').Model;
 
 var Pledge = Model.extend({
   tableName: 'pledges',
-  hasTimestamps: true,
 
   schema: {
     id: Joi.number().integer().min(0).required(),
