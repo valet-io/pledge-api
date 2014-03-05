@@ -13,6 +13,7 @@ describe('Pledge', function () {
     pledge.set({
       id: 0,
       amount: 1,
+      anonymous: false,
       donor_id: 0,
       campaign_id: 0,
       payment_id: 0,

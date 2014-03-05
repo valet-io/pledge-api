@@ -8,6 +8,7 @@ var Pledge = Model.extend({
   schema: {
     id: Joi.number().integer().min(0),
     amount: Joi.number().integer().min(1).required(),
+    anonymous: Joi.boolean(),
     donor_id: Joi.number().integer().min(0).required(),
     campaign_id: Joi.number().integer().min(0).required(),
     payment_id: Joi.number().integer().min(0),
