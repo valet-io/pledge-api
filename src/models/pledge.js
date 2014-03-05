@@ -5,6 +5,13 @@ var Model = require('../lib/model').Model;
 var Pledge = Model.extend({
   tableName: 'pledges',
 
+  initialize: function () {
+    this.on('created', function (pledge) {
+      return Pledge.triggerThen('created', pledge)
+        .catch(console.log);
+    });
+  },
+
   schema: {
     id: Joi.number().integer().min(0),
     amount: Joi.number().integer().min(1).required(),

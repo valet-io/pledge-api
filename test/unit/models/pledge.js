@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var sinon  = require('sinon');
 var Pledge = require('../../../src/models/pledge');
 
 
@@ -21,6 +22,28 @@ describe('Pledge', function () {
       submitted_at: new Date()
     });
     return pledge.validate();
+  });
+
+  describe('events', function () {
+
+    describe('created', function () {
+
+      it('fires the event on the constructor', function () {
+        var spy = sinon.spy();
+        Pledge.on('created', spy);
+        return pledge.save(null, {validate: false}).then(function (pledge) {
+          expect(spy).to.have.been.calledWith(pledge);
+        });
+      });
+
+      it('ignores errors from the constructor', function () {
+        var stub = sinon.stub().throws();
+        Pledge.on('created', stub);
+        return pledge.save(null, {validate: false});
+      });
+
+    });
+
   });
 
   describe('#toFirebase', function () {
