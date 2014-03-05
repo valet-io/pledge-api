@@ -15,6 +15,7 @@ exports.up = function(knex, Promise) {
       t.increments('id');
       t.timestamps();
       t.integer('amount');
+      t.boolean('anonymous');
       t.integer('payment_id').unsigned();
       t.dateTime('started_at');
       t.dateTime('submitted_at');
