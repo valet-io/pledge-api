@@ -1,7 +1,8 @@
-var expect  = require('chai').expect;
-var Promise = require('bluebird');
-var Pledge  = require('../../src/models/pledge');
-var Donor   = require('../../src/models/donor');
+var expect   = require('chai').expect;
+var Promise  = require('bluebird');
+var Pledge   = require('../../src/models/pledge');
+var Donor    = require('../../src/models/donor');
+var Campaign = require('../../src/models/campaign');
 
 describe('Integration: Models', function () {
 
@@ -48,6 +49,32 @@ describe('Integration: Models', function () {
           })
           .then(function (donor) {
             expect(donor.related('pledges')).to.have.length(2);
+          });
+      });
+
+    });
+
+  });
+
+  describe('Campaign', function () {
+
+    describe('#pledges', function () {
+
+      it('hasMany pledges', function () {
+        return new Campaign().save(null, {validate: false})
+          .bind({})
+          .then(function (campaign) {
+            this.campaign = campaign;
+            return Promise.all([
+              new Pledge({campaign_id: campaign.id}).save(null, {validate: false}),
+              new Pledge({campaign_id: campaign.id}).save(null, {validate: false})
+            ]);
+          })
+          .then(function () {
+            return this.campaign.load('pledges');
+          })
+          .then(function (campaign) {
+            expect(campaign.related('pledges')).to.have.length(2);
           });
       });
 
