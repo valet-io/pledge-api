@@ -26,7 +26,7 @@ describe('Firebase', function () {
     describe('on "created"', function () {
 
       var trigger = function () {
-        Pledge.trigger('created', pledgeMock);
+        return Pledge.triggerThen('created', pledgeMock);
       };
 
       var sandbox;
@@ -42,31 +42,35 @@ describe('Firebase', function () {
 
       it('loads the campaign and donor metadata', function () {
         sandbox.spy(pledgeMock, 'load');
-        trigger();
-        expect(pledgeMock.load).to.have.been.calledWithMatch(['campaign', 'donor']);
+        return trigger().finally(function () {
+          expect(pledgeMock.load).to.have.been.calledWithMatch(['campaign', 'donor']);
+        });
       });
 
       it('sets the pledge in Firebase using its #toFirebase response', function () {
         var set = sandbox.spy(Firebase.prototype, 'set');
-        trigger();
-        expect(set).to.have.been.calledWith(pledgeMock.toFirebase());
-        expect(set).to.have.been.calledOn(sinon.match.has('_ref', 
-          campaignUrl + '/pledges/' + pledgeMock.id
-        ));
+        return trigger().finally(function () {
+          expect(set).to.have.been.calledWith(pledgeMock.toFirebase());
+          expect(set).to.have.been.calledOn(sinon.match.has('_ref', 
+            campaignUrl + '/pledges/' + pledgeMock.id
+          ));
+        });
       });
 
       it('updates the total for the campaign', function () {
         var transaction = sandbox.spy(Firebase.prototype, 'transaction');
-        trigger();
-        expect(transaction).to.have.been.calledOn(sinon.match.has('_ref', campaignUrl + '/aggregates/total'));
-        expect(transaction).to.have.been.calledOn(sinon.match.has('_val', 10));
+        return trigger().finally(function () {
+          expect(transaction).to.have.been.calledOn(sinon.match.has('_ref', campaignUrl + '/aggregates/total'));
+          expect(transaction).to.have.been.calledOn(sinon.match.has('_val', 10));
+        });
       });
 
       it('updates the count for the campaign', function () {
         var transaction = sandbox.spy(Firebase.prototype, 'transaction');
-        trigger();
-        expect(transaction).to.have.been.calledOn(sinon.match.has('_ref', campaignUrl + '/aggregates/count'));
-        expect(transaction).to.have.been.calledOn(sinon.match.has('_val', 10));
+        return trigger().finally(function () {
+          expect(transaction).to.have.been.calledOn(sinon.match.has('_ref', campaignUrl + '/aggregates/count'));
+          expect(transaction).to.have.been.calledOn(sinon.match.has('_val', 10));
+        });
       });
 
     });

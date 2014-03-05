@@ -1,6 +1,7 @@
 'use strict';
 
-var Pledge = require('../models/pledge');
+var Promise = require('bluebird');
+var Pledge  = require('../models/pledge');
 
 module.exports = function (Firebase) {
 
@@ -20,20 +21,23 @@ module.exports = function (Firebase) {
   };
 
   Pledge.on('created', function (pledge) {
-    pledge
+    return pledge
       .load(['campaign', 'donor'])
       .then(function (pledge) {
         var campaign = internals.Campaign(pledge.related('campaign'));
-        campaign.pledges.child(pledge.id).set(pledge.toFirebase());
-        campaign.aggregates.total.transaction(function (total) {
-          return total + pledge.get('amount');
-        });
-        campaign.aggregates.count.transaction(function (count) {
-          return count + 1;
-        });
+        var firePledge = campaign.pledges.child(pledge.id);
+        return Promise.promisify(firePledge.set, firePledge)(pledge.toFirebase())
+          .then(function () {
+            return Promise.all([
+              Promise.promisify(campaign.aggregates.total.transaction, campaign.aggregates.total)(function (total) {
+                return total + pledge.get('amount');
+              }),
+              Promise.promisify(campaign.aggregates.count.transaction, campaign.aggregates.count)(function (count) {
+                return count + 1;
+              })
+            ]);
+          });
       });
   });
-
-  return;
 
 };
