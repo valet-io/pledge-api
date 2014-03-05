@@ -28,6 +28,26 @@ describe('Integration: Models', function () {
 
     });
 
+    describe('#campaign', function () {
+
+      it('belongsTo a Campaign', function () {
+        return new Campaign()
+          .save(null, {validate: false})
+          .bind({})
+          .then(function (campaign) {
+            this.campaign = campaign;
+            return new Pledge({campaign_id: campaign.id}).save(null, {validate: false});
+          })
+          .then(function (pledge) {
+            return pledge.load('campaign');
+          })
+          .then(function (pledge) {
+            expect(pledge.related('campaign')).to.have.property('id', this.campaign.id);
+          });
+      });
+
+    });
+
   });
 
   describe('Donor', function () {

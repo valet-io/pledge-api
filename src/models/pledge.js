@@ -15,6 +15,10 @@ var Pledge = Model.extend({
     submitted_at: Joi.date()
   },
 
+  campaign: function () {
+    return this.belongsTo(require('./campaign'));
+  },
+
   donor: function () {
     return this.belongsTo(require('./donor'));
   },
