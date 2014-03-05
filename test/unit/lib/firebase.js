@@ -5,12 +5,21 @@ var sinon      = require('sinon');
 var Firebase   = require('../../mocks/firebase');
 var Pledge     = require('../../../src/models/pledge');
 var pledgeMock = require('../../mocks/pledge');
-var firePledge = require('../../../src/lib/firebase')(Firebase);
 
 describe('Firebase', function () {
 
-  var campaignsRef = Firebase.getCall(0).returnValue;
+  var campaignsRef;
   var baseUrl = 'https://valet-io-events.firebaseio.com/campaigns';
+
+  before(function () {
+    Pledge._events = {};
+    require('../../../src/lib/firebase')(Firebase);
+    campaignsRef = Firebase.getCall(0).returnValue;
+  });
+
+  after(function () {
+    Pledge._events = {};
+  });
 
   describe('Setup', function () {
 
