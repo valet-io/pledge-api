@@ -1,16 +1,16 @@
 'use strict';
 
-var expect    = require('chai').expect;
-var Promise   = require('bluebird');
-var Server    = require('../../mocks/server');
-var campaigns = require('../../../src/routes/campaigns');
-var Campaign  = require('../../../src/models/campaign');
+var expect        = require('chai').expect;
+var Promise       = require('bluebird');
+var serverFactory = require('../../mocks/server');
+var campaigns     = require('../../../src/routes/campaigns');
+var Campaign      = require('../../../src/models/campaign');
 
 describe('Routes: Campaigns', function () {
 
   var server;
   beforeEach(function () {
-    server = new Server();
+    server = serverFactory();
     campaigns(server);
   });
 
@@ -28,11 +28,11 @@ describe('Routes: Campaigns', function () {
 
   describe('GET /campaigns/{id}', function () {
 
-    it('gets the campaign by ID', function (done) {
-      server.inject('/campaigns/' + campaign.id, function (response) {
-        expect(response.result.id).to.equal(campaign.id);
-        done();
-      });
+    it('gets the campaign by ID', function () {
+      return server.injectThen('/campaigns/' + campaign.id)
+        .then(function (response) {
+          expect(response.result.id).to.equal(campaign.id);
+        });
     });
 
   });
@@ -44,10 +44,11 @@ describe('Routes: Campaigns', function () {
         host: 'myhost.org'
       })
       .then(function (campaign) {
-        server.inject('/campaigns?host=myhost.org', function (response) {
-          expect(response.result).to.have.length(1);
-          expect(response.result.toJSON()[0].id).to.equal(campaign.id);
-        });
+        return server.injectThen('/campaigns?host=myhost.org');
+      })
+      .then(function (response) {
+        expect(response.result).to.have.length(1);
+        expect(response.result.toJSON()[0].id).to.equal(campaign.id);
       });
     });
 
