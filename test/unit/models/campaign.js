@@ -14,6 +14,7 @@ describe('Campaign', function () {
     campaign.set({
       id: 0,
       name: 'The Greatest Fundraiser Ever',
+      host: 'myhost.org',
       metadata: {
         title: 'tbd'
       }

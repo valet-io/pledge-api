@@ -9,6 +9,7 @@ exports.up = function(knex, Promise) {
       t.increments('id');
       t.timestamps();
       t.string('name');
+      t.string('host').unique();
       t.json('metadata');
     }),
     knex.schema.createTable('pledges', function (t) {

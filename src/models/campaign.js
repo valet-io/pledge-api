@@ -7,6 +7,7 @@ var Campaign = Model.extend({
   schema: {
     id: Joi.number().integer().min(0),
     name: Joi.string().required(),
+    host: Joi.string().max(20),
     metadata: Joi.object()
   },
 
