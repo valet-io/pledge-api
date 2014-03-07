@@ -38,4 +38,14 @@ module.exports = function (server) {
     }
   });
 
+  server.route({
+    method: 'POST',
+    path: '/pledges',
+    handler: function (request, reply) {
+      new Pledge(request.payload)
+        .save()
+        .done(reply);
+    }
+  });
+
 }

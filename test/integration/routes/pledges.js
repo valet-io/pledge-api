@@ -63,4 +63,33 @@ describe('Routes: Pledges', function () {
 
   });
 
+  describe('POST /pledges', function () {
+
+    it('creates a new pledge', function () {  
+      return Promise.all([
+        new Campaign().save(null, {validate: false}),
+        new Donor().save(null, {validate: false})
+      ])
+      .spread(function (campaign, donor) {
+        return server.injectThen({
+          url: '/pledges',
+          method: 'POST',
+          payload: JSON.stringify({
+            amount: 10,
+            campaign_id: campaign.id,
+            donor_id: donor.id
+          })
+        });
+      })
+      .then(function (response) {
+        expect(response.result).to.be.an.instanceOf(Pledge);
+        return new Pledge({id: response.result.id}).fetch();
+      })
+      .then(function (pledge) {
+        expect(pledge.get('amount')).to.equal(10);
+      });
+    });
+
+  });
+
 });
