@@ -1,18 +1,18 @@
 'use strict';
 
-var expect    = require('chai').expect;
-var Promise   = require('bluebird');
-var Server    = require('../../mocks/server');
-var pledges   = require('../../../src/routes/pledges');
-var Pledge    = require('../../../src/models/pledge');
-var Campaign  = require('../../../src/models/campaign');
-var Donor     = require('../../../src/models/donor');
+var expect        = require('chai').expect;
+var Promise       = require('bluebird');
+var serverFactory = require('../../mocks/server');
+var pledges       = require('../../../src/routes/pledges');
+var Pledge        = require('../../../src/models/pledge');
+var Campaign      = require('../../../src/models/campaign');
+var Donor         = require('../../../src/models/donor');
 
 describe('Routes: Pledges', function () {
 
   var server;
   beforeEach(function () {
-    server = new Server();
+    server = serverFactory();
     pledges(server);
   });
 
@@ -36,11 +36,11 @@ describe('Routes: Pledges', function () {
 
   describe('GET /pledges/{id}', function () {
 
-    it('gets the pledge by ID', function (done) {
-      server.inject('/pledges/' + pledge.id, function (response) {
-        expect(response.result.id).to.equal(pledge.id);
-        done();
-      });
+    it('gets the pledge by ID', function () {
+      return server.injectThen('/pledges/' + pledge.id)
+        .then(function (response) {
+          expect(response.result.id).to.equal(pledge.id);
+        });
     });
 
   });
@@ -48,15 +48,16 @@ describe('Routes: Pledges', function () {
   describe('GET /pledges', function () {
 
     it('can get the pledges by campaign', function () {
-      new Pledge({
+      return new Pledge({
         campaign_id: pledge.get('campaign_id')
       })
       .save(null, {validate: false})
       .then(function () {
-        server.inject('/pledges?campaign_id=' + pledge.get('campaign_id'), function (response) {
-          expect(response.result).to.have.length(2);
-          expect(response.result.toJSON()[0].id).to.equal(pledge.id);
-        });
+        return server.injectThen('/pledges?campaign_id=' + pledge.get('campaign_id'));
+      })
+      .then(function (response) {
+        expect(response.result).to.have.length(2);
+        expect(response.result.toJSON()[0].id).to.equal(pledge.id);
       });
     });
 

@@ -20,4 +20,22 @@ module.exports = function (server) {
         .done(reply);
     }
   });
+
+  server.route({
+    method: 'GET',
+    path: '/pledges/{id}',
+    handler: function (request, reply) {
+      new Pledge({id: request.params.id})
+        .fetch()
+        .done(reply);
+    },
+    config: {
+      validate: {
+        path: {
+          id: validators.id().required()
+        }
+      }
+    }
+  });
+
 }
