@@ -1,7 +1,8 @@
 'use strict';
-
+var _          = require('lodash');
 var validators = require('../lib/validators');
 var Pledge     = require('../models/pledge');
+var Donor      = require('../models/donor');
 
 module.exports = function (server) {
 
@@ -42,8 +43,13 @@ module.exports = function (server) {
     method: 'POST',
     path: '/pledges',
     handler: function (request, reply) {
-      new Pledge(request.payload)
+      new Donor(request.payload.donor)
         .save()
+        .then(function (donor) {
+          return new Pledge(_.omit(request.payload, 'donor'))
+            .set('donor_id', donor.id)
+            .save();
+        })
         .done(reply);
     }
   });

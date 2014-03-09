@@ -65,7 +65,7 @@ describe('Routes: Pledges', function () {
 
   describe('POST /pledges', function () {
 
-    it('creates a new pledge', function () {  
+    it('creates a new pledge and donor', function () {  
       return Promise.all([
         new Campaign().save(null, {validate: false}),
         new Donor().save(null, {validate: false})
@@ -77,7 +77,9 @@ describe('Routes: Pledges', function () {
           payload: JSON.stringify({
             amount: 10,
             campaign_id: campaign.id,
-            donor_id: donor.id
+            donor: {
+              name: 'Ben'
+            }
           })
         });
       })
@@ -87,6 +89,10 @@ describe('Routes: Pledges', function () {
       })
       .then(function (pledge) {
         expect(pledge.get('amount')).to.equal(10);
+        return pledge.donor().fetch();
+      })
+      .then(function (donor) {
+        expect(donor.get('name')).to.equal('Ben');
       });
     });
 
