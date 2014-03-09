@@ -13,6 +13,10 @@ var Campaign = Model.extend({
 
   pledges: function () {
     return this.hasMany(require('./pledge'));
+  },
+
+  donors: function () {
+    return this.belongsToMany(require('./donor')).through(require('./pledge'));
   }
 
 });

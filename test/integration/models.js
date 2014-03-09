@@ -100,6 +100,30 @@ describe('Integration: Models', function () {
 
     });
 
+    it('hasMany Donors through Pledges', function () {
+      return new Campaign().save(null, {validate: false})
+        .bind({})
+        .then(function (campaign) {
+          this.campaign = campaign;
+          return Promise.all([
+            new Donor({name: 'Ben'}).save(null, {validate: false}),
+            new Donor({name: 'Jordan'}).save(null, {validate: false})
+          ]);
+        })
+        .then(function (donors) {
+          return Promise.all([
+            new Pledge({campaign_id: this.campaign.id, donor_id: donors[0].id}).save(null, {validate: false}),
+            new Pledge({campaign_id: this.campaign.id, donor_id: donors[1].id}).save(null, {validate: false})
+          ]);
+        })
+        .then(function () {
+          return this.campaign.load('donors');
+        })
+        .then(function (campaign) {
+          expect(campaign.related('donors')).to.have.length(2);
+        });
+    });
+
   });
 
 });
