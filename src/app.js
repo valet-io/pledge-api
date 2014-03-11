@@ -1,6 +1,6 @@
 var Hapi = require('hapi');
 
-var server = new Hapi.Server('localhost', process.env.PORT || 8000, {cors: true});
+var server = new Hapi.Server('0.0.0.0', +process.env.PORT || 8000, {cors: true});
 
 require('./routes/campaigns')(server);
 require('./routes/pledges')(server);
