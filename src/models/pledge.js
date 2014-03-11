@@ -8,9 +8,6 @@ var Pledge = Model.extend({
   initialize: function () {
     this.on('created', function (pledge) {
       return Pledge.triggerThen('created', pledge)
-        .then(function (pledge) {
-          console.log('pledge ' + pledge.id + ' saved to FB');
-        })
         .catch(console.log);
     });
   },
