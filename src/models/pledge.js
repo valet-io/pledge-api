@@ -37,10 +37,10 @@ var Pledge = Model.extend({
   toFirebase: function () {
     return {
       donor: {
-        name: this.related('donor').get('name')
+        name: this.related('donor').get('name') || null
       },
-      anonymous: this.get('anonymous'),
-      amount: this.get('amount')
+      anonymous: this.get('anonymous') || null,
+      amount: this.get('amount') || null
     };
   }
 });
