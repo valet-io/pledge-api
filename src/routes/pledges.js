@@ -17,7 +17,9 @@ module.exports = function (server) {
             query.where(constraint, '=', request.query[constraint]);
           }
         })
-        .fetch()
+        .fetch({
+          withRelated: ['donor']
+        })
         .done(reply);
     }
   });
