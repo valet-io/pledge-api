@@ -33,7 +33,9 @@ var Pledge = Model.extend({
 
   toFirebase: function () {
     return {
+      donor_id: this.get('donor_id'),
       donor: {
+        id: this.related('donor').get('id'),
         name: this.related('donor').get('name') || null
       },
       anonymous: this.get('anonymous') || null,

@@ -84,7 +84,9 @@ describe('Integration: Firebase', function () {
 
       it('saves the toFirebase representation only', function () {
         pledges.forEach(function (pledge) {
-          expect(fireCampaign.pledges[pledge.id]).to.deep.equal(pledge.toFirebase());
+          var toFirebase = pledge.toFirebase();
+          delete toFirebase.anonymous;
+          expect(fireCampaign.pledges[pledge.id]).to.deep.equal(toFirebase);
         });
       });
 
