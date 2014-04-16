@@ -15,6 +15,20 @@ gulp.task('cover', function () {
     .pipe(plugins.istanbul());
 });
 
+gulp.task('test:unit', ['cover'], function () {
+  require('./test/setup');
+  return gulp.src(['test/unit/**/*.js'])
+    .pipe(plugins.mocha())
+    .pipe(plugins.istanbul.writeReports());
+});
+
+gulp.task('test:integration', ['cover'], function () {
+  require('./test/setup');
+  return gulp.src(['test/integration/**/*.js'])
+    .pipe(plugins.mocha())
+    .pipe(plugins.istanbul.writeReports());
+});
+
 gulp.task('test', ['cover'], function () {
   require('./test/setup');
   return gulp.src(['test/unit/**/*.js', 'test/integration/**/*.js'])
