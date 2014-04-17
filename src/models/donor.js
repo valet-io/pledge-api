@@ -1,13 +1,22 @@
-var Joi   = require('joi');
-var Model = require('../lib/model').Model;
+'use strict';
+
+var Joi            = require('joi');
+var Model          = require('../lib/model').Model;
+var phoneFormatter = require('phonenumber');
+
+var internals = {};
 
 var Donor = Model.extend({
   tableName: 'donors',
 
+  initialize: function () {
+    this.on('change', internals.normalizePhone);
+  },
+
   schema: {
     id: Joi.number().integer().min(0),
     name: Joi.string().required(),
-    phone: Joi.string().length(10),
+    phone: Joi.string(),
     email: Joi.string().email()
   },
 
@@ -16,5 +25,9 @@ var Donor = Model.extend({
   }
 
 });
+
+internals.normalizePhone = function (donor) {
+  if (donor.get('phone')) donor.set('phone', phoneFormatter.normalize(donor.get('phone')));
+};
 
 module.exports = Donor;
