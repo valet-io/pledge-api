@@ -1,6 +1,7 @@
-var Hapi = require('hapi');
+var Hapi  = require('hapi');
+var nconf = require('./config')
 
-var server = new Hapi.Server('0.0.0.0', +process.env.PORT || 8000, {cors: true});
+var server = new Hapi.Server('0.0.0.0', +nconf.get('port'), {cors: true});
 
 require('./lib/firebase')(require('firebase'));
 require('./routes/campaigns')(server);

@@ -41,6 +41,7 @@
     "pg": "~2.11.1",
     "lodash": "~2.4.1",
     "knex": "~0.5.8",
-    "phonenumber": "0.0.3"
+    "phonenumber": "0.0.3",
+    "nconf": "~0.6.9"
   }
 }

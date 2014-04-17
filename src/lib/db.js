@@ -4,11 +4,7 @@ var Bookshelf = require('bookshelf');
 
 var Bookshelf = Bookshelf.initialize({
   client: 'pg',
-  connection: {
-    host: 'localhost',
-    username: 'Ben',
-    database: 'valet_io_pledge'
-  }
+  connection: require('../config').get('database')
 });
 
 Bookshelf
