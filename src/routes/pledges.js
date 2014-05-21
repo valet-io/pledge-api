@@ -2,6 +2,9 @@
 
 var Joi        = require('joi');
 var Pledge     = require('../models/pledge');
+var Donor      = require('../models/donor');
+var config     = require('../config');
+var stripe     = require('stripe')(config.get('stripe:key'));
 
 module.exports = function (server) {
 
@@ -19,7 +22,7 @@ module.exports = function (server) {
         .fetch({
           withRelated: ['donor']
         })
-        .done(reply);
+        .done(reply, reply);
     }
   });
 
@@ -29,7 +32,7 @@ module.exports = function (server) {
     handler: function (request, reply) {
       new Pledge({id: request.params.id})
         .fetch()
-        .done(reply);
+        .done(reply, reply);
     },
     config: {
       validate: {
@@ -47,7 +50,23 @@ module.exports = function (server) {
       new Pledge(request.payload)
         .save()
         .call('fetch')
-        .done(reply);
+        .done(reply, reply);
+    }
+  });
+
+};
+  server.route({
+    method: 'POST',
+    path: '/payments',
+    handler: function (request, reply) {
+      stripe.charges.create({
+        amount: request.payload.amount * 100, 
+        currency: 'usd',
+        card: request.payload.token,
+        metadata: _.omit(request.payload, 'card', 'token', 'amount')
+      })
+      .then(reply)
+      .catch(reply);
     }
   });
 
