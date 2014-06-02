@@ -1,7 +1,16 @@
-var Hapi  = require('hapi');
-var nconf = require('./config')
+'use strict';
 
-var server = new Hapi.Server('0.0.0.0', +nconf.get('port'), {cors: true});
+var hapi   = require('hapi');
+var fs     = require('fs');
+var config = require('./config');
+
+var server = new hapi.Server('0.0.0.0', config.get('port'), {
+  cors: true,
+  tls: config.get('ssl') && {
+    key: fs.readFileSync(config.get('ssl:key')),
+    cert: fs.readFileSync(config.get('ssl:cert'))
+  }
+});
 
 require('./lib/firebase')(require('firebase'));
 require('./routes/campaigns')(server);
