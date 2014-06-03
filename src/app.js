@@ -12,6 +12,15 @@ var server = new hapi.Server('0.0.0.0', config.get('port'), {
   }
 });
 
+server.pack.require('good', {
+  subscribers: {
+    console: ['ops', 'request', 'log', 'error'],
+    'udp://logs.papertrailapp.com:44076': ['ops', 'request', 'log', 'error']
+  }
+}, function (err) {
+  if (err) throw err;
+});
+
 require('./lib/firebase')(require('firebase'));
 require('./routes/campaigns')(server);
 require('./routes/pledges')(server);

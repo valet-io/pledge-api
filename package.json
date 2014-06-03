@@ -32,16 +32,17 @@
     "gulp-istanbul": "~0.1.1"
   },
   "dependencies": {
-    "bookshelf-authorization": "0.0.5",
     "bluebird": "~1.0.7",
-    "joi": "~2.7.0",
-    "firebase": "~1.0.5",
     "bookshelf": "~0.6.4",
+    "bookshelf-authorization": "0.0.5",
+    "firebase": "~1.0.5",
+    "good": "^2.0.0",
     "hapi": "~2.6.0",
-    "pg": "~2.11.1",
-    "lodash": "~2.4.1",
+    "joi": "~2.7.0",
     "knex": "~0.5.8",
-    "phonenumber": "0.0.3",
-    "nconf": "~0.6.9"
+    "lodash": "~2.4.1",
+    "nconf": "~0.6.9",
+    "pg": "~2.11.1",
+    "phonenumber": "0.0.3"
   }
 }
