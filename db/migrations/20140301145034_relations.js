@@ -1,14 +1,11 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.table('campaigns', function (t) {
-      t.integer('organization_id').unsigned()
-        .references('id').inTable('organizations');
+      t.uuid('organization_id').references('id').inTable('organizations');
     }),
     knex.schema.table('pledges', function (t) {
-      t.integer('donor_id').unsigned()
-        .references('id').inTable('donors');
-      t.integer('campaign_id').unsigned()
-        .references('id').inTable('campaigns');
+      t.uuid('donor_id').references('id').inTable('donors');
+      t.uuid('campaign_id').references('id').inTable('campaigns');
     })
   ]);
 };
