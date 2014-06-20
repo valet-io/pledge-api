@@ -38,6 +38,7 @@ var Pledge = Model.extend({
         id: this.related('donor').get('id'),
         name: this.related('donor').get('name') || null
       },
+      timestamp: this.get('created_at').getTime(),
       anonymous: this.get('anonymous') || null,
       amount: this.get('amount') || null
     };
