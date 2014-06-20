@@ -8,5 +8,5 @@ module.exports = nconf
       username: 'Ben',
       database: 'valet_io_pledge'
     },
-    port: 8000
+    PORT: 8000
   });

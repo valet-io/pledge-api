@@ -4,7 +4,7 @@ var hapi   = require('hapi');
 var fs     = require('fs');
 var config = require('./config');
 
-var server = new hapi.Server('0.0.0.0', config.get('port'), {
+var server = new hapi.Server('0.0.0.0', config.get('PORT'), {
   cors: true,
   tls: config.get('ssl') && {
     key: fs.readFileSync(config.get('ssl:key')),
