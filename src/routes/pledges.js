@@ -72,7 +72,7 @@ module.exports = function (server) {
         metadata: _.omit(request.payload, 'card', 'token', 'amount')
       })
       .then(reply)
-      .catch(reply);
+      .then(null, reply);
     }
   });
 
