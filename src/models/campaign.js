@@ -10,7 +10,7 @@ var Campaign = Model.extend({
     host: Joi.string().max(20),
     metadata: Joi.object()
   },
-
+  
   pledges: function () {
     return this.hasMany(require('./pledge'));
   },

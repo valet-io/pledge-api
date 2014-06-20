@@ -1,7 +1,7 @@
 var nconf = require('nconf');
 
 module.exports = nconf
-  .env()
+  .env('_')
   .defaults({
     database: {
       host: 'localhost',
