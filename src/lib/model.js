@@ -8,11 +8,11 @@ var _       = require('lodash');
 var Model = DB.Model.extend({
   constructor: function () {
     DB.Model.apply(this, arguments);
-    this.on('saving', function (model, attrs, options) {
-      options = options || {};
-      if (options.validate === false) return;
-      return this.validate();
-    }, this);
+    // this.on('saving', function (model, attrs, options) {
+    //   options = options || {};
+    //   if (options.validate === false) return;
+    //   return this.validate();
+    // }, this);
   },
 
   hasTimestamps: true,

@@ -1,5 +1,6 @@
 'use strict';
-var validators = require('../lib/validators');
+
+var Joi        = require('joi');
 var Pledge     = require('../models/pledge');
 
 module.exports = function (server) {
@@ -33,7 +34,7 @@ module.exports = function (server) {
     config: {
       validate: {
         path: {
-          id: validators.id().required()
+          id: Joi.string().guid()
         }
       }
     }

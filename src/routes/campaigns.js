@@ -1,6 +1,7 @@
 'use strict';
 
 var Hapi       = require('hapi');
+var Joi        = require('joi');
 var validators = require('../lib/validators');
 var Campaign   = require('../models/campaign');
 
@@ -33,7 +34,7 @@ module.exports = function (server) {
     config: {
       validate: {
         path: {
-          id: validators.id().required()
+          id: Joi.string().guid()
         }
       }
     }
