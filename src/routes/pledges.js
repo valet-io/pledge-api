@@ -1,6 +1,6 @@
 'use strict';
 
-var Joi        = require('joi');
+var _          = require('lodash');
 var Pledge     = require('../models/pledge');
 var Donor      = require('../models/donor');
 var config     = require('../config');
@@ -22,7 +22,7 @@ module.exports = function (server) {
         .fetch({
           withRelated: ['donor']
         })
-        .done(reply, reply);
+        .done(reply);
     }
   });
 
@@ -32,14 +32,7 @@ module.exports = function (server) {
     handler: function (request, reply) {
       new Pledge({id: request.params.id})
         .fetch()
-        .done(reply, reply);
-    },
-    config: {
-      validate: {
-        path: {
-          id: Joi.string().guid()
-        }
-      }
+        .done(reply);
     }
   });
 
@@ -47,14 +40,27 @@ module.exports = function (server) {
     method: 'POST',
     path: '/pledges',
     handler: function (request, reply) {
-      new Pledge(request.payload)
+      new Donor(request.payload.donor)
         .save()
+        .then(function (donor) {
+          return new Pledge(_.omit(request.payload, 'donor')).set('donor_id', donor.id).save();
+        })      
         .call('fetch')
-        .done(reply, reply);
+        .done(reply);
     }
   });
 
-};
+  server.route({
+    method: 'PUT',
+    path: '/pledges/{id}',
+    handler: function (request, reply) {
+      new Pledge({id: request.params.id})
+        .save(request.payload)
+        .call('fetch')
+        .done(reply);
+    }
+  });
+
   server.route({
     method: 'POST',
     path: '/payments',
