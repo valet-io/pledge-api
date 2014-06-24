@@ -1,5 +1,11 @@
+'use strict';
+
+var uuid = require('node-uuid');
+
+var campaignId = uuid.v4();
+
 module.exports = {
-  id: 1,
+  id: uuid.v4(),
   attributes: {
     amount: 10
   },
@@ -14,7 +20,7 @@ module.exports = {
   },
   campaign: function () {
     return {
-      id: 2
+      id: campaignId
     };
   },
   related: function (model) {

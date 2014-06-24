@@ -14,7 +14,7 @@ describe('Firebase', function () {
   before(function () {
     Pledge._events = {};
     require('../../../src/lib/firebase')(Firebase);
-    campaignsRef = Firebase.getCall(0).returnValue;
+    campaignsRef = Firebase.firstCall.returnValue;
   });
 
   after(function () {
@@ -51,14 +51,14 @@ describe('Firebase', function () {
 
       it('loads the campaign and donor metadata', function () {
         sandbox.spy(pledgeMock, 'load');
-        return trigger().finally(function () {
+        return trigger().then(function () {
           expect(pledgeMock.load).to.have.been.calledWithMatch(['campaign', 'donor']);
         });
       });
 
       it('sets the pledge in Firebase using its #toFirebase response', function () {
         var set = sandbox.spy(Firebase.prototype, 'set');
-        return trigger().finally(function () {
+        return trigger().then(function () {
           expect(set).to.have.been.calledWith(pledgeMock.toFirebase());
           expect(set).to.have.been.calledOn(sinon.match.has('_ref', 
             campaignUrl + '/pledges/' + pledgeMock.id
@@ -68,7 +68,7 @@ describe('Firebase', function () {
 
       it('updates the total for the campaign', function () {
         var transaction = sandbox.spy(Firebase.prototype, 'transaction');
-        return trigger().finally(function () {
+        return trigger().then(function () {
           expect(transaction).to.have.been.calledOn(sinon.match.has('_ref', campaignUrl + '/aggregates/total'));
           expect(transaction).to.have.been.calledOn(sinon.match.has('_val', 10));
         });
@@ -76,7 +76,7 @@ describe('Firebase', function () {
 
       it('updates the count for the campaign', function () {
         var transaction = sandbox.spy(Firebase.prototype, 'transaction');
-        return trigger().finally(function () {
+        return trigger().then(function () {
           expect(transaction).to.have.been.calledOn(sinon.match.has('_ref', campaignUrl + '/aggregates/count'));
           expect(transaction).to.have.been.calledOn(sinon.match.has('_val', 10));
         });

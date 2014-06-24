@@ -1,6 +1,7 @@
+'use strict';
+
 var Joi   = require('joi');
-var _     = require('lodash');
-var Model = require('../lib/model').Model;
+var Model = require('../lib/db').Model;
 
 var Pledge = Model.extend({
   tableName: 'pledges',
@@ -13,12 +14,12 @@ var Pledge = Model.extend({
   },
 
   schema: {
-    id: Joi.number().integer().min(0),
+    id: Joi.string().guid(),
     amount: Joi.number().integer().min(1).required(),
     anonymous: Joi.boolean(),
-    donor_id: Joi.number().integer().min(0).required(),
-    campaign_id: Joi.number().integer().min(0).required(),
-    payment_id: Joi.number().integer().min(0),
+    donor_id: Joi.string().guid().required(),
+    campaign_id: Joi.string().guid().required(),
+    payment_id: Joi.string(),
     started_at: Joi.date(),
     submitted_at: Joi.date()
   },
@@ -44,7 +45,5 @@ var Pledge = Model.extend({
     };
   }
 });
-
-_.extend(Pledge, require('bookshelf/dialects/base/events').Events);
 
 module.exports = Pledge;

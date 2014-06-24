@@ -36,7 +36,8 @@ module.exports = function (Firebase) {
                 return count + 1;
               })
             ]);
-          });
+          })
+          .then(console.log.bind(console, 'resolved'));
       });
   });
 

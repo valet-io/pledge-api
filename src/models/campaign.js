@@ -1,11 +1,11 @@
 var Joi   = require('joi');
-var Model = require('../lib/model').Model;
+var Model = require('../lib/db').Model;
 
 var Campaign = Model.extend({
   tableName: 'campaigns',
 
   schema: {
-    id: Joi.number().integer().min(0),
+    id: Joi.string().guid(),
     name: Joi.string().required(),
     host: Joi.string().max(20),
     metadata: Joi.object()

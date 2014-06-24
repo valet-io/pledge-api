@@ -1,6 +1,7 @@
 'use strict';
 
 var expect   = require('chai').expect;
+var uuid     = require('node-uuid');
 var Campaign = require('../../../src/models/campaign');
 
 describe('Campaign', function () {
@@ -12,7 +13,7 @@ describe('Campaign', function () {
 
   it('provides a validation schema', function () {
     campaign.set({
-      id: 0,
+      id: uuid.v4(),
       name: 'The Greatest Fundraiser Ever',
       host: 'myhost.org',
       metadata: {
