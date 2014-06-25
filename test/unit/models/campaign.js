@@ -5,7 +5,7 @@ var uuid       = require('node-uuid');
 var proxyquire = require('proxyquire');
 
 var Campaign   = proxyquire('../../../src/models/campaign', {
-  Firebase: require('mockfirebase')
+  firebase: require('mockfirebase').MockFirebase
 });
 
 describe('Campaign', function () {
@@ -30,8 +30,10 @@ describe('Campaign', function () {
   describe('#firebase', function () {
 
     it('can provide its firebase reference', function () {
+      var base = require('../../../src/config').get('firebase');
       campaign.id = uuid.v4();
-      expect(campaign.firebase().name()).to.equal(campaign.id);
+      var endpoint = base + '/campaigns/' + campaign.id;
+      expect(campaign.firebase().currentPath).to.equal(endpoint);
     });
 
   });
