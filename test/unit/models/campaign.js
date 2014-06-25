@@ -1,8 +1,12 @@
 'use strict';
 
-var expect   = require('chai').expect;
-var uuid     = require('node-uuid');
-var Campaign = require('../../../src/models/campaign');
+var expect     = require('chai').expect;
+var uuid       = require('node-uuid');
+var proxyquire = require('proxyquire');
+
+var Campaign   = proxyquire('../../../src/models/campaign', {
+  Firebase: require('mockfirebase')
+});
 
 describe('Campaign', function () {
 
@@ -21,6 +25,15 @@ describe('Campaign', function () {
       }
     });
     return campaign.validate();
+  });
+
+  describe('#firebase', function () {
+
+    it('can provide its firebase reference', function () {
+      campaign.id = uuid.v4();
+      expect(campaign.firebase().name()).to.equal(campaign.id);
+    });
+
   });
   
 });
