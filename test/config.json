@@ -2,7 +2,7 @@
   "database": {
     "connection": {
       "host": "localhost",
-      "username": "Ben",
+      "username": "postgres",
       "database": "valet_io_pledge"
     },
     "pool": {
