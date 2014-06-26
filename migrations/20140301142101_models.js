@@ -1,7 +1,7 @@
 'use strict';
 
-exports.up = function(knex, Promise) {
-  return knex.raw('CREATE EXTENSION "uuid-ossp"')
+exports.up = function (knex, Promise) {
+  return knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
     .then(function () {
       return Promise.all([
         knex.schema.createTable('organizations', function (t) {
@@ -35,7 +35,7 @@ exports.up = function(knex, Promise) {
     });
 };
 
-exports.down = function(knex, Promise) {
+exports.down = function (knex, Promise) {
   return Promise.map([
     'organizations',
     'campaigns',

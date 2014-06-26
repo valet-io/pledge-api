@@ -1,9 +1,16 @@
-var nconf = require('nconf');
+'use strict';
 
-module.exports = nconf
+module.exports = require('nconf')
   .env('_')
   .defaults({
     database: {
-      client: 'pg'
+      client: 'postgres',
+      connection: {
+        adapter: 'postgresql'
+      },
+      migrations: {
+        directory: __dirname + '/../migrations',
+        tableName: 'migrations'
+      }
     }
   });

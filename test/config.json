@@ -4,10 +4,6 @@
       "host": "localhost",
       "username": "postgres",
       "database": "valet_io_pledge"
-    },
-    "pool": {
-      "min": 0,
-      "max": 1
     }
   },
   "firebase": "https://valet-io-test.firebaseio.com"

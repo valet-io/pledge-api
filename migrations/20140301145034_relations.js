@@ -1,4 +1,6 @@
-exports.up = function(knex, Promise) {
+'use strict';
+
+exports.up = function (knex, Promise) {
   return Promise.all([
     knex.schema.table('campaigns', function (t) {
       t.uuid('organization_id').references('id').inTable('organizations');
@@ -10,7 +12,7 @@ exports.up = function(knex, Promise) {
   ]);
 };
 
-exports.down = function(knex, Promise) {
+exports.down = function (knex, Promise) {
   return Promise.all([
     knex.schema.table('campaigns', function (t) {
       t.dropColumn('organization_id');
