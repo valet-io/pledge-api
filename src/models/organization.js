@@ -1,5 +1,5 @@
 var Joi   = require('joi');
-var Model = require('../lib/db').Model;
+var Model = require('../db').Model;
 
 var Organization = Model.extend({
   tableName: 'organizations',

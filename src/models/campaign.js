@@ -1,7 +1,7 @@
 'use strict';
 
 var Joi       = require('joi');
-var Model     = require('../lib/db').Model;
+var Model     = require('../db').Model;
 var Firebase  = require('firebase');
 var config    = require('../config');
 var internals = {};

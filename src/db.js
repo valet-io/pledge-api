@@ -5,7 +5,7 @@ var Bookshelf = require('bookshelf');
 
 var bookshelf = Bookshelf(knex({
   client: 'pg',
-  connection: require('../config').get('database')
+  connection: require('./config').get('database')
 }));
 
 bookshelf
