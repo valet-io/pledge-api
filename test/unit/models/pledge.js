@@ -1,8 +1,11 @@
-var expect = require('chai').expect;
-var sinon  = require('sinon');
-var uuid   = require('node-uuid');
-var Pledge = require('../../../src/models/pledge');
+'use strict';
 
+var expect       = require('chai').expect;
+var sinon        = require('sinon');
+var uuid         = require('node-uuid');
+var MockFirebase = require('mockfirebase').MockFirebase;
+var Pledge       = require('../../../src/models/pledge');
+var Donor        = require('../../../src/models/donor');
 
 describe('Pledge', function () {
 
@@ -46,6 +49,47 @@ describe('Pledge', function () {
       expect(pledge.toFirebase()).to.have.property('amount', 5);
     });
 
+  });
+
+  describe('firebase sync', function () {
+
+    var data, campaign;
+    beforeEach(function () {
+      var firebase = new MockFirebase('campaign').autoFlush();
+      sinon.stub(pledge, 'related')
+        .withArgs('campaign').returns({
+          firebase: sinon.stub().returns(firebase)
+        })
+        .withArgs('donor').returns(Donor.forge({
+          id: uuid.v4(),
+          name: 'Ben Drucker'
+        }));
+      sinon.stub(pledge, 'load').resolves(pledge);
+      pledge.set(pledge.timestamp());
+      pledge.set('id', uuid.v4());
+      pledge.set('amount', 100);
+      return Pledge.triggerThen('created', pledge)
+        .then(function () {
+          data = firebase.getData();
+        });
+    });
+
+    it('saves the pledge to firebase', function () {
+      expect(data).to.have.property('pledges')
+        .with.property(pledge.id)
+        .that.deep.equals(pledge.toFirebase());
+    });
+
+    it('increments the total by the pledge amount', function () {
+      expect(data).to.have.deep.property('aggregates.total')
+        .that.equals(100);
+    });
+
+    it('increments the count', function () {
+      expect(data).to.have.deep.property('aggregates.count')
+        .that.equals(1);
+    });
+    
   });
 
 });

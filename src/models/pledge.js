@@ -1,17 +1,21 @@
 'use strict';
 
-var Joi   = require('joi');
-var Model = require('../lib/db').Model;
+var Joi       = require('joi');
+var Model     = require('../lib/db').Model;
+var Promise   = require('bluebird');
+var internals = {};
 
-var Pledge = Model.extend({
+internals.refs = function (pledge) {
+  var campaign = pledge.related('campaign').firebase();
+  return {
+    pledge: campaign.child('pledges').child(pledge.id),
+    total: campaign.child('aggregates').child('total'),
+    count: campaign.child('aggregates').child('count')
+  };
+};
+
+module.exports = Model.extend({
   tableName: 'pledges',
-
-  initialize: function () {
-    this.on('created', function (pledge) {
-      return Pledge.triggerThen('created', pledge)
-        .catch(console.log);
-    });
-  },
 
   schema: {
     id: Joi.string().guid(),
@@ -37,13 +41,29 @@ var Pledge = Model.extend({
       donor_id: this.get('donor_id'),
       donor: {
         id: this.related('donor').get('id'),
-        name: this.related('donor').get('name') || null
+        name: this.related('donor').get('name')
       },
-      timestamp: this.get('created_at').getTime(),
+      created_at: this.get('created_at').getTime(),
       anonymous: this.get('anonymous') || null,
-      amount: this.get('amount') || null
+      amount: this.get('amount')
     };
   }
+})
+.on('created', function (pledge) {
+  return pledge
+    .load(['campaign', 'donor'])
+    .then(function (pledge) {
+      var refs = internals.refs(pledge);
+      return Promise.promisify(refs.pledge.set, refs.pledge)(pledge.toFirebase())
+        .then(function () {
+          return Promise.all([
+            Promise.promisify(refs.total.transaction, refs.total)(function (total) {
+              return total + pledge.get('amount');
+            }),
+            Promise.promisify(refs.count.transaction, refs.count)(function (count) {
+              return count + 1;
+            })
+          ]);
+        });
+    });
 });
-
-module.exports = Pledge;
