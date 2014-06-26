@@ -1,20 +1,13 @@
 'use strict';
 
-var expect        = require('chai').expect;
-var Promise       = require('bluebird');
-var serverFactory = require('../../mocks/server');
-var pledges       = require('../../../src/routes/pledges');
-var Pledge        = require('../../../src/models/pledge');
-var Campaign      = require('../../../src/models/campaign');
-var Donor         = require('../../../src/models/donor');
+var expect   = require('chai').expect;
+var Promise  = require('bluebird');
+var server   = require('../../server');
+var Pledge   = require('../../../src/models/pledge');
+var Campaign = require('../../../src/models/campaign');
+var Donor    = require('../../../src/models/donor');
 
 describe('Routes: Pledges', function () {
-
-  var server;
-  beforeEach(function () {
-    server = serverFactory();
-    pledges(server);
-  });
 
   var pledge;
   beforeEach(function () {
@@ -22,8 +15,8 @@ describe('Routes: Pledges', function () {
       amount: 10
     });
     return Promise.all([
-      new Campaign().save(null, {validate: false}),
-      new Donor().save(null, {validate: false})
+      new Campaign().save(null, {validation: false}),
+      new Donor().save(null, {validation: false})
     ])
     .spread(function (campaign, donor) {
       return pledge.save({campaign_id: campaign.id, donor_id: donor.id});
@@ -45,30 +38,12 @@ describe('Routes: Pledges', function () {
 
   });
 
-  describe('GET /pledges', function () {
-
-    it('can get the pledges by campaign', function () {
-      return new Pledge({
-        campaign_id: pledge.get('campaign_id')
-      })
-      .save(null, {validate: false})
-      .then(function () {
-        return server.injectThen('/pledges?campaign_id=' + pledge.get('campaign_id'));
-      })
-      .then(function (response) {
-        expect(response.result).to.have.length(2);
-        expect(response.result.toJSON()[0].id).to.equal(pledge.id);
-      });
-    });
-
-  });
-
   describe('POST /pledges', function () {
 
     it('creates a new pledge and donor', function () {  
       return Promise.all([
-        new Campaign().save(null, {validate: false}),
-        new Donor().save(null, {validate: false})
+        new Campaign().save(null, {validation: false}),
+        new Donor().save(null, {validation: false})
       ])
       .spread(function (campaign, donor) {
         return server.injectThen({
@@ -77,7 +52,10 @@ describe('Routes: Pledges', function () {
           payload: JSON.stringify({
             amount: 10,
             campaign_id: campaign.id,
-            donor_id: donor.id
+            donor: {
+              name: 'Ben Drucker',
+              phone: '9739856070'
+            }
           })
         });
       })

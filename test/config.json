@@ -1,0 +1,8 @@
+{
+  "database": {
+    "host": "localhost",
+    "username": "Ben",
+    "database": "valet_io_pledge"
+  },
+  "firebase": "https://valet-io-test.firebaseio.com"
+}
