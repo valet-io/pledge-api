@@ -19,7 +19,7 @@ describe('Routes: Pledges', function () {
       new Donor().save(null, {validation: false})
     ])
     .spread(function (campaign, donor) {
-      return pledge.save({campaign_id: campaign.id, donor_id: donor.id});
+      return pledge.save({campaign_id: campaign.id, donor_id: donor.id}, {validation: false});
     });
   });
 
