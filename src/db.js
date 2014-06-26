@@ -1,15 +1,7 @@
 'use strict';
 
-var knex      = require('knex');
-var Bookshelf = require('bookshelf');
+var knex = require('knex')(require('./config').get('database'));
 
-var bookshelf = Bookshelf(knex({
-  client: 'pg',
-  connection: require('./config').get('database')
-}));
-
-bookshelf
+module.exports = require('bookshelf')(knex)
   .plugin('registry')
   .plugin(require('bookshelf-base'));
-
-module.exports = bookshelf;

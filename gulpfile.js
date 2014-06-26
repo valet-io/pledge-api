@@ -20,21 +20,12 @@ gulp.task('unit', ['cover'], function () {
   require('./test/setup');
   return gulp.src(['test/unit/**/*.js'])
     .pipe(plugins.mocha())
-    .pipe(plugins.istanbul.writeReports())
-    .on('end', process.exit);
+    .pipe(plugins.istanbul.writeReports());
 });
 
 gulp.task('integration', ['cover'], function () {
   require('./test/setup');
   return gulp.src(['test/integration/**/*.js'])
-    .pipe(plugins.mocha())
-    .pipe(plugins.istanbul.writeReports())
-    .on('end', process.exit);
-});
-
-gulp.task('test', ['cover'], function () {
-  require('./test/setup');
-  return gulp.src(['test/unit/**/*.js', 'test/integration/**/*.js'])
     .pipe(plugins.mocha())
     .pipe(plugins.istanbul.writeReports())
     .on('end', process.exit);
