@@ -1,7 +1,7 @@
 'use strict';
 
 var Joi            = require('joi');
-var Model          = require('../lib/model').Model;
+var Model          = require('../db').Model;
 var phoneFormatter = require('phonenumber');
 
 var internals = {};
@@ -14,7 +14,7 @@ var Donor = Model.extend({
   },
 
   schema: {
-    id: Joi.number().integer().min(0),
+    id: Joi.string().guid(),
     name: Joi.string().required(),
     phone: Joi.string(),
     email: Joi.string().email()

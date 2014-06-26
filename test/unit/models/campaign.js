@@ -1,7 +1,12 @@
 'use strict';
 
-var expect   = require('chai').expect;
-var Campaign = require('../../../src/models/campaign');
+var expect     = require('chai').expect;
+var uuid       = require('node-uuid');
+var proxyquire = require('proxyquire').noPreserveCache();
+
+var Campaign   = proxyquire('../../../src/models/campaign', {
+  firebase: require('mockfirebase').MockFirebase
+});
 
 describe('Campaign', function () {
 
@@ -12,7 +17,7 @@ describe('Campaign', function () {
 
   it('provides a validation schema', function () {
     campaign.set({
-      id: 0,
+      id: uuid.v4(),
       name: 'The Greatest Fundraiser Ever',
       host: 'myhost.org',
       metadata: {
@@ -20,6 +25,17 @@ describe('Campaign', function () {
       }
     });
     return campaign.validate();
+  });
+
+  describe('#firebase', function () {
+
+    it('can provide its firebase reference', function () {
+      var base = require('../../../src/config').get('firebase');
+      campaign.id = uuid.v4();
+      var endpoint = base + '/campaigns/' + campaign.id;
+      expect(campaign.firebase().currentPath).to.equal(endpoint);
+    });
+
   });
   
 });

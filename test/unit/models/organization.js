@@ -1,6 +1,7 @@
 'use strict';
 
-var expect   = require('chai').expect;
+var expect       = require('chai').expect;
+var uuid         = require('node-uuid');
 var Organization = require('../../../src/models/organization');
 
 describe('Organization', function () {
@@ -12,7 +13,7 @@ describe('Organization', function () {
 
   it('provides a validation schema', function () {
     organization.set({
-      id: 0,
+      id: uuid.v4(),
       name: 'My Great Org'
     });
     return organization.validate();

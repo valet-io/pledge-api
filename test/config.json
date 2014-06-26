@@ -1,0 +1,14 @@
+{
+  "database": {
+    "connection": {
+      "host": "localhost",
+      "username": "Ben",
+      "database": "valet_io_pledge"
+    },
+    "pool": {
+      "min": 0,
+      "max": 1
+    }
+  },
+  "firebase": "https://valet-io-test.firebaseio.com"
+}

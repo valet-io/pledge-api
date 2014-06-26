@@ -1,11 +1,22 @@
-var Joi   = require('joi');
-var Model = require('../lib/model').Model;
+'use strict';
+
+var Joi       = require('joi');
+var Model     = require('../db').Model;
+var Firebase  = require('firebase');
+var config    = require('../config');
+var internals = {};
+
+internals.firebase = new Firebase(config.get('firebase'));
 
 var Campaign = Model.extend({
   tableName: 'campaigns',
 
+  firebase: function () {
+    return internals.firebase.child('campaigns').child(this.id);
+  },
+
   schema: {
-    id: Joi.number().integer().min(0),
+    id: Joi.string().guid(),
     name: Joi.string().required(),
     host: Joi.string().max(20),
     metadata: Joi.object()
