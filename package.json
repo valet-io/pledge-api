@@ -5,7 +5,8 @@
   "description": "Valet.io Pledge API",
   "main": "src/app.js",
   "scripts": {
-    "test": "gulp unit && gulp integration"
+    "test": "gulp unit && gulp integration",
+    "migrate": "gulp migrate"
   },
   "repository": {
     "type": "git",
