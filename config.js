@@ -9,7 +9,7 @@ module.exports = require('nconf')
         adapter: 'postgresql'
       },
       migrations: {
-        directory: './migrations',
+        directory: __dirname + '/migrations',
         tableName: 'migrations'
       }
     }
