@@ -4,7 +4,7 @@ node_js:
 before_script:
 - psql -c 'create database valet_io_pledge;' -U postgres
 - gulp migrate
-env: database_connection_database=valet_io_pledge database_connection_username=postgres
+env: database__connection__database=valet_io_pledge database__connection__username=postgres
 deploy:
 - provider: heroku
   app: valet-io-pledge-staging
