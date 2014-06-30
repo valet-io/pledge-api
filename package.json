@@ -6,7 +6,8 @@
   "main": "src/app.js",
   "scripts": {
     "test": "gulp unit && gulp integration",
-    "migrate": "gulp migrate"
+    "migrate": "gulp migrate",
+    "seed": "gulp seed"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,6 @@
   "devDependencies": {
     "chai": "~1.9.0",
     "chai-as-promised": "~4.1.0",
-    "gulp": "~3.5.2",
     "gulp-istanbul": "~0.1.1",
     "gulp-jshint": "~1.5.0",
     "gulp-load-plugins": "~0.3.0",
@@ -43,6 +43,7 @@
     "bookshelf-base": "git://github.com/valet-io/bookshelf-base.git#v0.2.0",
     "firebase": "~1.0.17",
     "good": "~2.1.2",
+    "gulp": "~3.8.5",
     "hapi": "~6.0.2",
     "joi": "~4.6.1",
     "knex": "~0.6.18",
