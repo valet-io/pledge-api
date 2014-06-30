@@ -13,8 +13,7 @@ deploy:
     on:
       repo: valet-io/pledge-api
     run:
-      - 'gulp migrate'
-      - 'gulp seed'
+      - 'npm run migrate'
   - provider: 'heroku'
     app: valet-io-pledge
     api_key:
