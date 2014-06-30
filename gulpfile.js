@@ -1,10 +1,8 @@
 'use strict';
 
 var gulp      = require('gulp');
-var gutil     = require('gulp-util');
 var plugins   = require('gulp-load-plugins')();
 var knex      = require('./src/db').knex;
-var internals = {};
 
 gulp.task('lint', function () {
   return gulp.src(['src/**', 'test/**'])
@@ -35,6 +33,27 @@ gulp.task('integration', ['cover'], function () {
 
 gulp.task('migrate', function () {
   return knex.migrate.latest()
+    .bind(knex)
+    .then(knex.destroy);
+});
+
+gulp.task('seed', function () {
+  return knex
+    .insert({
+      name: 'Simba\'s Saviors'
+    })
+    .returning('id')
+    .into('organizations')
+    .then()
+    .get(0)
+    .then(function (organization) {
+      return knex
+        .insert({
+          name: 'Simba Gala',
+          organization_id: organization
+        })
+        .into('campaigns');
+    })
     .bind(knex)
     .then(knex.destroy);
 });
