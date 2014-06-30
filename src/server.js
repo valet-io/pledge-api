@@ -2,7 +2,7 @@
 
 var hapi   = require('hapi');
 var fs     = require('fs');
-var config = require('./config');
+var config = require('../config');
 
 var server = new hapi.Server('0.0.0.0', config.get('PORT'), {
   cors: true,

@@ -30,7 +30,7 @@ describe('Campaign', function () {
   describe('#firebase', function () {
 
     it('can provide its firebase reference', function () {
-      var base = require('../../../src/config').get('firebase');
+      var base = require('../../../config').get('firebase');
       campaign.id = uuid.v4();
       var endpoint = base + '/campaigns/' + campaign.id;
       expect(campaign.firebase().currentPath).to.equal(endpoint);

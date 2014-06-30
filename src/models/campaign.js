@@ -3,7 +3,7 @@
 var Joi       = require('joi');
 var Model     = require('../db').Model;
 var Firebase  = require('firebase');
-var config    = require('../config');
+var config    = require('../../config');
 var internals = {};
 
 internals.firebase = new Firebase(config.get('firebase'));

@@ -3,7 +3,7 @@
 var _          = require('lodash');
 var Pledge     = require('../models/pledge');
 var Donor      = require('../models/donor');
-var config     = require('../config');
+var config     = require('../../config');
 var stripe     = require('stripe')(config.get('stripe:key'));
 
 module.exports = function (server) {
