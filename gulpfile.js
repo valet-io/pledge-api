@@ -35,5 +35,6 @@ gulp.task('integration', ['cover'], function () {
 
 gulp.task('migrate', function () {
   return knex.migrate.latest()
-    .then(knex.destroy.bind(knex));
+    .bind(knex)
+    .then(knex.destroy);
 });
