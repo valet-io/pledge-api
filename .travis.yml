@@ -1,17 +1,28 @@
 language: node_js
 node_js:
-- '0.10'
+  - '0.10'
 before_script:
-- psql -c 'create database valet_io_pledge;' -U postgres
-- gulp migrate
+  - psql -c 'create database valet_io_pledge;' -U postgres
+  - gulp migrate
 env: database__connection__database=valet_io_pledge database__connection__username=postgres
 deploy:
-- provider: heroku
-  app: valet-io-pledge-staging
-  api_key:
-    secure: RRktdJ0w8NlzkEZRrhkehBXuycAkHiVXne0c4RnNAN1CdkZY9j3CsKTl6+PiB+sWErIqPrEyS+XyWdmsrTdIWGDIc5RFex/vQZxm+Osfnu2+k+CRfUHfkh75KPTHxQTaMhIGOy27gyQph6IzmpTlhUu7RzuwugpELYIPMU5fl9s=
-  app: pledge-api-staging
-  on:
-    repo: valet-io/pledge-api
-  run:
-    - 'gulp migrate'
+  - provider: 'heroku'
+    app: valet-io-pledge-staging
+    api_key:
+      secure: RRktdJ0w8NlzkEZRrhkehBXuycAkHiVXne0c4RnNAN1CdkZY9j3CsKTl6+PiB+sWErIqPrEyS+XyWdmsrTdIWGDIc5RFex/vQZxm+Osfnu2+k+CRfUHfkh75KPTHxQTaMhIGOy27gyQph6IzmpTlhUu7RzuwugpELYIPMU5fl9s=
+    app: pledge-api-staging
+    on:
+      repo: valet-io/pledge-api
+    run:
+      - 'gulp migrate'
+  - provider: 'heroku'
+    app: valet-io-pledge
+    api_key:
+      secure: RRktdJ0w8NlzkEZRrhkehBXuycAkHiVXne0c4RnNAN1CdkZY9j3CsKTl6+PiB+sWErIqPrEyS+XyWdmsrTdIWGDIc5RFex/vQZxm+Osfnu2+k+CRfUHfkh75KPTHxQTaMhIGOy27gyQph6IzmpTlhUu7RzuwugpELYIPMU5fl9s=
+    app: pledge-api-staging
+    on:
+      repo: valet-io/pledge-api
+      tags: true
+      all_branches: true
+    run:
+      - 'gulp migrate'
