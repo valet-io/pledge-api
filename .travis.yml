@@ -10,7 +10,6 @@ deploy:
     app: valet-io-pledge-staging
     api_key:
       secure: RRktdJ0w8NlzkEZRrhkehBXuycAkHiVXne0c4RnNAN1CdkZY9j3CsKTl6+PiB+sWErIqPrEyS+XyWdmsrTdIWGDIc5RFex/vQZxm+Osfnu2+k+CRfUHfkh75KPTHxQTaMhIGOy27gyQph6IzmpTlhUu7RzuwugpELYIPMU5fl9s=
-    app: pledge-api-staging
     on:
       repo: valet-io/pledge-api
     run:
@@ -19,7 +18,6 @@ deploy:
     app: valet-io-pledge
     api_key:
       secure: RRktdJ0w8NlzkEZRrhkehBXuycAkHiVXne0c4RnNAN1CdkZY9j3CsKTl6+PiB+sWErIqPrEyS+XyWdmsrTdIWGDIc5RFex/vQZxm+Osfnu2+k+CRfUHfkh75KPTHxQTaMhIGOy27gyQph6IzmpTlhUu7RzuwugpELYIPMU5fl9s=
-    app: pledge-api-staging
     on:
       repo: valet-io/pledge-api
       tags: true
