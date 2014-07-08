@@ -54,7 +54,8 @@ module.exports = Model.extend({
     .load(['campaign', 'donor'])
     .then(function (pledge) {
       var refs = internals.refs(pledge);
-      return Promise.promisify(refs.pledge.set, refs.pledge)(pledge.toFirebase())
+      var toFirebase = pledge.toFirebase();
+      return Promise.promisify(refs.pledge.setWithPriority, refs.pledge)(toFirebase, toFirebase.created_at)
         .then(function () {
           return Promise.all([
             Promise.promisify(refs.total.transaction, refs.total)(function (total) {

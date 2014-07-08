@@ -28,7 +28,7 @@
     "inject-then": "~0.2.0",
     "jshint-stylish": "~0.1.5",
     "mocha": "~1.20.1",
-    "mockfirebase": "git://github.com/katowulf/mockfirebase.git#767278cce2f6a27a50af7b95240ad88f2e1a02a0",
+    "mockfirebase": "git://github.com/bendrucker/mockfirebase.git#4725a52630537f2292d4804eea9f1b8562585572",
     "node-uuid": "~1.4.1",
     "proxyquire": "~1.0.1",
     "run-sequence": "~0.3.6",

@@ -53,9 +53,9 @@ describe('Pledge', function () {
 
   describe('firebase sync', function () {
 
-    var data, campaign;
+    var firebase, data, campaign;
     beforeEach(function () {
-      var firebase = new MockFirebase('campaign').autoFlush();
+      firebase = new MockFirebase('campaign').autoFlush();
       sinon.stub(pledge, 'related')
         .withArgs('campaign').returns({
           firebase: sinon.stub().returns(firebase)
@@ -78,6 +78,11 @@ describe('Pledge', function () {
       expect(data).to.have.property('pledges')
         .with.property(pledge.id)
         .that.deep.equals(pledge.toFirebase());
+    });
+
+    it('uses the timestamp as the firebase priority', function () {
+      expect(firebase.child('pledges').child(pledge.id))
+        .to.have.property('priority', pledge.get('created_at').getTime());
     });
 
     it('increments the total by the pledge amount', function () {
