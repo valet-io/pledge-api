@@ -24,8 +24,8 @@ module.exports = Model.extend({
     donor_id: Joi.string().guid().required(),
     campaign_id: Joi.string().guid().required(),
     payment_id: Joi.string(),
-    started_at: Joi.date(),
-    submitted_at: Joi.date()
+    started_at: Joi.date().allow(null),
+    submitted_at: Joi.date().allow(null)
   },
 
   campaign: function () {
