@@ -31,4 +31,13 @@ if (env === 'production' || env === 'staging') {
 require('./routes/campaigns')(server);
 require('./routes/pledges')(server);
 
+server.ext('onPreResponse', function (request, reply) {
+  var response = request.response;
+  if (response instanceof require('./db').Model.NotFoundError) {
+    return reply(hapi.error.notFound())
+  }
+  reply();
+});
+
+
 module.exports = server;

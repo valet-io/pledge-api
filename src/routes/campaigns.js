@@ -10,8 +10,8 @@ module.exports = function (server) {
     path: '/campaigns/{id}',
     handler: function (request, reply) {
       new Campaign({id: request.params.id})
-        .fetch()
-        .done(reply);
+        .fetch({require: true})
+        .done(reply, reply);
     },
     config: {
       validate: {
