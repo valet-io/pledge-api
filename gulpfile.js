@@ -22,6 +22,7 @@ gulp.task('cover:integration', function () {
 
 gulp.task('unit', ['cover:unit'], function () {
   require('./test/setup');
+  var knex = require('./src/db').knex;
   return gulp.src(['test/unit/**/*.js'])
     .pipe(plugins.mocha(argv))
     .pipe(plugins.istanbul.writeReports({
@@ -41,13 +42,15 @@ gulp.task('integration', ['cover:integration'], function () {
 });
 
 gulp.task('migrate', function () {
-  return require('./src/db').knex.migrate.latest()
+  var knex = require('./src/db').knex;
+  return knex.migrate.latest()
     .bind(knex)
     .then(knex.destroy);
 });
 
 gulp.task('seed', function () {
-  return require('./src/db').knex
+  var knex = require('./src/db').knex;
+  return knex
     .insert({
       name: 'Simba\'s Saviors'
     })
