@@ -9,12 +9,17 @@ gulp.task('lint', function () {
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('cover', function () {
+gulp.task('cover:unit', function () {
   return gulp.src('src/**/*.js')
     .pipe(plugins.istanbul());
 });
 
-gulp.task('unit', ['cover'], function () {
+gulp.task('cover:integration', function () {
+  return gulp.src('src/routes/**/*.js')
+    .pipe(plugins.istanbul());
+});
+
+gulp.task('unit', ['cover:unit'], function () {
   require('./test/setup');
   return gulp.src(['test/unit/**/*.js'])
     .pipe(plugins.mocha())
@@ -22,11 +27,11 @@ gulp.task('unit', ['cover'], function () {
     .on('end', knex.destroy.bind(knex));
 });
 
-gulp.task('integration', function () {
+gulp.task('integration', ['cover:integration'], function () {
   require('./test/setup');
   return gulp.src(['test/integration/index.js'])
     .pipe(plugins.mocha())
-    // .pipe(plugins.istanbul.writeReports())
+    .pipe(plugins.istanbul.writeReports())
     .on('end', process.exit);
 });
 
