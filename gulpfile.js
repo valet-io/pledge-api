@@ -23,7 +23,9 @@ gulp.task('unit', ['cover:unit'], function () {
   require('./test/setup');
   return gulp.src(['test/unit/**/*.js'])
     .pipe(plugins.mocha())
-    .pipe(plugins.istanbul.writeReports())
+    .pipe(plugins.istanbul.writeReports({
+      dir: './coverage/unit'
+    }))
     .on('end', knex.destroy.bind(knex));
 });
 
@@ -31,7 +33,9 @@ gulp.task('integration', ['cover:integration'], function () {
   require('./test/setup');
   return gulp.src(['test/integration/index.js'])
     .pipe(plugins.mocha())
-    .pipe(plugins.istanbul.writeReports())
+    .pipe(plugins.istanbul.writeReports({
+      dir: './coverage/integration'
+    }))
     .on('end', process.exit);
 });
 
