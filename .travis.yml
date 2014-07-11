@@ -11,6 +11,7 @@ deploy:
   api_key:
     secure: RRktdJ0w8NlzkEZRrhkehBXuycAkHiVXne0c4RnNAN1CdkZY9j3CsKTl6+PiB+sWErIqPrEyS+XyWdmsrTdIWGDIc5RFex/vQZxm+Osfnu2+k+CRfUHfkh75KPTHxQTaMhIGOy27gyQph6IzmpTlhUu7RzuwugpELYIPMU5fl9s=
   on:
+    branch: master
     repo: valet-io/pledge-api
   run:
   - npm run migrate
