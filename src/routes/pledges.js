@@ -1,8 +1,8 @@
 'use strict';
 
+var Joi        = require('joi');
 var _          = require('lodash');
 var Pledge     = require('../models/pledge');
-var Donor      = require('../models/donor');
 var config     = require('../../config');
 var stripe     = require('stripe')(config.get('stripe:key'));
 
@@ -13,8 +13,15 @@ module.exports = function (server) {
     path: '/pledges/{id}',
     handler: function (request, reply) {
       new Pledge({id: request.params.id})
-        .fetch()
-        .done(reply);
+        .fetch({require: true})
+        .done(reply, reply);
+    },
+    config: {
+      validate: {
+        params: {
+          id: Joi.string().guid()
+        }
+      }
     }
   });
 
@@ -22,13 +29,17 @@ module.exports = function (server) {
     method: 'POST',
     path: '/pledges',
     handler: function (request, reply) {
-      new Donor(request.payload.donor)
+      new Pledge(request.payload)
         .save()
-        .then(function (donor) {
-          return new Pledge(_.omit(request.payload, 'donor')).set('donor_id', donor.id).save();
-        })      
-        .call('fetch')
-        .done(reply);
+        .call('fetch', {require: true})
+        .then(reply)
+        .call('code', 201)
+        .done(null, reply);
+    },
+    config: {
+      validate: {
+        payload: Pledge.prototype.schema
+      }
     }
   });
 
@@ -37,24 +48,22 @@ module.exports = function (server) {
     path: '/pledges/{id}',
     handler: function (request, reply) {
       new Pledge({id: request.params.id})
-        .save(request.payload)
-        .call('fetch')
-        .done(reply);
-    }
-  });
-
-  server.route({
-    method: 'POST',
-    path: '/payments',
-    handler: function (request, reply) {
-      stripe.charges.create({
-        amount: request.payload.amount * 100, 
-        currency: 'usd',
-        card: request.payload.token,
-        metadata: _.omit(request.payload, 'card', 'token', 'amount')
-      })
-      .then(reply)
-      .then(null, reply);
+        .save(_.omit(request.payload, 'id'), {
+          method: 'update',
+          require: true
+        })
+        .call('fetch', {require: true})
+        .done(reply, reply);
+    },
+    config: {
+      validate: {
+        params: {
+          id: Joi.string().guid().required()
+        },
+        payload: _.extend(_.clone(Pledge.prototype.schema), {
+          id: Joi.valid(Joi.ref('$params.id'))
+        })
+      }
     }
   });
 

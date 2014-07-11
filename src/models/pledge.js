@@ -19,8 +19,10 @@ module.exports = Model.extend({
 
   schema: {
     id: Joi.string().guid(),
+    created_at: Joi.date(),
+    updated_at: Joi.date(),
     amount: Joi.number().integer().min(1).required(),
-    anonymous: Joi.boolean(),
+    anonymous: Joi.boolean().allow(null),
     donor_id: Joi.string().guid().required(),
     campaign_id: Joi.string().guid().required(),
     payment_id: Joi.string(),

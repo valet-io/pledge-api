@@ -1,38 +1,35 @@
 'use strict';
 
 var expect   = require('chai').expect;
-var Promise  = require('bluebird');
+var uuid     = require('node-uuid');
+var moment   = require('moment');
 var server   = require('../../server');
-var Pledge   = require('../../../src/models/pledge');
-var Campaign = require('../../../src/models/campaign');
-var Donor    = require('../../../src/models/donor');
 
-describe('Routes: Pledges', function () {
+describe('Pledges', function () {
 
-  var pledge;
-  beforeEach(function () {
-    pledge = new Pledge({
-      amount: 10
-    });
-    return Promise.all([
-      new Campaign().save(null, {validation: false}),
-      new Donor().save(null, {validation: false})
-    ])
-    .spread(function (campaign, donor) {
-      return pledge.save({campaign_id: campaign.id, donor_id: donor.id}, {validation: false});
-    });
-  });
-
-  afterEach(function () {
-    return pledge.destroy();
-  });
+  var pledge = require('../seeds/pledges')[0];
 
   describe('GET /pledges/{id}', function () {
 
     it('gets the pledge by ID', function () {
       return server.injectThen('/pledges/' + pledge.id)
         .then(function (response) {
+          expect(response.statusCode).to.equal(200);
           expect(response.result.id).to.equal(pledge.id);
+        });
+    });
+
+    it('responds with a 400 for non-uuid', function () {
+      return server.injectThen('/pledges/1')
+        .then(function (response) {
+          expect(response.statusCode).to.equal(400);
+        });
+    });
+
+    it('responds with 404 if the pledge is not found', function () {
+      return server.injectThen('/pledges/' + uuid.v4())
+        .then(function (response) {
+          expect(response.statusCode).to.equal(404);
         });
     });
 
@@ -40,28 +37,110 @@ describe('Routes: Pledges', function () {
 
   describe('POST /pledges', function () {
 
-    it('creates a new pledge and donor', function () {  
-      return Promise.all([
-        new Campaign().save(null, {validation: false}),
-        new Donor().save(null, {validation: false})
-      ])
-      .spread(function (campaign, donor) {
-        return server.injectThen({
-          url: '/pledges',
-          method: 'POST',
-          payload: JSON.stringify({
-            amount: 10,
-            campaign_id: campaign.id,
-            donor: {
-              name: 'Ben Drucker',
-              phone: '9739856070'
-            }
-          })
-        });
+    var donor = require('../seeds/donors')[0];
+    var campaign = require('../seeds/campaigns')[0];
+
+    it('creates a new pledge', function () {
+      return server.injectThen({
+        url: '/pledges',
+        method: 'post',
+        payload: JSON.stringify({
+          campaign_id: campaign.id,
+          donor_id: donor.id,
+          amount: 1,
+          submitted_at: moment().subtract('seconds', 1),
+          started_at: moment().subtract('seconds', 20)
+        })
       })
       .then(function (response) {
-        expect(response.result).to.be.an.instanceOf(Pledge);
-        expect(response.result.get('amount')).to.equal(10);
+        expect(response.statusCode).to.equal(201);
+        expect(response.result.id).to.have.length(36);
+      });
+    });
+
+    it('validates the pledge and responds 400 if invalid', function () {
+      return server.injectThen({
+        url: '/pledges',
+        method: 'post',
+        payload: JSON.stringify({
+          donor_id: donor.id,
+          amount: 1,
+          submitted_at: moment().subtract('seconds', 1),
+          started_at: moment().subtract('seconds', 20)
+        })
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(400);
+        expect(response.result.message).to.equal('campaign_id is required');
+      });
+    });
+
+  });
+
+  describe('PUT /pledges', function () {
+
+    it('updates the pledge by ID', function () {
+      return server.injectThen({
+        url: '/pledges/' + pledge.id,
+        method: 'put',
+        payload: JSON.stringify({
+          id: pledge.id,
+          campaign_id: pledge.campaign_id,
+          donor_id: pledge.donor_id,
+          amount: pledge.amount,
+          submitted_at: moment().subtract('seconds', 1),
+          started_at: moment().subtract('seconds', 20)
+        })
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(200);
+        expect(JSON.parse(response.payload))
+          .to.have.property('submitted_at')
+          .that.is.a('string');
+      });
+
+    });
+
+    it('responds with a 400 for non-uuid', function () {
+      return server.injectThen({
+        method: 'put',
+        url: '/pledges/a'
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(400);
+      });
+    });
+
+    it('responds with a 404 if the pledge does not exist', function () {
+      var id = uuid.v4();
+      return server.injectThen({
+        method: 'put',
+        url: '/pledges/' + id,
+        payload: JSON.stringify({
+          id: id,
+          campaign_id: pledge.campaign_id,
+          donor_id: pledge.donor_id,
+          amount: pledge.amount
+        })
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(404);
+      });
+    });
+
+    it('it ensures the url id matches the payload id', function () {
+      return server.injectThen({
+        method: 'put',
+        url: '/pledges/' + pledge.id,
+        payload: JSON.stringify({
+          id: uuid.v4(),
+          campaign_id: pledge.campaign_id,
+          donor_id: pledge.donor_id,
+          amount: pledge.amount
+        })
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(400);
       });
     });
 

@@ -34,7 +34,10 @@ require('./routes/pledges')(server);
 server.ext('onPreResponse', function (request, reply) {
   var response = request.response;
   if (response instanceof require('./db').Model.NotFoundError) {
-    return reply(hapi.error.notFound())
+    return reply(hapi.error.notFound());
+  }
+  else if (response.isBoom && response.message.indexOf('No rows were affected in the update') !== -1) {
+    return reply(hapi.error.notFound());
   }
   reply();
 });
