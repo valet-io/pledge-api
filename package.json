@@ -35,7 +35,8 @@
     "run-sequence": "~0.3.6",
     "sinon": "~1.8.2",
     "sinon-as-promised": "0.0.4",
-    "sinon-chai": "~2.5.0"
+    "sinon-chai": "~2.5.0",
+    "yargs": "~1.2.6"
   },
   "dependencies": {
     "bluebird": "~2.1.3",

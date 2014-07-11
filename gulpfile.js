@@ -1,7 +1,8 @@
 'use strict';
 
-var gulp      = require('gulp');
-var plugins   = require('gulp-load-plugins')();
+var gulp    = require('gulp');
+var plugins = require('gulp-load-plugins')();
+var argv    = require('yargs').argv;
 
 gulp.task('lint', function () {
   return gulp.src(['src/**', 'test/**'])
@@ -22,7 +23,7 @@ gulp.task('cover:integration', function () {
 gulp.task('unit', ['cover:unit'], function () {
   require('./test/setup');
   return gulp.src(['test/unit/**/*.js'])
-    .pipe(plugins.mocha())
+    .pipe(plugins.mocha(argv))
     .pipe(plugins.istanbul.writeReports({
       dir: './coverage/unit'
     }))
@@ -32,7 +33,7 @@ gulp.task('unit', ['cover:unit'], function () {
 gulp.task('integration', ['cover:integration'], function () {
   require('./test/setup');
   return gulp.src(['test/integration/index.js'])
-    .pipe(plugins.mocha())
+    .pipe(plugins.mocha(argv))
     .pipe(plugins.istanbul.writeReports({
       dir: './coverage/integration'
     }))
