@@ -1,7 +1,6 @@
 'use strict';
 
 var config = require('../config');
-
 config.file('test', __dirname + '/config.json');
 
 require('chai')

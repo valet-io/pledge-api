@@ -2,7 +2,6 @@
 
 var gulp      = require('gulp');
 var plugins   = require('gulp-load-plugins')();
-var knex      = require('./src/db').knex;
 
 gulp.task('lint', function () {
   return gulp.src(['src/**', 'test/**'])
@@ -23,22 +22,22 @@ gulp.task('unit', ['cover'], function () {
     .on('end', knex.destroy.bind(knex));
 });
 
-gulp.task('integration', ['cover'], function () {
+gulp.task('integration', function () {
   require('./test/setup');
-  return gulp.src(['test/integration/**/*.js'])
+  return gulp.src(['test/integration/index.js'])
     .pipe(plugins.mocha())
-    .pipe(plugins.istanbul.writeReports())
+    // .pipe(plugins.istanbul.writeReports())
     .on('end', process.exit);
 });
 
 gulp.task('migrate', function () {
-  return knex.migrate.latest()
+  return require('./src/db').knex.migrate.latest()
     .bind(knex)
     .then(knex.destroy);
 });
 
 gulp.task('seed', function () {
-  return knex
+  return require('./src/db').knex
     .insert({
       name: 'Simba\'s Saviors'
     })

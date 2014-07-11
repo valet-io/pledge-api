@@ -31,6 +31,7 @@
     "mockfirebase": "git://github.com/katowulf/mockfirebase.git#888b31fe842d747cb87a6004655666739ae5a261",
     "node-uuid": "~1.4.1",
     "proxyquire": "~1.0.1",
+    "require-all": "0.0.8",
     "run-sequence": "~0.3.6",
     "sinon": "~1.8.2",
     "sinon-as-promised": "0.0.4",
