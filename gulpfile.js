@@ -48,6 +48,13 @@ gulp.task('migrate', function () {
     .then(knex.destroy);
 });
 
+gulp.task('migrate:make', function () {
+  var knex = require('./src/db').knex;
+  return knex.migrate.make(argv.name)
+    .bind(knex)
+    .then(knex.destroy);
+});
+
 gulp.task('seed', function () {
   var knex = require('./src/db').knex;
   return knex
