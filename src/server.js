@@ -2,6 +2,7 @@
 
 var hapi   = require('hapi');
 var fs     = require('fs');
+var _      = require('lodash');
 var config = require('../config');
 
 var server = new hapi.Server('0.0.0.0', config.get('PORT'), {
@@ -28,8 +29,9 @@ if (env === 'production' || env === 'staging') {
   });
 }
 
-require('./routes/campaigns')(server);
-require('./routes/pledges')(server);
+_.each(require('require-all')(__dirname + '/routes'), function (fn, name) {
+  fn(server);
+});
 
 server.ext('onPreResponse', function (request, reply) {
   var response = request.response;
