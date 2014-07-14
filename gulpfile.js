@@ -28,7 +28,7 @@ gulp.task('unit', ['cover:unit'], function () {
     .pipe(plugins.istanbul.writeReports({
       dir: './coverage/unit'
     }))
-    .on('end', knex.destroy.bind(knex));
+    .on('end', process.exit);
 });
 
 gulp.task('integration', ['cover:integration'], function () {

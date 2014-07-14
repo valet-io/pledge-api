@@ -22,10 +22,10 @@ module.exports = Model.extend({
     created_at: Joi.date(),
     updated_at: Joi.date(),
     amount: Joi.number().integer().min(1).required(),
-    anonymous: Joi.boolean().allow(null),
+    anonymous: Joi.boolean().default(false),
     donor_id: Joi.string().guid().required(),
     campaign_id: Joi.string().guid().required(),
-    payment_id: Joi.string(),
+    payment_id: Joi.string().guid(),
     started_at: Joi.date().allow(null),
     submitted_at: Joi.date().allow(null)
   },

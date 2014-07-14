@@ -51,6 +51,22 @@ describe('Pledge', function () {
 
   });
 
+  describe('Relations', function () {
+
+    it('belongsTo a Campaign', function () {
+      pledge.set('campaign_id', 0);
+      expect(pledge.campaign())
+        .to.have.deep.property('relatedData.parentFk', 0);
+    });
+
+    it('belongsTo a Donor', function () {
+      pledge.set('donor_id', 0);
+      expect(pledge.donor())
+        .to.have.deep.property('relatedData.parentFk', 0);
+    });
+
+  });
+
   describe('firebase sync', function () {
 
     var firebase, data, campaign;
