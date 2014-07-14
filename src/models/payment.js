@@ -44,7 +44,7 @@ var Payment = Model.extend({
       },
       function (err) {
         throw _.extend(new Payment.CardError(err.message), {
-          provider_id: err.raw && err.raw.charge || null
+          provider_id: err.raw && err.raw.charge
         });
       })
       .catch(Payment.CardError, function (err) {
