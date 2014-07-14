@@ -15,22 +15,19 @@ module.exports = function (server) {
         .charge(request.payload.token)
         .then(reply)
         .call('code', 201)
-        .catch(function (err) {
-          return err.type === 'StripeCardError'
-        }, function (err) {
+        .catch(Payment.CardError, function (err) {
           var error = hapi.error.badRequest(err.message);
           error.output.statusCode = 402;
           error.reformat();
           error.output.payload.error = 'Card Error';
+          error.output.payload.id = err.id;
           throw error;
         })
         .done(null, reply);
     },
     config: {
       validate: {
-        payload: _.extend(_.clone(Payment.prototype.schema), {
-          token: Joi.string().required()
-        })
+        payload: Payment.prototype.schema
       }
     }
   });
