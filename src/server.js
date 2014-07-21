@@ -6,12 +6,18 @@ var _      = require('lodash');
 var config = require('../config');
 
 var server = new hapi.Server('0.0.0.0', config.get('PORT'), {
-  cors: true,
-  tls: config.get('ssl') && {
-    key: fs.readFileSync(config.get('ssl:key')),
-    cert: fs.readFileSync(config.get('ssl:cert'))
-  }
+  cors: true
 });
+
+if (config.get('ssl')) {
+  server.ext('onRequest', function (request, reply) {
+    if (request.headers['x-forwarded-proto'] !== 'https') {
+      return reply('Forwarding to https')
+        .redirect('https://' + request.headers.host + request.path);
+    }
+    reply();
+  });
+}
 
 var env = config.get('NODE:ENV');
 
