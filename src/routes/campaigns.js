@@ -42,6 +42,10 @@ module.exports = function (server) {
           id: Joi.string().guid()
         }
       }
+      ,
+      cache: {
+        expiresIn: 60 * 60 * 1000
+      }
     }
   });
 
