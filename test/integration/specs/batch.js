@@ -28,9 +28,8 @@ describe('Batch Endpoint', function () {
             path: '/pledges',
             payload: {
               amount: 100,
-              // donor_id: '$0.id',
-              campaign_id: campaign.id,
-              donor_id: donor.id
+              donor_id: '$0.id',
+              campaign_id: campaign.id
             }
           }
         ]
