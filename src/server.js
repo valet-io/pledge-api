@@ -1,12 +1,14 @@
 'use strict';
 
 var hapi   = require('hapi');
-var fs     = require('fs');
 var _      = require('lodash');
 var config = require('../config');
 
 var server = new hapi.Server('0.0.0.0', config.get('PORT'), {
-  cors: true
+  cors: true,
+  cache: _.extend(config.get('redis'), {
+    engine: require('catbox-redis')
+  })
 });
 
 if (config.get('ssl')) {
@@ -35,7 +37,7 @@ if (env === 'production' || env === 'staging') {
   });
 }
 
-_.each(require('require-all')(__dirname + '/routes'), function (fn, name) {
+_.each(require('require-all')(__dirname + '/routes'), function (fn) {
   fn(server);
 });
 

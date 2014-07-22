@@ -21,6 +21,9 @@ module.exports = function (server) {
         params: {
           id: Joi.string().guid()
         }
+      },
+      cache: {
+        expiresIn: 60 * 60 * 1000
       }
     }
   });
