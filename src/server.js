@@ -37,6 +37,12 @@ if (env === 'production' || env === 'staging') {
   });
 }
 
+server.pack.register({
+  plugin: require('bassmaster')
+}, function (err) {
+  if (err) throw err;
+});
+
 _.each(require('require-all')(__dirname + '/routes'), function (fn) {
   fn(server);
 });
