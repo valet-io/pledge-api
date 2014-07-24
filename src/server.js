@@ -37,9 +37,7 @@ if (env === 'production' || env === 'staging') {
   });
 }
 
-server.pack.register({
-  plugin: require('bassmaster')
-}, function (err) {
+server.pack.register([require('batch-me-if-you-can'), require('inject-then')], function (err) {
   if (err) throw err;
 });
 
