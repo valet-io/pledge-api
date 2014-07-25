@@ -40,15 +40,17 @@
     "yargs": "~1.2.6"
   },
   "dependencies": {
+    "batch-me-if-you-can": "0.0.0",
     "bluebird": "~2.1.3",
     "bookshelf": "~0.7.5",
     "bookshelf-base": "git://github.com/valet-io/bookshelf-base.git#v0.2.0",
+    "catbox-redis": "~1.0.3",
     "create-error": "~0.3.1",
     "firebase": "~1.0.17",
     "good": "~2.1.2",
     "gulp": "~3.8.5",
     "gulp-load-plugins": "~0.5.3",
-    "hapi": "~6.0.2",
+    "hapi": "~6.2.0",
     "joi": "~4.6.1",
     "knex": "~0.6.18",
     "lodash": "~2.4.1",
