@@ -13,13 +13,19 @@ module.exports = function (server) {
     path: '/pledges/{id}',
     handler: function (request, reply) {
       new Pledge({id: request.params.id})
-        .fetch({require: true})
+        .fetch({
+          require: true,
+          withRelated: request.query.expand
+        })
         .done(reply, reply);
     },
     config: {
       validate: {
         params: {
           id: Joi.string().guid()
+        },
+        query: {
+          expand: Joi.array().includes(Joi.string())
         }
       },
       cache: {

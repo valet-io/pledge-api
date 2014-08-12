@@ -8,6 +8,7 @@ var server   = require('../../server');
 describe('Pledges', function () {
 
   var pledge = require('../seeds/pledges')[0];
+  var donor = require('../seeds/donors')[0];
 
   describe('GET /pledges/{id}', function () {
 
@@ -16,6 +17,17 @@ describe('Pledges', function () {
         .then(function (response) {
           expect(response.statusCode).to.equal(200);
           expect(response.result.id).to.equal(pledge.id);
+        });
+    });
+
+    it('can get the pledge with related data', function () {
+      return server.injectThen('/pledges/' + pledge.id + '?expand[0]=donor')
+        .then(function (response) {
+          expect(response.statusCode).to.equal(200);
+          var payload = JSON.parse(response.payload);
+          expect(payload)
+            .to.have.property('donor')
+            .with.property('id', donor.id);
         });
     });
 
@@ -37,7 +49,6 @@ describe('Pledges', function () {
 
   describe('POST /pledges', function () {
 
-    var donor = require('../seeds/donors')[0];
     var campaign = require('../seeds/campaigns')[0];
 
     it('creates a new pledge', function () {
