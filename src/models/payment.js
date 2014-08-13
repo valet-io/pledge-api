@@ -67,7 +67,13 @@ var Payment = Model.extend({
           })
           .save();
       });
+  },
+
+
+  pledge: function () {
+    return this.belongsTo(require('./pledge'));
   }
+
 },
 {
   CardError: createError('Card Error')

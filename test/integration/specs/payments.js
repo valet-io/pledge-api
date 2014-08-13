@@ -7,9 +7,47 @@ var stripe  = require('../../../src/models/payment').prototype.stripe;
 
 describe('Payments', function () {
 
-  var pledge = require('../seeds/pledges')[0];
+  var payment = require('../seeds/payments')[0];
+  var pledge  = require('../seeds/pledges')[0];
 
   this.timeout(10000);
+
+  describe('GET /pledges/{id}', function () {
+
+    it('gets the payment by ID', function () {
+      return server.injectThen('/payments/' + payment.id)
+        .then(function (response) {
+          expect(response.statusCode).to.equal(200);
+          expect(response.result.id).to.equal(payment.id);
+        });
+    });
+
+    it('can get the payment with related data', function () {
+      return server.injectThen('/payments/' + payment.id + '?expand[0]=pledge')
+        .then(function (response) {
+          expect(response.statusCode).to.equal(200);
+          var payload = JSON.parse(response.payload);
+          expect(payload)
+            .to.have.property('pledge')
+            .with.property('id', pledge.id);
+        });
+    });
+
+    it('responds with a 400 for non-uuid', function () {
+      return server.injectThen('/payments/1')
+        .then(function (response) {
+          expect(response.statusCode).to.equal(400);
+        });
+    });
+
+    it('responds with 404 if the payment is not found', function () {
+      return server.injectThen('/payments/' + uuid.v4())
+        .then(function (response) {
+          expect(response.statusCode).to.equal(404);
+        });
+    });
+
+  });
 
   describe('POST /payments', function () {
 

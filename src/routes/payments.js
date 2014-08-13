@@ -8,6 +8,29 @@ var Payment = require('../models/payment');
 module.exports = function (server) {
 
   server.route({
+    method: 'GET',
+    path: '/payments/{id}',
+    handler: function (request, reply) {
+      new Payment({id: request.params.id})
+        .fetch({
+          require: true,
+          withRelated: request.query.expand
+        })
+        .done(reply, reply);
+    },
+    config: {
+      validate: {
+        params: {
+          id: Joi.string().guid()
+        },
+        query: {
+          expand: Joi.array().includes(Joi.string())
+        }
+      }
+    }
+  });
+
+  server.route({
     method: 'POST',
     path: '/payments',
     handler: function (request, reply) {

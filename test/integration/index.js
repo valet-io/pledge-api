@@ -8,7 +8,8 @@ var tables = [
   'organizations',
   'campaigns',
   'donors',
-  'pledges'
+  'pledges',
+  'payments'
 ];
 
 internals.truncate = function () {
