@@ -13,7 +13,7 @@ module.exports = function (server) {
         .collection()
         .query(function (qb) {
           var query = request.query;
-          query.host && qb.where('host', request.query.host);
+          if (query.host) qb.where('host', request.query.host);
         })
         .fetch()
         .done(reply, reply);
@@ -41,8 +41,7 @@ module.exports = function (server) {
         params: {
           id: Joi.string().guid()
         }
-      }
-      ,
+      },
       cache: {
         expiresIn: 60 * 60 * 1000
       }
