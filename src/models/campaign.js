@@ -19,6 +19,7 @@ var Campaign = Model.extend({
     id: Joi.string().guid(),
     name: Joi.string().required(),
     host: Joi.string().max(20),
+    payments: Joi.boolean().default(true),
     metadata: Joi.object()
   },
   
