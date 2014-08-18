@@ -45,14 +45,14 @@ gulp.task('migrate', function () {
   var knex = require('./src/db').knex;
   return knex.migrate.latest()
     .bind(knex)
-    .then(knex.destroy);
+    .finally(knex.destroy);
 });
 
 gulp.task('migrate:make', function () {
   var knex = require('./src/db').knex;
   return knex.migrate.make(argv.name)
     .bind(knex)
-    .then(knex.destroy);
+    .finally(knex.destroy);
 });
 
 gulp.task('seed', function () {
@@ -74,5 +74,5 @@ gulp.task('seed', function () {
         .into('campaigns');
     })
     .bind(knex)
-    .then(knex.destroy);
+    .finally(knex.destroy);
 });

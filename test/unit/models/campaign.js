@@ -20,6 +20,7 @@ describe('Campaign', function () {
       id: uuid.v4(),
       name: 'The Greatest Fundraiser Ever',
       host: 'myhost.org',
+      payments: true,
       metadata: {
         title: 'tbd'
       }

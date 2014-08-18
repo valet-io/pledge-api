@@ -20,9 +20,17 @@ describe('Payment', function () {
       pledge_id: uuid.v4(),
       provider_name: 'stripe',
       provider_id: 'ch_123',
-      paid: true
+      paid: true,
+      processed: true
     });
     return payment.validate();
+  });
+
+  it('defines a read-only virtual property "processed"', function () {
+    expect(payment.get('processed')).to.be.false;
+    expect(payment.set('provider_id', '123').get('processed')).to.be.true;
+    expect(payment.set.bind(payment, 'processed', false)).to.not.throw();
+    expect(payment.get('processed')).to.be.true;
   });
 
   describe('#charge', function () {

@@ -6,6 +6,7 @@ module.exports = [{
   updated_at: new Date(),
   name: 'Simba Gala',
   host: 'www.ssgala.org',
+  payments: true,
   metadata: JSON.stringify({
     logo: 'url'
   }),
