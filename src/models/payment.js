@@ -21,10 +21,17 @@ var Payment = Model.extend({
       pledge_id: Joi.string().guid().required(),
       provider_name: Joi.string().valid('stripe'),
       provider_id: Joi.string(),
-      paid: Joi.boolean()
+      paid: Joi.boolean(),
+      processed: Joi.boolean()
     }),
 
   stripe: require('stripe')(config.get('stripe:key')),
+
+  virtuals: {
+    processed: function () {
+      return !!this.get('provider_id');
+    }
+  },
 
   charge: function (token) {
     return Promise
