@@ -10,6 +10,15 @@ env:
   - database__connection__database=valet_io_pledge database__connection__username=postgres
 deploy:
 - provider: heroku
+  app: valet-io-pledge-dev
+  api_key:
+    secure: v6aol/bx1rzv2a8DzDwOaQzVO8NlgbN4NAEWPowHfgwlL/ahdLO/x7P5YeLMKLiS5EJKoV8hiVLxpEN4SUlIq0VK9+7Ve0LyQoZVv7mkBxetFuM92C69hQvuwZfALLo7H+nN4I9Qd5bKURUNctPRJZ3rcZ6yehtDnqL5mbKOorI=
+  on:
+    branch: master
+    repo: valet-io/pledge-api
+  run:
+  - npm run migrate
+- provider: heroku
   app: valet-io-pledge-staging
   api_key:
     secure: v6aol/bx1rzv2a8DzDwOaQzVO8NlgbN4NAEWPowHfgwlL/ahdLO/x7P5YeLMKLiS5EJKoV8hiVLxpEN4SUlIq0VK9+7Ve0LyQoZVv7mkBxetFuM92C69hQvuwZfALLo7H+nN4I9Qd5bKURUNctPRJZ3rcZ6yehtDnqL5mbKOorI=
