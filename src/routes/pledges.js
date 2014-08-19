@@ -39,8 +39,12 @@ module.exports = function (server) {
     path: '/pledges',
     handler: function (request, reply) {
       new Pledge(request.payload)
-        .save()
-        .call('fetch', {require: true})
+        .save(null, {method: 'insert'})
+        .catch(function (err) {
+          console.log(err);
+          throw err;
+        })
+        .call('fetch')
         .then(reply)
         .call('code', 201)
         .done(null, reply);

@@ -25,7 +25,6 @@
     "gulp-jshint": "~1.5.0",
     "gulp-mocha": "~0.4.1",
     "gulp-util": "~2.2.14",
-    "inject-then": "~0.2.0",
     "jshint-stylish": "~0.1.5",
     "mocha": "~1.20.1",
     "mockfirebase": "git://github.com/katowulf/mockfirebase.git#888b31fe842d747cb87a6004655666739ae5a261",
@@ -38,9 +37,10 @@
     "sinon-chai": "~2.5.0"
   },
   "dependencies": {
-    "batch-me-if-you-can": "0.0.0",
+    "batch-me-if-you-can": "~0.1.2",
+    "inject-then": "~0.3.1",
     "bluebird": "~2.1.3",
-    "bookshelf": "~0.7.5",
+    "bookshelf": "git://github.com/tgriesser/bookshelf#41c97e861f7f76bdf8e6a1fbfd351b1917e57edb",
     "bookshelf-base": "git://github.com/valet-io/bookshelf-base.git#v0.2.0",
     "catbox-redis": "~1.0.3",
     "create-error": "~0.3.1",

@@ -9,8 +9,8 @@ module.exports = function (server) {
     path: '/donors',
     handler: function (request, reply) {
       new Donor(request.payload)
-        .save()
-        .call('fetch', {require: true})
+        .save(null, {method: 'insert'})
+        .call('fetch')
         .then(reply)
         .call('code', 201)
         .done(null, reply);

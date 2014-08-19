@@ -65,6 +65,7 @@ describe('Payments', function () {
           url: '/payments',
           method: 'post',
           payload: JSON.stringify({
+            id: uuid.v4(),
             amount: 100,
             pledge_id: pledge.id,
             token: token.id
@@ -88,6 +89,7 @@ describe('Payments', function () {
         url: '/payments',
         method: 'post',
         payload: JSON.stringify({
+          id: uuid.v4(),
           amount: 100,
           pledge_id: pledge.id,
           token: ''
@@ -112,6 +114,7 @@ describe('Payments', function () {
           url: '/payments',
           method: 'post',
           payload: JSON.stringify({
+            id: uuid.v4(),
             amount: 100,
             pledge_id: pledge.id,
             token: token.id

@@ -60,7 +60,7 @@ var Payment = Model.extend({
             provider_id: err.provider_id,
             paid: false
           })
-          .save()
+          .save(null, {method: 'insert'})
           .then(function (payment) {
             err.id = payment.id;
           })
@@ -72,7 +72,7 @@ var Payment = Model.extend({
             provider_id: charge.id,
             paid: true
           })
-          .save();
+          .save(null, {method: 'insert'});
       });
   },
 
