@@ -5,9 +5,7 @@ module.exports = require('nconf')
   .defaults({
     database: {
       client: 'postgres',
-      connection: {
-        adapter: 'postgresql'
-      },
+      connection: process.env.DATABASE_URL,
       migrations: {
         directory: __dirname + '/migrations',
         tableName: 'migrations'
