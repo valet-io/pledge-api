@@ -26,7 +26,7 @@ describe('Donors', function () {
       return server.injectThen({
         url: '/donors',
         method: 'post',
-        payload: "{}"
+        payload: '{}'
       })
       .then(function (response) {
         expect(response.statusCode).to.equal(400);
