@@ -7,6 +7,8 @@ var createError = require('create-error');
 var Model       = require('../db').Model;
 var config      = require('../../config');
 
+var addressFields = ['street1', 'street2', 'zip'];
+
 var Payment = Model.extend({
   tableName: 'payments',
 
@@ -22,8 +24,32 @@ var Payment = Model.extend({
       provider_name: Joi.string().valid('stripe'),
       provider_id: Joi.string(),
       paid: Joi.boolean(),
-      processed: Joi.boolean()
+      processed: Joi.boolean(),
+      address: Joi.object().required().keys({
+        street1: Joi.string().required(),
+        street2: Joi.string(),
+        zip: Joi.string()
+      })
     }),
+
+  parse: function (attributes) {
+    attributes.address = {};
+    addressFields.forEach(function (field) {
+      attributes.address[field] = attributes['address_' + field];
+      delete attributes['address_' + field];
+    });
+    return attributes;
+  },
+
+  format: function (attributes) {
+    if (attributes.address) {
+      addressFields.forEach(function (field) {
+        attributes['address_' + field] = attributes.address[field];
+      });
+      delete attributes.address;
+    }
+    return attributes;
+  },
 
   stripe: require('stripe')(config.get('stripe:key')),
 

@@ -21,7 +21,12 @@ describe('Payment', function () {
       provider_name: 'stripe',
       provider_id: 'ch_123',
       paid: true,
-      processed: true
+      processed: true,
+      address: {
+        street1: '123 Main St',
+        street2: 'Apt 1A',
+        zip: '10230'
+      }
     });
     return payment.validate();
   });
@@ -31,6 +36,44 @@ describe('Payment', function () {
     expect(payment.set('provider_id', '123').get('processed')).to.be.true;
     expect(payment.set.bind(payment, 'processed', false)).to.not.throw();
     expect(payment.get('processed')).to.be.true;
+  });
+
+  describe('#format', function () {
+
+    it('snakifies the address properties', function () {
+      expect(payment.format({
+        address: {
+          street1: '123 Main St',
+          street2: 'Apt 1A',
+          zip: '10230'
+        }
+      }))
+      .to.deep.equal({
+        address_street1: '123 Main St',
+        address_street2: 'Apt 1A',
+        address_zip: '10230'
+      });
+    });
+
+  });
+
+  describe('#parse', function () {
+
+    it('object-ifies the address properties', function () {
+      expect(payment.parse({
+        address_street1: '123 Main St',
+        address_street2: 'Apt 1A',
+        address_zip: '10230'
+      }))
+      .to.deep.equal({
+        address: {
+          street1: '123 Main St',
+          street2: 'Apt 1A',
+          zip: '10230'
+        }
+      });
+    });
+
   });
 
   describe('#charge', function () {

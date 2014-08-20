@@ -8,5 +8,8 @@ module.exports = [{
   provider_name: 'stripe',
   provider_id: 'ch_abc123',
   paid: true,
-  pledge_id: require('./pledges')[0].id
+  pledge_id: require('./pledges')[0].id,
+  address_street1: '123 Main St',
+  address_street2: 'Apt 1A',
+  address_zip: '10000'
 }];
