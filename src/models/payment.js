@@ -28,7 +28,7 @@ var Payment = Model.extend({
       address: Joi.object().required().keys({
         street1: Joi.string().required(),
         street2: Joi.string(),
-        zip: Joi.string()
+        zip: Joi.string().required()
       })
     }),
 
