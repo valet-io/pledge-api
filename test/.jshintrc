@@ -5,6 +5,8 @@
     "describe": false,
     "beforeEach": false,
     "afterEach": false,
-    "it": false
+    "it": false,
+    "before": false,
+    "after": false
   }
 }
