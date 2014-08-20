@@ -17,10 +17,13 @@ var Campaign = Model.extend({
 
   schema: {
     id: Joi.string().guid(),
+    created_at: Joi.date(),
+    updated_at: Joi.date(),
     name: Joi.string().required(),
     host: Joi.string().max(20),
     payments: Joi.boolean().default(true),
     metadata: Joi.object()
+
   },
   
   pledges: function () {
