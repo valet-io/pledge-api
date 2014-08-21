@@ -22,7 +22,8 @@ describe('Campaign', function () {
       host: 'myhost.org',
       payments: true,
       metadata: {
-        title: 'tbd'
+        logo: 'http://logo.com/file.png',
+        fields: ['email']
       }
     });
     return campaign.validate();

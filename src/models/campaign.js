@@ -22,8 +22,10 @@ var Campaign = Model.extend({
     name: Joi.string().required(),
     host: Joi.string().max(20),
     payments: Joi.boolean().default(true),
-    metadata: Joi.object()
-
+    metadata: Joi.object().keys({
+      logo: Joi.string(),
+      fields: Joi.array().includes(Joi.string())
+    })
   },
   
   pledges: function () {
