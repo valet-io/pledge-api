@@ -6,7 +6,9 @@ var Organization = Model.extend({
 
   schema: {
     id: Joi.string().guid(),
-    name: Joi.string().required()
+    name: Joi.string().required(),
+    created_at: Joi.date(),
+    updated_at: Joi.date()
   }
 
 });

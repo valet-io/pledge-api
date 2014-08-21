@@ -15,6 +15,8 @@ var Donor = Model.extend({
 
   schema: {
     id: Joi.string().guid(),
+    created_at: Joi.date(),
+    updated_at: Joi.date(),
     name: Joi.string().required(),
     phone: Joi.string(),
     email: Joi.string().email()

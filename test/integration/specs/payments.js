@@ -68,7 +68,12 @@ describe('Payments', function () {
             id: uuid.v4(),
             amount: 100,
             pledge_id: pledge.id,
-            token: token.id
+            token: token.id,
+            address: {
+              street1: '123 Main St',
+              street2: 'Apt 1A',
+              zip: '10001'
+            }
           })
         });
       })
@@ -92,7 +97,12 @@ describe('Payments', function () {
           id: uuid.v4(),
           amount: 100,
           pledge_id: pledge.id,
-          token: ''
+          token: '',
+          address: {
+            street1: '123 Main St',
+            street2: 'Apt 1A',
+            zip: '10001'
+          }
         })
       })
       .then(function (response) {
@@ -117,7 +127,12 @@ describe('Payments', function () {
             id: uuid.v4(),
             amount: 100,
             pledge_id: pledge.id,
-            token: token.id
+            token: token.id,
+            address: {
+              street1: '123 Main St',
+              street2: 'Apt 1A',
+              zip: '10001'
+            }
           })
         });
       })
