@@ -42,3 +42,4 @@ addons:
 notifications:
   slack:
     secure: ZzSNTvOCbhgU3YZ79SwmZdFsixEcWo4vuYrXrlukt3WhQAs6UGP3L3uekb31NUBgHMoi53q2ZJ3ZJLzwd1QiQbC1zrVZ0NXYj9fjUMErYlYS38LDdcM2FSt4moh+hGwJU6QFiiPnkgZcpkivFF9kUGp1yi8Y8h9ZgAn9VCw9miM=
+  email: false
