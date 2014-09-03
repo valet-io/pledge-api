@@ -65,6 +65,8 @@ var Payment = Model.extend({
       .then(function () {
         return this.stripe.charges.create({
           amount: this.get('amount') * 100,
+          description: 'Donation',
+          statement_description: 'Donation',
           currency: 'usd',
           card: token
         });

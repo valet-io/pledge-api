@@ -102,6 +102,8 @@ describe('Payment', function () {
         expect(stripe.charges.create).to.have.been.calledWithMatch({
           amount: 100,
           currency: 'usd',
+          description: 'Donation',
+          statement_description: 'Donation',
           card: 'token'
         });
       });
