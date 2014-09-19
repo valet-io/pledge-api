@@ -50,6 +50,27 @@ module.exports = Model.extend({
       amount: this.get('amount')
     };
   }
+}, {
+  paid: function (isPaid) {
+    if (typeof isPaid === 'undefined') isPaid = true;
+    return this.query(function (qb) {
+      qb.select('pledges.*');
+      var join;
+      if (isPaid) {
+        join = 'innerJoin';
+      }
+      else {
+        join = 'leftOuterJoin';
+      }
+      qb[join]('payments', function () {
+        this.on('pledges.id', '=', 'payments.pledge_id')
+            .on('payments.paid', '=', true);
+      });
+      if (!isPaid) {
+        qb.whereNull('payments.id');
+      }
+    });
+  }
 })
 .on('created', function (pledge) {
   return pledge

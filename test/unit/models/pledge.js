@@ -67,6 +67,33 @@ describe('Pledge', function () {
 
   });
 
+  describe('#paid', function () {
+
+    it('can query for paid pledges by default', function () {
+      expect(Pledge.paid().query().toString())
+        .to.equal(
+          'select "pledges".* ' + 
+          'from "pledges" ' +
+          'inner join "payments" ' +
+          'on "pledges"."id" = "payments"."pledge_id" ' +
+          'and "payments"."paid" = "true"'
+        );
+    });
+
+    it('can query for unpaid pledges', function () {
+      expect(Pledge.paid(false).query().toString())
+        .to.equal(
+          'select "pledges".* ' + 
+          'from "pledges" ' +
+          'left outer join "payments" ' +
+          'on "pledges"."id" = "payments"."pledge_id" ' +
+          'and "payments"."paid" = "true" ' +
+          'where "payments"."id" is null'
+        );
+    });
+
+  });
+
   describe('firebase sync', function () {
 
     var firebase, data, campaign;
