@@ -78,9 +78,12 @@ describe('Pledge', function () {
         .to.equal(
           'select "pledges".* ' + 
           'from "pledges" ' +
+          'inner join "campaigns" ' +
+          'on "campaigns"."id" = "pledges"."campaign_id" ' +
           'inner join "payments" ' +
           'on "pledges"."id" = "payments"."pledge_id" ' +
-          'and "payments"."paid" = "true"'
+          'and "payments"."paid" = "true" ' +
+          'where "campaigns"."active" = \'true\''
         )
         .and.to.equal(Pledge.paid(true).query().toString());
     });
@@ -90,10 +93,13 @@ describe('Pledge', function () {
         .to.equal(
           'select "pledges".* ' + 
           'from "pledges" ' +
+          'inner join "campaigns" ' +
+          'on "campaigns"."id" = "pledges"."campaign_id" ' +
           'left outer join "payments" ' +
           'on "pledges"."id" = "payments"."pledge_id" ' +
           'and "payments"."paid" = "true" ' +
-          'where "payments"."id" is null'
+          'where "campaigns"."active" = \'true\' ' +
+          'and "payments"."id" is null'
         );
     });
 
