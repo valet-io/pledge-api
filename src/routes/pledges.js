@@ -4,7 +4,6 @@ var Joi        = require('joi');
 var _          = require('lodash');
 var Pledge     = require('../models/pledge');
 var config     = require('../../config');
-var stripe     = require('stripe')(config.get('stripe:key'));
 
 module.exports = function (server) {
 
@@ -30,6 +29,32 @@ module.exports = function (server) {
       },
       cache: {
         expiresIn: 60 * 60 * 1000
+      }
+    }
+  });
+
+  server.route({
+    method: 'get',
+    path: '/pledges',
+    handler: function (request, reply) {
+      var collection;
+      if (typeof request.query.paid !== 'undefined') {
+        collection = Pledge.paid(request.query.paid);
+      }
+      else {
+        collection = Pledge.collection();
+      }
+      return collection.fetch({
+        withRelated: request.query.expand
+      })
+      .done(reply, reply);
+    },
+    config: {
+      validate: {
+        query: {
+          paid: Joi.boolean(),
+          expand: Joi.array().includes(Joi.string())
+        }
       }
     }
   });

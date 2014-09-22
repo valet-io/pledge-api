@@ -7,7 +7,8 @@ var server   = require('../../server');
 
 describe('Pledges', function () {
 
-  var pledge = require('../seeds/pledges')[0];
+  var pledges = require('../seeds/pledges');
+  var pledge = pledges[0];
   var donor = require('../seeds/donors')[0];
 
   describe('GET /pledges/{id}', function () {
@@ -43,6 +44,26 @@ describe('Pledges', function () {
         .then(function (response) {
           expect(response.statusCode).to.equal(404);
         });
+    });
+
+  });
+
+  describe('GET /pledges', function () {
+
+    it('can get all unpaid pledges', function () {
+      return server.injectThen({
+        url: '/pledges?paid=false',
+        method: 'get'
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(200);
+        var payload = JSON.parse(response.payload);
+        expect(payload).to.have.length(2);
+        // plain old unpaid
+        expect(payload[0].id).to.equal(pledges[1].id);
+        // a payment attempt, but failed
+        expect(payload[1].id).to.equal(pledges[2].id)
+      });
     });
 
   });
