@@ -83,8 +83,7 @@ describe('Pledge', function () {
           'inner join "payments" ' +
           'on "pledges"."id" = "payments"."pledge_id" ' +
           'and "payments"."paid" = true ' +
-          'where "campaigns"."active" = \'true\' ' +
-          'and "campaigns"."payments" = \'true\''
+          'where "campaigns"."payments" = \'true\''
         )
         .and.to.equal(Pledge.paid(true).query().toString());
     });
@@ -99,8 +98,7 @@ describe('Pledge', function () {
           'left outer join "payments" ' +
           'on "pledges"."id" = "payments"."pledge_id" ' +
           'and "payments"."paid" = true ' +
-          'where "campaigns"."active" = \'true\' ' +
-          'and "campaigns"."payments" = \'true\' ' +
+          'where "campaigns"."payments" = \'true\' ' +
           'and "payments"."id" is null'
         );
     });

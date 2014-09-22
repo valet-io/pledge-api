@@ -55,9 +55,7 @@ module.exports = Model.extend({
   paid: function (isPaid) {
     if (typeof isPaid === 'undefined') isPaid = true;
     return this.collection().query(function (qb) {
-      qb
-        .join('campaigns', 'campaigns.id', 'pledges.campaign_id')
-        .where('campaigns.active', true)
+      qb.join('campaigns', 'campaigns.id', 'pledges.campaign_id')
         .where('campaigns.payments', true);
       var join;
       if (isPaid) {
