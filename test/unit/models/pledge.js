@@ -77,7 +77,8 @@ describe('Pledge', function () {
           'inner join "payments" ' +
           'on "pledges"."id" = "payments"."pledge_id" ' +
           'and "payments"."paid" = "true"'
-        );
+        )
+        .and.to.equal(Pledge.paid(true).query().toString());
     });
 
     it('can query for unpaid pledges', function () {
