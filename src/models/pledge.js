@@ -57,7 +57,8 @@ module.exports = Model.extend({
       qb
         .select('pledges.*')
         .join('campaigns', 'campaigns.id', 'pledges.campaign_id')
-        .where('campaigns.active', true);
+        .where('campaigns.active', true)
+        .where('campaigns.payments', true);
       var join;
       if (isPaid) {
         join = 'innerJoin';
