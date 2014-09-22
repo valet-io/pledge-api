@@ -59,10 +59,13 @@ describe('Pledges', function () {
         expect(response.statusCode).to.equal(200);
         var payload = JSON.parse(response.payload);
         expect(payload).to.have.length(2);
+        expect(payload.map(function (pledge) {
+          return pledge.id;
+        }))
         // plain old unpaid
-        expect(payload[0].id).to.equal(pledges[1].id);
+        .to.include(pledges[1].id)
         // a payment attempt, but failed
-        expect(payload[1].id).to.equal(pledges[2].id)
+        .and.include(pledges[2].id);
       });
     });
 
