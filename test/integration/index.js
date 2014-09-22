@@ -26,11 +26,11 @@ internals.seed = function () {
 
 describe('Integration Tests', function () {
 
-  before(function () {
+  beforeEach(function () {
     return internals.truncate().then(internals.seed);
   });
 
-  after(function () {
+  afterEach(function () {
     return internals.truncate();
   });
 

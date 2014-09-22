@@ -6,7 +6,8 @@ var uuid   = require('node-uuid');
 
 describe('Campaigns', function () {
 
-  var campaign = require('../seeds/campaigns')[0];
+  var campaigns = require('../seeds/campaigns');
+  var campaign  = campaigns[0];
 
   describe('GET /campaigns', function () {
 
@@ -14,7 +15,7 @@ describe('Campaigns', function () {
       return server.injectThen('/campaigns')
         .then(function (response) {
           expect(response.statusCode).to.equal(200);
-          expect(JSON.parse(response.payload)).to.have.length(1);
+          expect(JSON.parse(response.payload)).to.have.length(campaigns.length);
         });
     });
 
