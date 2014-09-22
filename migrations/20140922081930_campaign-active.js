@@ -2,7 +2,7 @@
 
 exports.up = function (knex) {
   return knex.schema.table('campaigns', function (t) {
-    t.boolean('active');
+    t.boolean('active').defaultTo(true);
   });
 };
 
