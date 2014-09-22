@@ -10,17 +10,17 @@ exports.up = function (knex, Promise) {
     t.timestamps();
   })
   .then(function () {
-    return knex.table('pledges', function (t) {
+    return knex.schema.table('pledges', function (t) {
       t.dropColumn('payment_id');
     });
   });
 };
 
 exports.down = function (knex, Promise) {
-  return knex.table('pledges', function (t) {
+  return knex.schema.table('pledges', function (t) {
     t.text('payment_id');
   })
   .then(function () {
-    return knex.dropTable('payments');
+    return knex.schema.dropTable('payments');
   });
 };
