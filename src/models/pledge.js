@@ -63,8 +63,8 @@ module.exports = Model.extend({
         join = 'leftOuterJoin';
       }
       qb[join]('payments', function () {
-        this.on('pledges.id', '=', 'payments.pledge_id')
-            .on('payments.paid', '=', true);
+        this.on('pledges.id', 'payments.pledge_id')
+            .on('payments.paid', true);
       });
       if (!isPaid) {
         qb.whereNull('payments.id');
