@@ -53,7 +53,7 @@ module.exports = Model.extend({
 }, {
   paid: function (isPaid) {
     if (typeof isPaid === 'undefined') isPaid = true;
-    return this.query(function (qb) {
+    return this.collection().query(function (qb) {
       qb.select('pledges.*');
       var join;
       if (isPaid) {

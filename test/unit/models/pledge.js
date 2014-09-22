@@ -69,6 +69,10 @@ describe('Pledge', function () {
 
   describe('#paid', function () {
 
+    it('returns a collection', function () {
+      expect(Pledge.paid()).to.be.an.instanceOf(Pledge.prototype.Collection);
+    });
+
     it('can query for paid pledges by default', function () {
       expect(Pledge.paid().query().toString())
         .to.equal(
