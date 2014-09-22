@@ -11,7 +11,7 @@ exports.up = function (knex, Promise) {
   })
   .then(function () {
     return knex.table('pledges', function (t) {
-      t.dropColumn('payment_id')
+      t.dropColumn('payment_id');
     });
   });
 };
