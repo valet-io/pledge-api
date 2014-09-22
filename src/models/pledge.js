@@ -3,6 +3,7 @@
 var Joi       = require('joi');
 var Model     = require('../db').Model;
 var Promise   = require('bluebird');
+var knex      = require('../db').knex;
 var internals = {};
 
 internals.refs = function (pledge) {
@@ -55,7 +56,6 @@ module.exports = Model.extend({
     if (typeof isPaid === 'undefined') isPaid = true;
     return this.collection().query(function (qb) {
       qb
-        .select('pledges.*')
         .join('campaigns', 'campaigns.id', 'pledges.campaign_id')
         .where('campaigns.active', true)
         .where('campaigns.payments', true);
@@ -68,7 +68,7 @@ module.exports = Model.extend({
       }
       qb[join]('payments', function () {
         this.on('pledges.id', 'payments.pledge_id')
-            .on('payments.paid', true);
+            .on('payments.paid', knex.raw(true));
       });
       if (!isPaid) {
         qb.whereNull('payments.id');

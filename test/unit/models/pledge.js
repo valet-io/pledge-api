@@ -76,13 +76,13 @@ describe('Pledge', function () {
     it('can query for paid pledges by default', function () {
       expect(Pledge.paid().query().toString())
         .to.equal(
-          'select "pledges".* ' + 
+          'select * ' + 
           'from "pledges" ' +
           'inner join "campaigns" ' +
           'on "campaigns"."id" = "pledges"."campaign_id" ' +
           'inner join "payments" ' +
           'on "pledges"."id" = "payments"."pledge_id" ' +
-          'and "payments"."paid" = "true" ' +
+          'and "payments"."paid" = true ' +
           'where "campaigns"."active" = \'true\' ' +
           'and "campaigns"."payments" = \'true\''
         )
@@ -92,13 +92,13 @@ describe('Pledge', function () {
     it('can query for unpaid pledges', function () {
       expect(Pledge.paid(false).query().toString())
         .to.equal(
-          'select "pledges".* ' + 
+          'select * ' + 
           'from "pledges" ' +
           'inner join "campaigns" ' +
           'on "campaigns"."id" = "pledges"."campaign_id" ' +
           'left outer join "payments" ' +
           'on "pledges"."id" = "payments"."pledge_id" ' +
-          'and "payments"."paid" = "true" ' +
+          'and "payments"."paid" = true ' +
           'where "campaigns"."active" = \'true\' ' +
           'and "campaigns"."payments" = \'true\' ' +
           'and "payments"."id" is null'
