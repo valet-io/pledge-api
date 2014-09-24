@@ -34,6 +34,10 @@ var Campaign = Model.extend({
 
   donors: function () {
     return this.belongsToMany(require('./donor')).through(require('./pledge'));
+  },
+
+  organization: function () {
+    return this.belongsTo(require('./organization'));
   }
 
 });
