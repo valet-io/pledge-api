@@ -21,21 +21,17 @@ if (config.get('ssl')) {
   });
 }
 
-var env = config.get('NODE:ENV');
 
-if (env === 'production' || env === 'staging') {
-  server.pack.register({
-    plugin: require('good'),
-    options: {
-      subscribers: {
-        console: ['ops', 'request', 'log', 'error'],
-        'udp://logs.papertrailapp.com:44076': ['ops', 'request', 'log', 'error']
-      }
+server.pack.register({
+  plugin: require('good'),
+  options: {
+    subscribers: {
+      console: ['request', 'log', 'error']
     }
-  }, function (err) {
-    if (err) throw err;
-  });
-}
+  }
+}, function (err) {
+  if (err) throw err;
+});
 
 server.pack.register([require('batch-me-if-you-can'), require('inject-then')], function (err) {
   if (err) throw err;
