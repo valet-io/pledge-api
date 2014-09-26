@@ -43,6 +43,7 @@ module.exports = Model.extend({
 
   toFirebase: function () {
     return {
+      id: this.id,
       donor_id: this.get('donor_id'),
       donor: {
         id: this.related('donor').get('id'),
