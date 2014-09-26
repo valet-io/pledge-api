@@ -28,7 +28,9 @@ module.exports = Model.extend({
     campaign_id: Joi.string().guid().required(),
     payment_id: Joi.string().guid(),
     started_at: Joi.date().allow(null),
-    submitted_at: Joi.date().allow(null)
+    submitted_at: Joi.date().allow(null),
+    cancelled: Joi.boolean().default(false),
+    cancelled_reason: Joi.string().valid('fake','abandoned', 'donor_request', 'bad_contact_info', 'duplicate').allow(null)
   },
 
   campaign: function () {
