@@ -52,7 +52,7 @@ describe('Pledges', function () {
 
     it('can get all unpaid pledges', function () {
       return server.injectThen({
-        url: '/pledges?paid=false&expand[]=donor&expand[]=campaign&expand[]=campaign.organization',
+        url: '/pledges?paid=false&cancelled=false&expand[]=donor&expand[]=campaign&expand[]=campaign.organization',
         method: 'get'
       })
       .then(function (response) {
@@ -65,7 +65,9 @@ describe('Pledges', function () {
         // plain old unpaid
         .to.include(pledges[1].id)
         // a payment attempt, but failed
-        .and.include(pledges[2].id);
+        .and.include(pledges[2].id)
+        // cancelled
+        .and.to.not.include(pledges[6]);
         expect(payload[0]).to.contain.keys('donor', 'campaign');
       });
     });

@@ -10,7 +10,8 @@ module.exports = [
     amount: 100,
     anonymous: false,
     campaign_id: require('./campaigns')[0].id,
-    donor_id: require('./donors')[0].id
+    donor_id: require('./donors')[0].id,
+    cancelled: false
   },
   {
     id: uuid.v4(),
@@ -20,7 +21,8 @@ module.exports = [
     anonymous: false,
     // unpaid 
     campaign_id: require('./campaigns')[0].id,
-    donor_id: require('./donors')[0].id
+    donor_id: require('./donors')[0].id,
+    cancelled: false
   },
   {
     id: uuid.v4(),
@@ -30,7 +32,8 @@ module.exports = [
     anonymous: false,
     // failed payment 
     campaign_id: require('./campaigns')[0].id,
-    donor_id: require('./donors')[0].id
+    donor_id: require('./donors')[0].id,
+    cancelled: false
   },
   {
     id: uuid.v4(),
@@ -40,6 +43,18 @@ module.exports = [
     anonymous: false,
     // paymentless campaign
     campaign_id: require('./campaigns')[2].id,
-    donor_id: require('./donors')[0].id
+    donor_id: require('./donors')[0].id,
+    cancelled: false
+  },
+  {
+    id: uuid.v4(),
+    created_at: new Date(),
+    updated_at: new Date(),
+    amount: 100,
+    anonymous: false,
+    campaign_id: require('./campaigns')[0].id,
+    // cancelled
+    cancelled: true,
+    cancelled_reason: 'abandoned'
   }
 ];

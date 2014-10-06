@@ -53,11 +53,10 @@ module.exports = Model.extend({
       anonymous: this.get('anonymous') || null,
       amount: this.get('amount')
     };
-  }
-}, {
+  },
   paid: function (isPaid) {
     if (typeof isPaid === 'undefined') isPaid = true;
-    return this.collection().query(function (qb) {
+    return this.query(function (qb) {
       qb.join('campaigns', 'campaigns.id', 'pledges.campaign_id')
         .where('campaigns.payments', true);
       var join;

@@ -37,14 +37,14 @@ module.exports = function (server) {
     method: 'get',
     path: '/pledges',
     handler: function (request, reply) {
-      var collection;
+      var pledge = new Pledge();
       if (typeof request.query.paid !== 'undefined') {
-        collection = Pledge.paid(request.query.paid);
+        pledge.paid(request.query.paid);
       }
-      else {
-        collection = Pledge.collection();
+      if (typeof request.query.cancelled !== 'undefined') {
+        pledge.where({cancelled: request.query.cancelled});
       }
-      return collection.fetch({
+      return pledge.fetchAll({
         withRelated: request.query.expand
       })
       .done(reply, reply);
@@ -53,6 +53,7 @@ module.exports = function (server) {
       validate: {
         query: {
           paid: Joi.boolean(),
+          cancelled: Joi.boolean(),
           expand: Joi.array().includes(Joi.string())
         }
       }
