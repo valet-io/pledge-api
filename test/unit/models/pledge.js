@@ -69,12 +69,8 @@ describe('Pledge', function () {
 
   describe('#paid', function () {
 
-    it('returns a collection', function () {
-      expect(Pledge.paid()).to.be.an.instanceOf(Pledge.prototype.Collection);
-    });
-
     it('can query for paid pledges by default', function () {
-      expect(Pledge.paid().query().toString())
+      expect(pledge.paid().query().toString())
         .to.equal(
           'select * ' + 
           'from "pledges" ' +
@@ -85,11 +81,11 @@ describe('Pledge', function () {
           'and "payments"."paid" = true ' +
           'where "campaigns"."payments" = \'true\''
         )
-        .and.to.equal(Pledge.paid(true).query().toString());
+        .and.to.equal(new Pledge().paid(true).query().toString());
     });
 
     it('can query for unpaid pledges', function () {
-      expect(Pledge.paid(false).query().toString())
+      expect(pledge.paid(false).query().toString())
         .to.equal(
           'select * ' + 
           'from "pledges" ' +
