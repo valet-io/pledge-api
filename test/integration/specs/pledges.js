@@ -67,7 +67,7 @@ describe('Pledges', function () {
         // a payment attempt, but failed
         .and.include(pledges[2].id)
         // cancelled
-        .and.to.not.include(pledges[6]);
+        .and.to.not.include(pledges[4].id);
         expect(payload[0]).to.contain.keys('donor', 'campaign');
       });
     });
