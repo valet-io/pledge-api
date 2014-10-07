@@ -44,6 +44,7 @@ module.exports = function (server) {
       if (typeof request.query.cancelled !== 'undefined') {
         pledge.where({cancelled: request.query.cancelled});
       }
+      pledge.where({live: request.query.live});
       return pledge.fetchAll({
         withRelated: request.query.expand
       })
@@ -54,6 +55,7 @@ module.exports = function (server) {
         query: {
           paid: Joi.boolean(),
           cancelled: Joi.boolean(),
+          live: Joi.boolean().default(true),
           expand: Joi.array().includes(Joi.string())
         }
       }
@@ -66,10 +68,6 @@ module.exports = function (server) {
     handler: function (request, reply) {
       new Pledge(request.payload)
         .save(null, {method: 'insert'})
-        .catch(function (err) {
-          console.log(err);
-          throw err;
-        })
         .call('fetch')
         .then(reply)
         .call('code', 201)
