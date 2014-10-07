@@ -29,7 +29,8 @@ var Payment = Model.extend({
         street1: Joi.string().required(),
         street2: Joi.string(),
         zip: Joi.string().required()
-      })
+      }),
+      live: Joi.boolean().default(true)
     }),
 
   parse: function (attributes) {

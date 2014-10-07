@@ -72,6 +72,35 @@ describe('Pledges', function () {
       });
     });
 
+    it('excludes pledges where live=false by default', function () {
+      return server.injectThen({
+        url: '/pledges',
+        method: 'get'
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(200);
+        var payload = JSON.parse(response.payload);
+        expect(payload).to.have.length(pledges.length - 1);
+        expect(payload.map(function (pledge) {
+          return pledge.id;
+        }))
+        .to.not.include(pledges[5].id);
+      });
+    });
+
+    it('can fetch live=false pledges', function () {
+      return server.injectThen({
+        url: '/pledges?live=false',
+        method: 'get'
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(200);
+        var payload = JSON.parse(response.payload);
+        expect(payload).to.have.length(1);
+        expect(payload[0].id).to.equal(pledges[5].id);
+      });
+    });
+
   });
 
   describe('POST /pledges', function () {

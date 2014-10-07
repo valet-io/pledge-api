@@ -19,7 +19,8 @@ var Donor = Model.extend({
     updated_at: Joi.date(),
     name: Joi.string().required(),
     phone: Joi.string(),
-    email: Joi.string().email()
+    email: Joi.string().email(),
+    live: Joi.boolean().default(true)
   },
 
   pledges: function () {

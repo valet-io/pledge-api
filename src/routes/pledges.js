@@ -44,7 +44,7 @@ module.exports = function (server) {
       if (typeof request.query.cancelled !== 'undefined') {
         pledge.where({cancelled: request.query.cancelled});
       }
-      pledge.where({live: request.query.live});
+      pledge.where('pledges.live', request.query.live);
       return pledge.fetchAll({
         withRelated: request.query.expand
       })

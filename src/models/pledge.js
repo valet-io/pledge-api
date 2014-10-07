@@ -30,7 +30,8 @@ module.exports = Model.extend({
     started_at: Joi.date().allow(null),
     submitted_at: Joi.date().allow(null),
     cancelled: Joi.boolean().default(false),
-    cancelled_reason: Joi.string().valid('fake','abandoned', 'donor_request', 'bad_contact_info', 'duplicate').allow(null)
+    cancelled_reason: Joi.string().valid('fake','abandoned', 'donor_request', 'bad_contact_info', 'duplicate').allow(null),
+    live: Joi.boolean().default(true)
   },
 
   campaign: function () {
