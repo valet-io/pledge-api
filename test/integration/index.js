@@ -2,7 +2,6 @@
 
 var Promise   = require('bluebird');
 var knex      = require('../../src/db').knex;
-var internals = {};
 
 var tables = [
   'organizations',
@@ -12,13 +11,13 @@ var tables = [
   'payments'
 ];
 
-internals.truncate = function () {
+function truncate () {
   return Promise.each(tables, function (table) {
     return knex.raw('truncate table ' + table + ' cascade');
   });
 };
 
-internals.seed = function () {
+function seed () {
   return Promise.each(tables, function (table) {
     return knex(table).insert(require('./seeds/' + table));
   });
@@ -27,11 +26,11 @@ internals.seed = function () {
 describe('Integration Tests', function () {
 
   beforeEach(function () {
-    return internals.truncate().then(internals.seed);
+    return truncate().then(seed);
   });
 
   afterEach(function () {
-    return internals.truncate();
+    return truncate();
   });
 
   require('require-all')(__dirname + '/specs');
