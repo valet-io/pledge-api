@@ -43,6 +43,7 @@ module.exports = function (server) {
           error.output.statusCode = 402;
           error.reformat();
           error.output.payload.error = 'Card Error';
+          error.output.payload.code = err.code;
           error.output.payload.id = err.id;
           throw error;
         })

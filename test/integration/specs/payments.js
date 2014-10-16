@@ -140,6 +140,7 @@ describe('Payments', function () {
         expect(response.statusCode).to.equal(402);
         expect(response.result.error).to.equal('Card Error');
         expect(response.result.message).to.equal('Your card was declined.');
+        expect(response.result.code).to.equal('card_declined');
         expect(response.result.id).to.have.length(36);
       });
     });

@@ -80,7 +80,8 @@ var Payment = Model.extend({
       },
       function (err) {
         throw _.extend(new Payment.CardError(err.message), {
-          provider_id: err.raw && err.raw.charge
+          provider_id: err.raw && err.raw.charge,
+          code: err.code
         });
       })
       .catch(Payment.CardError, function (err) {
