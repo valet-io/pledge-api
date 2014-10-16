@@ -6,7 +6,10 @@ module.exports = require('nconf')
   .defaults({
     database: {
       client: 'pg',
-      connection: process.env.DATABASE_URL,
+      connection: process.env.DATABASE_URL || {
+        database: 'valet_io_pledge',
+        username: 'postgres'
+      },
       migrations: {
         directory: __dirname + '/migrations',
         tableName: 'migrations'
