@@ -1,7 +1,9 @@
 'use strict';
 
-var Promise   = require('bluebird');
-var knex      = require('../../src/db').knex;
+var Promise = require('bluebird');
+var sinon   = require('sinon-as-promised')(Promise);
+var knex    = require('../../src/db').knex;
+var events  = require('../../src/events');
 
 var tables = [
   'organizations',
@@ -23,13 +25,16 @@ function seed () {
   });
 };
 
+
 describe('Integration Tests', function () {
 
   beforeEach(function () {
+    sinon.stub(events, 'log').resolves();
     return truncate().then(seed);
   });
 
   afterEach(function () {
+    events.log.restore();
     return truncate();
   });
 

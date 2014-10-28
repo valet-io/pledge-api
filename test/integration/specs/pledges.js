@@ -1,9 +1,11 @@
 'use strict';
 
-var expect   = require('chai').expect;
-var uuid     = require('node-uuid');
-var moment   = require('moment');
-var server   = require('../../server');
+var expect = require('chai').expect;
+var uuid   = require('node-uuid');
+var moment = require('moment');
+var knex   = require('../../../src/db').knex;
+var events = require('../../../src/events');
+var server = require('../../server');
 
 describe('Pledges', function () {
 
@@ -107,11 +109,13 @@ describe('Pledges', function () {
 
     var campaign = require('../seeds/campaigns')[0];
 
-    it('creates a new pledge', function () {
+    it('saves a new pledge to the database', function () {
+      var id = uuid.v4();
       return server.injectThen({
         url: '/pledges',
         method: 'post',
         payload: JSON.stringify({
+          id: id,
           campaign_id: campaign.id,
           donor_id: donor.id,
           amount: 1,
@@ -121,7 +125,29 @@ describe('Pledges', function () {
       })
       .then(function (response) {
         expect(response.statusCode).to.equal(201);
-        expect(response.result.id).to.have.length(36);
+        return knex('pledges').select('id').where('id', id);
+      })
+      .then(function (rows) {
+        expect(rows).to.have.length(1);
+      });
+    });
+
+    it('fires a pledge.created event', function () {
+      var id = uuid.v4();
+      return server.injectThen({
+        url: '/pledges',
+        method: 'post',
+        payload: JSON.stringify({
+          id: id,
+          campaign_id: campaign.id,
+          donor_id: donor.id,
+          amount: 1,
+          submitted_at: moment().subtract('seconds', 1),
+          started_at: moment().subtract('seconds', 20)
+        })
+      })
+      .then(function (response) {
+        expect(events.log).to.have.been.calledWith('pledge', 'created', id);
       });
     });
 

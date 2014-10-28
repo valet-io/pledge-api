@@ -4,6 +4,7 @@ var Joi        = require('joi');
 var _          = require('lodash');
 var Pledge     = require('../models/pledge');
 var config     = require('../../config');
+var events     = require('../events');
 
 module.exports = function (server) {
 
@@ -69,9 +70,13 @@ module.exports = function (server) {
       new Pledge(request.payload)
         .save(null, {method: 'insert'})
         .call('fetch')
-        .then(reply)
-        .call('code', 201)
-        .done(null, reply);
+        .bind({})
+        .then(function (pledge) {
+          var eventTail = request.tail('event created');
+          events.log('pledge', 'created', pledge.id).then(eventTail);
+          return reply(pledge).code(201);
+        })
+        .catch(reply);
     },
     config: {
       validate: {
