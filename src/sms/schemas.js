@@ -2,7 +2,7 @@
 
 var joi = require('joi');
 
-exports.create = {
+var create = joi.object().keys({
   id: joi.string().guid(),
   created_at: joi.date(),
   updated_at: joi.date(),
@@ -38,4 +38,9 @@ exports.create = {
   }),
   direction: joi.valid('inbound', 'outbound').default('outbound'),
   body: joi.string().required()
-};
+});
+
+exports.create = joi.alternatives().try([
+  joi.array().includes(create).max(100),
+  create
+]);

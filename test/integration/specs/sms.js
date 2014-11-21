@@ -26,6 +26,23 @@ describe('SMS', function () {
       });
     });
 
+    it('can create multiple SMS messages', function () {
+      return server.injectThen({
+        url: '/messages',
+        method: 'post',
+        payload: JSON.stringify([{
+          to_number: '9739856070',
+          direction: 'outbound',
+          body: 'Hello world!'
+        }])
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(201);
+        expect(response.result).to.have.length(1);
+        expect(response.result.at(0).get('created_at')).to.be.an.instanceOf(Date);
+      });
+    });
+
   });
 
 });
