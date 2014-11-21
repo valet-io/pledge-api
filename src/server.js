@@ -21,6 +21,10 @@ if (config.get('ssl')) {
   });
 }
 
+function throwIf (err) {
+  if (err) throw err;
+}
+
 
 server.pack.register({
   plugin: require('good'),
@@ -29,17 +33,21 @@ server.pack.register({
       console: ['request', 'log', 'error']
     }
   }
-}, function (err) {
-  if (err) throw err;
-});
+}, throwIf);
 
-server.pack.register([require('batch-me-if-you-can'), require('inject-then')], function (err) {
-  if (err) throw err;
-});
+server.pack.register([
+  require('batch-me-if-you-can'),
+  require('inject-then')
+], throwIf);
 
 _.each(require('require-all')(__dirname + '/routes'), function (fn) {
   fn(server);
 });
+server.pack.register(require('./sms'), {
+  route: {
+    prefix: '/messages'
+  }
+}, throwIf);
 
 server.ext('onPreResponse', function (request, reply) {
   var response = request.response;
