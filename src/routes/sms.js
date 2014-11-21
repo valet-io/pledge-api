@@ -21,35 +21,34 @@ module.exports = function (server) {
           id: joi.string().guid(),
           created_at: joi.date(),
           updated_at: joi.date(),
-          sent_at: joi.when('direction', {
+          sent_at: joi.date().when('direction', {
             is: 'inbound',
-            then: joi.date().required(),
+            then: joi.required(),
             otherwise: joi.forbidden()
           }),
-          from_number: joi.when('direction', {
+          from_number: joi.string().when('direction', {
             is: 'inbound',
-            then: joi.string().required(),
-            otherwise: joi.string()
+            then: joi.required()
           }),
           to_number: joi.string().required(),
-          provider_name: joi.when('direction', {
+          provider_name: joi.string().valid('twilio').when('direction', {
             is: 'inbound',
-            then: joi.string().required().valid('twilio'),
+            then: joi.required(),
             otherwise: joi.forbidden()
           }),
-          provider_id: joi.when('direction', {
+          provider_id: joi.string().when('direction', {
             is: 'inbound',
-            then: joi.string().required(),
+            then: joi.required(),
             otherwise: joi.forbidden()
           }),
-          status: joi.when('direction', {
+          status: joi.string().when('direction', {
             is: 'inbound',
-            then: joi.string().valid('received').default('received'),
+            then: joi.valid('received').default('received'),
             otherwise: joi.forbidden()
           }),
-          price: joi.when('direction', {
+          price: joi.number().when('direction', {
             is: 'inbound',
-            then: joi.number().required(),
+            then: joi.required(),
             otherwise: joi.forbidden()
           }),
           direction: joi.valid('inbound', 'outbound').default('outbound'),

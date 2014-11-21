@@ -5,10 +5,10 @@ exports.up = function (knex, Promise) {
     t.uuid('id').primary().notNullable().defaultTo(knex.raw('uuid_generate_v4()'));
     t.timestamps();
     t.timestamp('sent_at');
-    t.text('from_number').nullable();
+    t.text('from_number');
     t.text('to_number').notNullable();
-    t.text('provider_name').notNullable();
-    t.text('provider_id').notNullable();
+    t.text('provider_name');
+    t.text('provider_id');
     t.enum('status', ['queued', 'sent', 'delivered', 'undelivered', 'failed']).defaultTo('queued');
     t.decimal('price');
     t.enum('direction', ['inbound', 'outbound']).notNullable();
