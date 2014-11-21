@@ -16,7 +16,7 @@ module.exports = Model.extend({
     provider_id: Joi.string().required(),
     status: Joi.string().valid('queued', 'sent', 'delivered', 'undelivered', 'failed').default('queued'),
     price: Joi.number(),
-    direction: Joi.string().valid('inbound', 'outbound').required(),
+    direction: Joi.string().valid('inbound', 'outbound').default('outbound'),
     body: Joi.string()
   },
 });
