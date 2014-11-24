@@ -3,7 +3,7 @@
 var expect  = require('chai').expect;
 var uuid    = require('node-uuid');
 var server  = require('../../server');
-var stripe  = require('../../../src/models/payment').prototype.stripe;
+var stripe  = require('../../../src/payment/payment').prototype.stripe;
 
 describe('Payments', function () {
 
