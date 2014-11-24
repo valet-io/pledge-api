@@ -4,7 +4,8 @@ var Joi         = require('joi');
 var Promise     = require('bluebird');
 var _           = require('lodash');
 var createError = require('create-error');
-var Model       = require('../db').Model;
+var bookshelf   = require('../db');
+var Model       = bookshelf.Model;
 var config      = require('../../config');
 
 var addressFields = ['street1', 'street2', 'zip'];
@@ -108,7 +109,7 @@ var Payment = Model.extend({
 
 
   pledge: function () {
-    return this.belongsTo(require('./pledge'));
+    return this.belongsTo('Pledge');
   }
 
 },
@@ -116,4 +117,4 @@ var Payment = Model.extend({
   CardError: createError('Card Error')
 });
 
-module.exports = Payment;
+module.exports = bookshelf.model('Payment', Payment);

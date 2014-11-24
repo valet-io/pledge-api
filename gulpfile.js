@@ -10,17 +10,12 @@ gulp.task('lint', function () {
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('cover:unit', function () {
+gulp.task('cover', function () {
   return gulp.src('src/**/*.js')
     .pipe(plugins.istanbul());
 });
 
-gulp.task('cover:integration', function () {
-  return gulp.src('src/routes/**/*.js')
-    .pipe(plugins.istanbul());
-});
-
-gulp.task('unit', ['cover:unit'], function () {
+gulp.task('unit', ['cover'], function () {
   require('./test/setup');
   var knex = require('./src/db').knex;
   return gulp.src(['test/unit/**/*.js'])
@@ -31,7 +26,7 @@ gulp.task('unit', ['cover:unit'], function () {
     .on('end', process.exit);
 });
 
-gulp.task('integration', ['cover:integration'], function () {
+gulp.task('integration', ['cover'], function () {
   require('./test/setup');
   return gulp.src(['test/integration/index.js'])
     .pipe(plugins.mocha(argv))

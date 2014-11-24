@@ -1,14 +1,13 @@
 'use strict';
 
-var Donor = require('../models/donor');
+var Donor = require('./donor');
 var Joi   = require('joi');
 var _     = require('lodash');
 
-module.exports = function (server) {
-
-  server.route({
+module.exports = [
+  {
     method: 'POST',
-    path: '/donors',
+    path: '/',
     handler: function (request, reply) {
       new Donor(request.payload)
         .save(null, {method: 'insert'})
@@ -22,11 +21,10 @@ module.exports = function (server) {
         payload: Donor.prototype.schema
       }
     }
-  });
-
-  server.route({
+  },
+  {
     method: 'PUT',
-    path: '/donors/{id}',
+    path: '/{id}',
     handler: function (request, reply) {
       new Donor({id: request.params.id})
         .save(_.omit(request.payload, 'id'), {
@@ -46,6 +44,5 @@ module.exports = function (server) {
         })
       }
     }
-  });
-
-};
+  }
+];

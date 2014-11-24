@@ -3,13 +3,13 @@
 var _       = require('lodash');
 var hapi    = require('hapi');
 var Joi     = require('joi');
-var Payment = require('../models/payment');
+var Payment = require('./payment');
 
-module.exports = function (server) {
+module.exports = [
 
-  server.route({
+  {
     method: 'GET',
-    path: '/payments/{id}',
+    path: '/{id}',
     handler: function (request, reply) {
       new Payment({id: request.params.id})
         .fetch({
@@ -28,11 +28,10 @@ module.exports = function (server) {
         }
       }
     }
-  });
-
-  server.route({
+  },
+  {
     method: 'POST',
-    path: '/payments',
+    path: '/',
     handler: function (request, reply) {
       new Payment(_.omit(request.payload, 'token'))
         .charge(request.payload.token)
@@ -54,6 +53,5 @@ module.exports = function (server) {
         payload: Payment.prototype.schema
       }
     }
-  });
-
-};
+  }
+];

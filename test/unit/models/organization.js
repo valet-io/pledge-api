@@ -2,7 +2,7 @@
 
 var expect       = require('chai').expect;
 var uuid         = require('node-uuid');
-var Organization = require('../../../src/models/organization');
+var Organization = require('../../../src/organization/organization');
 
 describe('Organization', function () {
 

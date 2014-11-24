@@ -1,15 +1,13 @@
 'use strict';
 
-var Joi        = require('joi');
-var _          = require('lodash');
-var Pledge     = require('../models/pledge');
-var config     = require('../../config');
+var Joi    = require('joi');
+var _      = require('lodash');
+var Pledge = require('./pledge');
 
-module.exports = function (server) {
-
-  server.route({
+module.exports = [
+  {
     method: 'GET',
-    path: '/pledges/{id}',
+    path: '/{id}',
     handler: function (request, reply) {
       new Pledge({id: request.params.id})
         .fetch({
@@ -31,11 +29,10 @@ module.exports = function (server) {
         expiresIn: 60 * 60 * 1000
       }
     }
-  });
-
-  server.route({
-    method: 'get',
-    path: '/pledges',
+  },
+  {
+    method: 'GET',
+    path: '/',
     handler: function (request, reply) {
       var pledge = new Pledge();
       if (typeof request.query.paid !== 'undefined') {
@@ -60,11 +57,10 @@ module.exports = function (server) {
         }
       }
     }
-  });
-
-  server.route({
+  },
+  {
     method: 'POST',
-    path: '/pledges',
+    path: '/',
     handler: function (request, reply) {
       new Pledge(request.payload)
         .save(null, {method: 'insert'})
@@ -78,11 +74,10 @@ module.exports = function (server) {
         payload: Pledge.prototype.schema
       }
     }
-  });
-
-  server.route({
+  },
+  {
     method: 'PUT',
-    path: '/pledges/{id}',
+    path: '/{id}',
     handler: function (request, reply) {
       new Pledge({id: request.params.id})
         .save(_.omit(request.payload, 'id'), {
@@ -102,6 +97,5 @@ module.exports = function (server) {
         })
       }
     }
-  });
-
-};
+  }
+];

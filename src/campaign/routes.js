@@ -1,13 +1,12 @@
 'use strict';
 
 var Joi      = require('joi');
-var Campaign = require('../models/campaign');
+var Campaign = require('./campaign');
 
-module.exports = function (server) {
-
-  server.route({
+module.exports = [
+  {
     method: 'GET',
-    path: '/campaigns',
+    path: '/',
     handler: function (request, reply) {
       Campaign
         .collection()
@@ -25,11 +24,10 @@ module.exports = function (server) {
         }
       }
     }
-  });
-
-  server.route({
+  },
+  {
     method: 'GET',
-    path: '/campaigns/{id}',
+    path: '/{id}',
     handler: function (request, reply) {
       Campaign
         .where({id: request.params.id})
@@ -46,6 +44,5 @@ module.exports = function (server) {
         expiresIn: 60 * 60 * 1000
       }
     }
-  });
-
-};
+  }
+];

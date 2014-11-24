@@ -4,8 +4,8 @@ var expect       = require('chai').expect;
 var sinon        = require('sinon');
 var uuid         = require('node-uuid');
 var MockFirebase = require('mockfirebase').MockFirebase;
-var Pledge       = require('../../../src/models/pledge');
-var Donor        = require('../../../src/models/donor');
+var Pledge       = require('../../../src/pledge/pledge');
+var Donor        = require('../../../src/donor/donor');
 
 describe('Pledge', function () {
 

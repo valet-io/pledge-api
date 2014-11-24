@@ -1,9 +1,10 @@
 'use strict';
 
 var Joi       = require('joi');
-var Model     = require('../db').Model;
+var bookshelf = require('../db');
+var Model     = bookshelf.Model;
+var knex      = bookshelf.knex;
 var Promise   = require('bluebird');
-var knex      = require('../db').knex;
 var internals = {};
 
 internals.refs = function (pledge) {
@@ -15,7 +16,7 @@ internals.refs = function (pledge) {
   };
 };
 
-module.exports = Model.extend({
+var Pledge = Model.extend({
   tableName: 'pledges',
 
   schema: {
@@ -35,11 +36,11 @@ module.exports = Model.extend({
   },
 
   campaign: function () {
-    return this.belongsTo(require('./campaign'));
+    return this.belongsTo('Campaign');
   },
 
   donor: function () {
-    return this.belongsTo(require('./donor'));
+    return this.belongsTo('Donor');
   },
 
   toFirebase: function () {
@@ -96,3 +97,5 @@ module.exports = Model.extend({
         });
     });
 });
+
+module.exports = bookshelf.model('Pledge', Pledge);

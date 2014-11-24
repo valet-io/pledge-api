@@ -21,6 +21,9 @@ if (config.get('ssl')) {
   });
 }
 
+function throwIf (err) {
+  if (err) throw err;
+}
 
 server.pack.register({
   plugin: require('good'),
@@ -37,9 +40,31 @@ server.pack.register([require('batch-me-if-you-can'), require('inject-then')], f
   if (err) throw err;
 });
 
-_.each(require('require-all')(__dirname + '/routes'), function (fn) {
-  fn(server);
-});
+server.pack.register(require('./campaign'), {
+  route: {
+    prefix: '/campaigns'
+  }
+}, throwIf);
+server.pack.register(require('./donor'), {
+  route: {
+    prefix: '/donors'
+  }
+}, throwIf);
+server.pack.register(require('./organization'), {
+  route: {
+    prefix: '/organizations'
+  }
+}, throwIf);
+server.pack.register(require('./payment'), {
+  route: {
+    prefix: '/payments'
+  }
+}, throwIf);
+server.pack.register(require('./pledge'), {
+  route: {
+    prefix: '/pledges'
+  }
+}, throwIf);
 
 server.ext('onPreResponse', function (request, reply) {
   var response = request.response;

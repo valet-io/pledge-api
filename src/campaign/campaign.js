@@ -1,7 +1,8 @@
 'use strict';
 
 var Joi       = require('joi');
-var Model     = require('../db').Model;
+var bookshelf = require('../db');
+var Model     = bookshelf.Model;
 var Firebase  = require('firebase');
 var config    = require('../../config');
 var internals = {};
@@ -29,17 +30,17 @@ var Campaign = Model.extend({
   },
   
   pledges: function () {
-    return this.hasMany(require('./pledge'));
+    return this.hasMany('Pledge');
   },
 
   donors: function () {
-    return this.belongsToMany(require('./donor')).through(require('./pledge'));
+    return this.belongsToMany('Donor').through('Pledge');
   },
 
   organization: function () {
-    return this.belongsTo(require('./organization'));
+    return this.belongsTo('Organization');
   }
 
 });
 
-module.exports = Campaign;
+module.exports = bookshelf.model('Campaign', Campaign);

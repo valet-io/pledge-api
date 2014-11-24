@@ -1,8 +1,8 @@
 var expect  = require('chai').expect;
 var Promise = require('bluebird');
 var uuid    = require('node-uuid');
-var Donor   = require('../../../src/models/donor');
-var Pledge  = require('../../../src/models/pledge');
+var Donor   = require('../../../src/donor/donor');
+var Pledge  = require('../../../src/pledge/pledge');
 
 describe('Donor', function () {
 

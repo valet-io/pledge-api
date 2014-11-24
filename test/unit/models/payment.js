@@ -4,7 +4,7 @@ var expect  = require('chai').expect;
 var uuid    = require('node-uuid');
 var _       = require('lodash');
 var sinon   = require('sinon');
-var Payment = require('../../../src/models/payment');
+var Payment = require('../../../src/payment/payment');
 
 describe('Payment', function () {
 

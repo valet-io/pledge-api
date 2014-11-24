@@ -1,7 +1,8 @@
 'use strict';
 
 var Joi            = require('joi');
-var Model          = require('../db').Model;
+var bookshelf      = require('../db');
+var Model          = bookshelf.Model;
 var phoneFormatter = require('phonenumber');
 
 var internals = {};
@@ -24,7 +25,7 @@ var Donor = Model.extend({
   },
 
   pledges: function () {
-    return this.hasMany(require('./pledge'));
+    return this.hasMany('Pledge');
   }
 
 });
@@ -33,4 +34,4 @@ internals.normalizePhone = function (donor) {
   if (donor.get('phone')) donor.set('phone', phoneFormatter.normalize(donor.get('phone')));
 };
 
-module.exports = Donor;
+module.exports = bookshelf.model('Donor', Donor);

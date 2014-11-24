@@ -1,5 +1,8 @@
-var Joi   = require('joi');
-var Model = require('../db').Model;
+'use strict';
+
+var Joi       = require('joi');
+var bookshelf = require('../db')
+var Model     = bookshelf.Model;
 
 var Organization = Model.extend({
   tableName: 'organizations',
@@ -13,4 +16,4 @@ var Organization = Model.extend({
 
 });
 
-module.exports = Organization;
+module.exports = bookshelf.model('Organization', Organization);

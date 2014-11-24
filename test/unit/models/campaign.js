@@ -4,7 +4,7 @@ var expect     = require('chai').expect;
 var uuid       = require('node-uuid');
 var proxyquire = require('proxyquire').noPreserveCache();
 
-var Campaign   = proxyquire('../../../src/models/campaign', {
+var Campaign   = proxyquire('../../../src/campaign/campaign', {
   firebase: require('mockfirebase').MockFirebase
 });
 
