@@ -65,6 +65,11 @@ server.pack.register(require('./pledge'), {
     prefix: '/pledges'
   }
 }, throwIf);
+server.pack.register(require('./stripe-connect'), {
+  route: {
+    vhost: ['stripe.valet.io', 'stripe-staging.valet.io', 'localhost']
+  }
+}, throwIf)
 
 server.ext('onPreResponse', function (request, reply) {
   var response = request.response;
