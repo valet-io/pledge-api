@@ -20,9 +20,10 @@ server.pack.register(require('hapi-require-https'), throwIf);
 server.pack.register({
   plugin: require('good'),
   options: {
-    subscribers: {
-      console: ['request', 'log', 'error']
-    }
+    reporters: [{
+      reporter: require('good-console'),
+      args: [{log: '*', request: '*', error: '*'}]
+    }]
   }
 }, function (err) {
   if (err) throw err;
