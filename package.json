@@ -27,7 +27,7 @@
     "gulp-util": "~2.2.14",
     "jshint-stylish": "~0.1.5",
     "mocha": "~1.20.1",
-    "mockfirebase": "git://github.com/katowulf/mockfirebase.git#888b31fe842d747cb87a6004655666739ae5a261",
+    "mockfirebase": "~0.5.0",
     "moment": "~2.7.0",
     "nock": "~0.51.0",
     "node-uuid": "~1.4.1",
