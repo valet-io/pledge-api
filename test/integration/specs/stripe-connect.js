@@ -78,7 +78,7 @@ describe('Stripe Connect', function () {
         }
       })
       .then(function (response) {
-        expect(response.statusCode).to.equal(200);
+        expect(response.statusCode).to.equal(302);
         return new StripeUser({
           organization_id: organization.id
         })
