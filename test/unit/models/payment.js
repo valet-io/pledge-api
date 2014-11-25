@@ -4,6 +4,7 @@ var expect  = require('chai').expect;
 var uuid    = require('node-uuid');
 var _       = require('lodash');
 var sinon   = require('sinon');
+var Promise = require('bluebird');
 var Payment = require('../../../src/payment/payment');
 
 describe('Payment', function () {
@@ -125,15 +126,22 @@ describe('Payment', function () {
 
     describe('Error handling', function () {
 
-      var error;
+      var error, originalCreate;
       beforeEach(function () {
-        error = _.extend(new Error(), {
+        error = _.extend(new Error('StripeError'), {
           type: 'StripeCardError',
           raw: {
             charge: 'ch_123'
           }
         });
-        stripe.charges.create.rejects(error);
+        originalCreate = stripe.charges.create;
+        stripe.charges.create = function () {
+          return Promise.reject(error);
+        };
+      });
+
+      afterEach(function () {
+        stripe.charges.create = originalCreate;
       });
 
       it('transforms stripe card errors into CardError', function () {

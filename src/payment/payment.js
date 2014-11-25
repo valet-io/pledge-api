@@ -117,9 +117,6 @@ var Payment = Model.extend({
             paid: true
           })
           .save(null, {method: 'insert'});
-      })
-      .then(function (payment) {
-        return payment.toJSON({shallow: true});
       });
   },
 

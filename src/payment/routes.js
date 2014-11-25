@@ -35,7 +35,9 @@ module.exports = [
     handler: function (request, reply) {
       new Payment(_.omit(request.payload, 'token'))
         .charge(request.payload.token)
-        .then(reply)
+        .then(function (payment) {
+          return reply(payment.toJSON({shallow: true}));
+        })
         .call('code', 201)
         .catch(Payment.CardError, function (err) {
           var error = hapi.error.badRequest(err.message);
@@ -46,7 +48,7 @@ module.exports = [
           error.output.payload.id = err.id;
           throw error;
         })
-        .done(null, reply);
+        .catch(reply);
     },
     config: {
       validate: {
