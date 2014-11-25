@@ -38,9 +38,9 @@
     "sinon-chai": "~2.5.0"
   },
   "dependencies": {
-    "batch-me-if-you-can": "~0.1.2",
-    "bluebird": "~2.1.3",
-    "bookshelf": "git://github.com/tgriesser/bookshelf#41c97e861f7f76bdf8e6a1fbfd351b1917e57edb",
+    "batch-me-if-you-can": "~1.0.1",
+    "bluebird": "~2.3.11",
+    "bookshelf": "~0.7.9",
     "bookshelf-base": "git://github.com/valet-io/bookshelf-base.git#v0.2.0",
     "boom": "~2.6.0",
     "catbox-redis": "~1.0.3",
@@ -50,7 +50,7 @@
     "gulp": "~3.8.5",
     "gulp-load-plugins": "~0.5.3",
     "hapi": "~6.2.0",
-    "inject-then": "~0.3.1",
+    "inject-then": "~1.1.0",
     "joi": "~4.6.1",
     "knex": "~0.6.18",
     "lodash": "~2.4.1",
