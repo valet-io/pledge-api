@@ -11,19 +11,11 @@ var server = new hapi.Server('0.0.0.0', config.get('PORT'), {
   })
 });
 
-if (config.get('ssl')) {
-  server.ext('onRequest', function (request, reply) {
-    if (request.headers['x-forwarded-proto'] !== 'https') {
-      return reply('Forwarding to https')
-        .redirect('https://' + request.headers.host + request.path);
-    }
-    reply();
-  });
-}
-
 function throwIf (err) {
   if (err) throw err;
 }
+
+server.pack.register(require('hapi-require-https'), throwIf);
 
 server.pack.register({
   plugin: require('good'),
