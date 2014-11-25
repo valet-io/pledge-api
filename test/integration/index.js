@@ -8,20 +8,21 @@ var tables = [
   'campaigns',
   'donors',
   'pledges',
-  'payments'
+  'payments',
+  'stripe_users'
 ];
 
 function truncate () {
   return Promise.each(tables, function (table) {
     return knex.raw('truncate table ' + table + ' cascade');
   });
-};
+}
 
 function seed () {
   return Promise.each(tables, function (table) {
     return knex(table).insert(require('./seeds/' + table));
   });
-};
+}
 
 describe('Integration Tests', function () {
 

@@ -1,11 +1,10 @@
 'use strict';
 
 exports.register = function (plugin, options, next) {
-  require('./organization');
-  require('./stripe');
+  plugin.route(require('./routes'));
   next();
 };
 
 exports.register.attributes = {
-  name: 'organization'
+  name: 'stripe-connect'
 };

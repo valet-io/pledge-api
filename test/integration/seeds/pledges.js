@@ -71,5 +71,15 @@ module.exports = [
     campaign_id: require('./campaigns')[0].id,
     // test
     live: false
+  },
+  {
+    id: uuid.v4(),
+    created_at: new Date(),
+    updated_at: new Date(),
+    amount: 100,
+    anonymous: false,
+    // uses stripe connect
+    campaign_id: require('./campaigns')[3].id,
+    live: true
   }
 ];

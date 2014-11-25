@@ -33,5 +33,13 @@ module.exports = [
     active: true,
     payments: false,
     organization_id: require('./organizations')[0].id
+  },
+  {
+    id: uuid.v4(),
+    created_at: new Date(),
+    updated_at: new Date(),
+    name: 'Connect Gala',
+    active: true,
+    organization_id: require('./organizations')[1].id
   }
 ];

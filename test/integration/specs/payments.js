@@ -2,6 +2,8 @@
 
 var expect  = require('chai').expect;
 var uuid    = require('node-uuid');
+var sinon   = require('sinon');
+var config  = require('../../../config');
 var server  = require('../../server');
 var stripe  = require('../../../src/payment/payment').prototype.stripe;
 
@@ -79,13 +81,52 @@ describe('Payments', function () {
       })
       .then(function (response) {
         expect(response.statusCode).to.equal(201);
-        expect(response.result.get('id')).to.have.length(36);
-        expect(response.result.get('provider_name')).to.equal('stripe');
-        expect(response.result.get('token')).to.be.undefined;
-        expect(response.result.get('provider_id'))
+        expect(response.result.id).to.have.length(36);
+        expect(response.result.provider_name).to.equal('stripe');
+        expect(response.result.token).to.be.undefined;
+        expect(response.result.provider_id)
           .to.include('ch_')
           .and.have.length(17);
-        expect(response.result.get('pledge_id')).to.equal(pledge.id);
+        expect(response.result.pledge_id).to.equal(pledge.id);
+      });
+    });
+
+    it('uses stripe connect when configured', function () {
+      var connectPledge = require('../seeds/pledges')[6];
+      sinon.spy(stripe.charges, 'create');
+      return stripe.tokens.create({
+        card: {
+          'number': '4242424242424242',
+          'exp_month': 12,
+          'exp_year': 2015,
+          'cvc': '123'
+        }
+      })
+      .then(function (token) {
+        return server.injectThen({
+          url: '/payments',
+          method: 'post',
+          payload: JSON.stringify({
+            id: uuid.v4(),
+            amount: 100,
+            pledge_id: connectPledge.id,
+            token: token.id,
+            address: {
+              street1: '123 Main St',
+              street2: 'Apt 1A',
+              zip: '10001'
+            }
+          })
+        });
+      })
+      .then(function (response) {
+        expect(response.statusCode).to.equal(201);
+        expect(stripe.charges.create.firstCall.args[1])
+          .to.equal(config.get('stripe:key'));
+        expect(response.result).to.not.have.property('pledge');      
+      })
+      .finally(function () {
+        stripe.charges.create.restore();
       });
     });
 
