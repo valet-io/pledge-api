@@ -65,13 +65,26 @@ var Payment = Model.extend({
     return Promise
       .bind(this)
       .then(function () {
-        return this.stripe.charges.create({
+        return this.load(['pledge.campaign.organization.stripe'])
+          .then(function (payment) {
+            return payment.related('pledge').related('campaign').related('organization');
+          });
+      })
+      .then(function (organization) {
+        var charge = {
           amount: this.get('amount') * 100,
           description: 'Donation',
           statement_description: 'Donation',
           currency: 'usd',
           card: token
-        });
+        };
+        var connectToken = organization.related('stripe').get('stripe_access_token');
+        if (connectToken) {
+          return this.stripe.charges.create(charge, connectToken);
+        }
+        else {
+          return this.stripe.charges.create(charge);
+        }
       })
       .finally(function () {
         this.set('provider_name', 'stripe');
@@ -104,6 +117,9 @@ var Payment = Model.extend({
             paid: true
           })
           .save(null, {method: 'insert'});
+      })
+      .then(function (payment) {
+        return payment.toJSON({shallow: true});
       });
   },
 

@@ -20,7 +20,6 @@ function truncate () {
 
 function seed () {
   return Promise.each(tables, function (table) {
-    if (table === 'stripe_users') return;
     return knex(table).insert(require('./seeds/' + table));
   });
 }

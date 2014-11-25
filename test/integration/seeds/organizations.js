@@ -1,8 +1,18 @@
 'use strict';
 
-module.exports = [{
-  id: require('node-uuid').v4(),
-  created_at: new Date(),
-  updated_at: new Date(),
-  name: 'Simba\'s Saviors'
-}];
+var uuid = require('node-uuid');
+
+module.exports = [
+  {
+    id: uuid.v4(),
+    created_at: new Date(),
+    updated_at: new Date(),
+    name: 'Simba\'s Saviors'
+  },
+  {
+    id: uuid.v4(),
+    created_at: new Date(),
+    updated_at: new Date(),
+    name: 'Connect User'
+  }
+];
