@@ -15,7 +15,7 @@ function throwIf (err) {
   if (err) throw err;
 }
 
-server.pack.register(require('hapi-require-https'), throwIf);
+if (config.get('ssl')) server.pack.register(require('hapi-require-https'), throwIf);
 
 server.pack.register({
   plugin: require('good'),
