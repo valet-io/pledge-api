@@ -43,7 +43,6 @@
     "bookshelf": "~0.7.9",
     "bookshelf-base": "git://github.com/valet-io/bookshelf-base.git#v0.2.0",
     "boom": "~2.6.0",
-    "catbox-redis": "~1.0.3",
     "create-error": "~0.3.1",
     "firebase": "~1.0.17",
     "good": "~4.0.2",

@@ -5,10 +5,7 @@ var _      = require('lodash');
 var config = require('../config');
 
 var server = new hapi.Server('0.0.0.0', config.get('PORT'), {
-  cors: true,
-  cache: _.extend(config.get('redis'), {
-    engine: require('catbox-redis')
-  })
+  cors: true
 });
 
 function throwIf (err) {
