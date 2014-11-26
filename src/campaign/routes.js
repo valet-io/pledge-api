@@ -11,11 +11,12 @@ module.exports = [
       Campaign
         .collection()
         .query(function (qb) {
-          var query = request.query;
-          if (query.host) qb.where('host', request.query.host);
+          var host = request.query.host;
+          if (host) qb.where('host', host);
         })
         .fetch()
-        .done(reply, reply);
+        .then(reply)
+        .catch(reply);
     },
     config: {
       validate: {
@@ -32,7 +33,8 @@ module.exports = [
       Campaign
         .where({id: request.params.id})
         .fetch({require: true})
-        .done(reply, reply);
+        .then(reply)
+        .catch(reply);
     },
     config: {
       validate: {

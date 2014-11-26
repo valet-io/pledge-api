@@ -5,15 +5,14 @@ var bookshelf = require('../db');
 var Model     = bookshelf.Model;
 var Firebase  = require('firebase');
 var config    = require('../../config');
-var internals = {};
 
-internals.firebase = new Firebase(config.get('firebase'));
+var firebase = new Firebase(config.get('firebase'));
 
 var Campaign = Model.extend({
   tableName: 'campaigns',
 
   firebase: function () {
-    return internals.firebase.child('campaigns').child(this.id);
+    return firebase.child('campaigns').child(this.id);
   },
 
   schema: {
