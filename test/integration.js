@@ -1,7 +1,10 @@
 'use strict';
 
-var Promise   = require('bluebird');
-var knex      = require('../../src/db').knex;
+require('./setup');
+var server = require('../');
+
+var Promise = require('bluebird');
+var knex    = server.plugins.db.knex;
 
 var tables = [
   'organizations',
@@ -20,7 +23,7 @@ function truncate () {
 
 function seed () {
   return Promise.each(tables, function (table) {
-    return knex(table).insert(require('./seeds/' + table));
+    return knex(table).insert(require('./integration/seeds/' + table));
   });
 }
 
@@ -34,6 +37,10 @@ describe('Integration Tests', function () {
     return truncate();
   });
 
-  require('require-all')(__dirname + '/specs');
+  var suites = require('require-all')(__dirname + '/integration/specs');
+  Object.keys(suites)
+    .forEach(function (suite) {
+      suites[suite](server);
+    });
 
 });

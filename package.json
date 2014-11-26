@@ -3,9 +3,10 @@
   "private": true,
   "version": "1.3.2",
   "description": "Valet.io Pledge API",
-  "main": "src/app.js",
+  "main": "./src/server.js",
   "scripts": {
-    "test": "gulp unit && gulp integration",
+    "test": "gulp test",
+    "start": "node ./src/start",
     "migrate": "gulp migrate",
     "seed": "gulp seed"
   },
@@ -49,7 +50,8 @@
     "good-console": "~2.0.1",
     "gulp": "~3.8.5",
     "gulp-load-plugins": "~0.5.3",
-    "hapi": "~6.2.0",
+    "hapi": "~7.5.2",
+    "hapi-bookshelf": "~1.0.1",
     "hapi-require-https": "~1.0.1",
     "inject-then": "~1.1.0",
     "joi": "~4.6.1",

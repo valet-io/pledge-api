@@ -15,23 +15,12 @@ gulp.task('cover', function () {
     .pipe(plugins.istanbul());
 });
 
-gulp.task('unit', ['cover'], function () {
-  require('./test/setup');
+gulp.task('test', ['cover'], function () {
   var knex = require('./src/db').knex;
-  return gulp.src(['test/unit/**/*.js'])
+  return gulp.src(['test/index.js'])
     .pipe(plugins.mocha(argv))
     .pipe(plugins.istanbul.writeReports({
-      dir: './coverage/unit'
-    }))
-    .on('end', process.exit);
-});
-
-gulp.task('integration', ['cover'], function () {
-  require('./test/setup');
-  return gulp.src(['test/integration/index.js'])
-    .pipe(plugins.mocha(argv))
-    .pipe(plugins.istanbul.writeReports({
-      dir: './coverage/integration'
+      dir: './coverage'
     }))
     .on('end', process.exit);
 });
