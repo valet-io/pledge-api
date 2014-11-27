@@ -4,11 +4,10 @@ var Joi         = require('joi');
 var Promise     = require('bluebird');
 var _           = require('lodash');
 var createError = require('create-error');
-var config      = require('../config');
 
 var addressFields = ['street1', 'street2', 'zip'];
 
-module.exports = function (bookshelf) {
+module.exports = function (bookshelf, stripe) {
   var Payment = bookshelf.Model.extend({
     tableName: 'payments',
 
@@ -52,8 +51,6 @@ module.exports = function (bookshelf) {
       return attributes;
     },
 
-    stripe: require('stripe')(config.get('stripe.key')),
-
     virtuals: {
       processed: function () {
         return !!this.get('provider_id');
@@ -79,10 +76,10 @@ module.exports = function (bookshelf) {
           };
           var connectToken = organization.related('stripe').get('stripe_access_token');
           if (connectToken) {
-            return this.stripe.charges.create(charge, connectToken);
+            return stripe.charges.create(charge, connectToken);
           }
           else {
-            return this.stripe.charges.create(charge);
+            return stripe.charges.create(charge);
           }
         })
         .finally(function () {

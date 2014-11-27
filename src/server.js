@@ -10,9 +10,11 @@ var server = new hapi.Server('0.0.0.0', config.get('port'), {
 });
 
 function throwIf (err) {
+  /* istanbul ignore next */
   if (err) throw err;
 }
 
+/* istanbul ignore next */
 if (config.get('ssl')) server.pack.register(require('hapi-require-https'), throwIf);
 
 server.pack.register([
