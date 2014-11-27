@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('../../config');
+var config = require('../config');
 var crypto = require('crypto');
 var wreck  = require('wreck');
 var qs     = require('qs');
@@ -80,7 +80,7 @@ function handleError (request, reply) {
 
 // TODO: validate uuid with joi before authorizing
 function decrypt (request, reply) {
-  var decipher = crypto.createDecipher('aes256', config.get('stripe:key'));
+  var decipher = crypto.createDecipher('aes256', config.get('stripe.key'));
   var decrypted = decipher.update(request.query.state, 'hex', 'utf8') + decipher.final('utf8');
   reply(decrypted);
 }
@@ -88,7 +88,7 @@ function decrypt (request, reply) {
 function authorize (request, reply) {
   wreck.post('https://connect.stripe.com/oauth/token', {
     payload: qs.stringify({
-      client_secret: config.get('stripe:key'),
+      client_secret: config.get('stripe.key'),
       grant_type: 'authorization_code',
       code: request.query.code
     }),

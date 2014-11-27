@@ -2,8 +2,8 @@
 
 var Joi       = require('joi');
 var Firebase  = require('firebase');
-var config    = require('../../config');
-var firebase  = new Firebase(config.get('firebase'));
+var config    = require('../config');
+var firebase  = new Firebase(config.get('firebase.endpoint'));
 
 module.exports = function (bookshelf) {
   return bookshelf.model('Campaign', bookshelf.Model.extend({

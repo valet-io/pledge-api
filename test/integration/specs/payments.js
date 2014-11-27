@@ -3,7 +3,7 @@
 var expect  = require('chai').expect;
 var uuid    = require('node-uuid');
 var sinon   = require('sinon');
-var config  = require('../../../config');
+var config  = require('../../../src/config');
 
 module.exports = function (server) {
 
@@ -124,7 +124,7 @@ module.exports = function (server) {
         .then(function (response) {
           expect(response.statusCode).to.equal(201);
           expect(stripe.charges.create.firstCall.args[1])
-            .to.equal(config.get('stripe:key'));
+            .to.equal(config.get('stripe.key'));
           expect(response.result).to.not.have.property('pledge');      
         })
         .finally(function () {

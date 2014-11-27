@@ -1,6 +1,5 @@
 'use strict';
 
-require('./setup');
 var server = require('../');
 
 var Promise = require('bluebird');

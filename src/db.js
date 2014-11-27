@@ -1,6 +1,6 @@
 'use strict';
 
-exports.knex = require('knex')(require('../config').get('database'));
+exports.knex = require('knex')(require('./config').get('database'));
 
 exports.bookshelf = require('bookshelf')(exports.knex)
   .plugin('registry')

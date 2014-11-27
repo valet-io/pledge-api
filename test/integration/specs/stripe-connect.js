@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var crypto = require('crypto');
 var nock   = require('nock');
-var config = require('../../../config');
+var config = require('../../../src/config');
 
 module.exports = function (server) {
 
@@ -59,7 +59,7 @@ module.exports = function (server) {
       });
 
       it('can authorize an organization for Stripe', function () {
-        var secret  = config.get('stripe:key');
+        var secret  = config.get('stripe.key');
         var cipher  = crypto.createCipher('aes256', secret);
         var state   = cipher.update(organization.id, 'utf8', 'hex') + cipher.final('hex');
         nock('https://connect.stripe.com')

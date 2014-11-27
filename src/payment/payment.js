@@ -4,7 +4,7 @@ var Joi         = require('joi');
 var Promise     = require('bluebird');
 var _           = require('lodash');
 var createError = require('create-error');
-var config      = require('../../config');
+var config      = require('../config');
 
 var addressFields = ['street1', 'street2', 'zip'];
 
@@ -52,7 +52,7 @@ module.exports = function (bookshelf) {
       return attributes;
     },
 
-    stripe: require('stripe')(config.get('stripe:key')),
+    stripe: require('stripe')(config.get('stripe.key')),
 
     virtuals: {
       processed: function () {
