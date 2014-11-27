@@ -97,6 +97,7 @@ function authorize (request, reply) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   }, function (err, res, payload) {
+    /* istanbul ignore next */
     if (err) return reply(err);
     if (res.statusCode >= 400) {
       err = new Error(payload.error_description || 'Unknown error');

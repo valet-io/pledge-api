@@ -81,6 +81,10 @@ module.exports = function (server) {
         })
         .then(function (response) {
           expect(response.statusCode).to.equal(302);
+          return server.injectThen(response.headers.location);
+        })
+        .then(function (response) {
+          expect(response.result).to.contain('Success');
           return new StripeUser({
             organization_id: organization.id
           })
@@ -97,6 +101,45 @@ module.exports = function (server) {
         })
         .finally(function () {
           nock.cleanAll();
+        });
+      });
+
+      it('handles stripe errors', function () {
+        var secret  = config.get('stripe.key');
+        var cipher  = crypto.createCipher('aes256', secret);
+        var state   = cipher.update(organization.id, 'utf8', 'hex') + cipher.final('hex');
+        nock('https://connect.stripe.com')
+          .post('/oauth/token')
+          .reply(400, {
+            error: 'broke',
+            error_description: 'it broke'
+          });
+        return server.injectThen({
+          url: '/callback?code=authCode&scope=read_write&state=' + state,
+          headers: {
+            host: 'stripe.valet.io'
+          }
+        })
+        .then(function (response) {
+          expect(response.statusCode).to.equal(500);
+        });
+      });
+
+      it('handles malformed stripe errors', function () {
+        var secret  = config.get('stripe.key');
+        var cipher  = crypto.createCipher('aes256', secret);
+        var state   = cipher.update(organization.id, 'utf8', 'hex') + cipher.final('hex');
+        nock('https://connect.stripe.com')
+          .post('/oauth/token')
+          .reply(400);
+        return server.injectThen({
+          url: '/callback?code=authCode&scope=read_write&state=' + state,
+          headers: {
+            host: 'stripe.valet.io'
+          }
+        })
+        .then(function (response) {
+          expect(response.statusCode).to.equal(500);
         });
       });
 
