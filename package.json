@@ -54,6 +54,7 @@
     "hapi": "~7.5.2",
     "hapi-bookshelf": "~1.0.1",
     "hapi-require-https": "~1.0.1",
+    "hapi-raven": "~2.0.0",
     "inject-then": "~1.1.0",
     "joi": "~4.6.1",
     "knex": "~0.6.18",

@@ -52,5 +52,12 @@ module.exports = convict({
       default: null,
       env: 'firebase'
     }
+  },
+  sentry: {
+    dsn: {
+      format: String,
+      default: '',
+      env: 'SENTRY_DSN'
+    }
   }
 });

@@ -17,6 +17,13 @@ function throwIf (err) {
 /* istanbul ignore next */
 if (config.get('ssl')) server.pack.register(require('hapi-require-https'), throwIf);
 
+if (config.get('sentry.dsn')) server.pack.register({
+  plugin: require('hapi-raven'),
+  options: {
+    dsn: config.get('sentry.dsn')
+  }
+});
+
 server.pack.register([
   {
     plugin: require('good'),
