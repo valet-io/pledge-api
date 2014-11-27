@@ -5,7 +5,7 @@ var _       = require('lodash');
 var sinon   = require('sinon');
 var Promise = require('bluebird');
 
-module.exports = function (Payment) {
+module.exports = function (Payment, stripe) {
 
   describe('Payment', function () {
 
@@ -61,12 +61,11 @@ module.exports = function (Payment) {
 
     describe('#charge', function () {
 
-      var charge, stripe;
+      var charge;
       beforeEach(function () {
         charge = {
           id: 'ch_123'
         };
-        stripe = payment.stripe;
         sinon.stub(stripe.charges, 'create').resolves(charge);
         sinon.stub(payment, 'save').resolves(payment);
       });

@@ -7,7 +7,7 @@ var config  = require('../../../src/config');
 
 module.exports = function (server) {
 
-  var stripe  = server.plugins.payment.Payment.prototype.stripe;
+  var stripe  = server.plugins.stripe.stripe;
 
   describe('Payments', function () {
 

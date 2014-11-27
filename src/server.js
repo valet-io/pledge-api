@@ -30,12 +30,12 @@ server.pack.register([
   require('batch-me-if-you-can'),
   require('inject-then'),
   require('./db'),
+  require('./stripe'),
   require('./campaign'),
   require('./donor'),
   require('./organization'),
   require('./payment'),
-  require('./pledge'),
-  require('./stripe-connect')
+  require('./pledge')
 ], throwIf);
 
 
