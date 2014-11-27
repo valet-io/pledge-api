@@ -5,7 +5,7 @@ var plugins = require('gulp-load-plugins')();
 var argv    = require('yargs').argv;
 
 gulp.task('lint', function () {
-  return gulp.src(['src/**', 'test/**'])
+  return gulp.src(['src/**', 'test/**', 'migrations/**'])
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });

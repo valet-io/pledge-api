@@ -4,6 +4,9 @@ node_js:
 before_script:
 - psql -c 'create database valet_io_pledge;' -U postgres
 - gulp migrate
+script:
+- gulp lint
+- gulp test
 env:
   global:
   - secure: HQJyiIck8D3KPE5IKwrowrV8aZn80O+hEW02xyLhezYHTJ/Az8hxujH2VgT9StpQGGiI838yjKiqIWfJYbR17A1VMSxWbDnwN62H5RYpJvyWwJpk91f1qayTj0pWZVNsCUNkQ+bPP1a/yhrs2wIJ0kQc96fddMPaXrlsc61Qh8U=
