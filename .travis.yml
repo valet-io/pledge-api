@@ -10,6 +10,7 @@ script:
 env:
   global:
   - secure: HQJyiIck8D3KPE5IKwrowrV8aZn80O+hEW02xyLhezYHTJ/Az8hxujH2VgT9StpQGGiI838yjKiqIWfJYbR17A1VMSxWbDnwN62H5RYpJvyWwJpk91f1qayTj0pWZVNsCUNkQ+bPP1a/yhrs2wIJ0kQc96fddMPaXrlsc61Qh8U=
+  - secure: Lm3C3riJTJor2oKf3XVtsVqu7XLha8paYAv4QAXTEJzpaHpND49Rb8/merBRZNpKxq/1CLrHcdg/g/m5MQHdENFOcLdY0uGvFSmal5b6CIIhz9C3Doz4djNlytL3TnqQ19Hphs7M3VDO4HCi3sirQnFod6l1U8k0HscAMAHsXCM=
 deploy:
 - provider: heroku
   app: valet-io-pledge-dev
