@@ -56,5 +56,10 @@ module.exports = convict({
       default: '',
       env: 'SENTRY_DSN'
     }
+  },
+  newrelic: {
+    format: Boolean,
+    default: false,
+    env: 'NEW_RELIC_ENABLE'
   }
 });

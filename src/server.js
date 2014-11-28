@@ -5,6 +5,8 @@ var config = require('./config');
 
 config.validate();
 
+if (config.get('newrelic')) require('newrelic');
+
 var server = new hapi.Server('0.0.0.0', config.get('port'), {
   cors: true
 });
