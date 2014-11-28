@@ -22,7 +22,7 @@ if (config.get('sentry.dsn')) server.pack.register({
   options: {
     dsn: config.get('sentry.dsn')
   }
-});
+}, throwIf);
 
 server.pack.register([
   {
