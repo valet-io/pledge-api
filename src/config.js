@@ -16,11 +16,8 @@ module.exports = convict({
       default: 'pg'
     },
     connection: {
-      default: {
-        host: 'localhost',
-        username: 'postgres',
-        database: 'valet_io_pledge'
-      },
+      format: String,
+      default: 'postgres://postgres@localhost/valet_io_pledge',
       env: 'DATABASE_URL'
     },
     migrations: {
