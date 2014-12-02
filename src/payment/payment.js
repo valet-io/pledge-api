@@ -61,19 +61,24 @@ module.exports = function (bookshelf, stripe) {
       return Promise
         .bind(this)
         .then(function () {
-          return this.load(['pledge.campaign.organization.stripe'])
-            .then(function (payment) {
-              return payment.related('pledge').related('campaign').related('organization');
-            });
+          return this.load(['pledge.donor', 'pledge.campaign.organization.stripe']);
         })
-        .then(function (organization) {
+        .then(function (payment) {
           var charge = {
-            amount: this.get('amount') * 100,
+            amount: payment.get('amount') * 100,
             description: 'Donation',
             statement_description: 'Donation',
             currency: 'usd',
-            card: token
+            card: token,
+            metadata: {
+              pledge_id: payment.related('pledge').id,
+              pledge_created_at: payment.related('pledge').get('created_at'),
+              donor_id: payment.related('pledge').related('donor').id,
+              donor_email: payment.related('pledge').related('donor').get('email'),
+              donor_phone: payment.related('pledge').related('donor').get('phone')
+            }
           };
+          var organization = payment.related('pledge').related('campaign').related('organization');
           var connectToken = organization.related('stripe').get('stripe_access_token');
           if (connectToken) {
             return stripe.charges.create(charge, connectToken);

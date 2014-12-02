@@ -79,14 +79,39 @@ module.exports = function (Payment, stripe) {
       });
 
       it('creates a stripe charge using the token', function () {
-        payment.set('amount', 1);
+        sinon.stub(payment, 'load').resolves(payment);
+        var now = new Date();
+        payment
+          .set('amount', 1)
+          .related('pledge')
+          .set({
+            id: 'pledgeId',
+            created_at: now
+          })
+          .related('donor')
+          .set({
+            id: 'donorId',
+            email: 'email',
+            phone: '9739856070'
+          });
         return payment.charge('token').then(function () {
+          expect(payment.load).to.have.been.calledWithMatch([
+            'pledge.donor',
+            'pledge.campaign.organization.stripe'
+          ]);
           expect(stripe.charges.create).to.have.been.calledWithMatch({
             amount: 100,
             currency: 'usd',
             description: 'Donation',
             statement_description: 'Donation',
-            card: 'token'
+            card: 'token',
+            metadata: {
+              pledge_id: 'pledgeId',
+              pledge_created_at: now,
+              donor_id: 'donorId',
+              donor_email: 'email',
+              donor_phone: '+19739856070'
+            }
           });
         });
       });

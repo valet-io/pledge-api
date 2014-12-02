@@ -57,6 +57,7 @@ module.exports = [
     amount: 100,
     anonymous: false,
     campaign_id: require('./campaigns')[0].id,
+    donor_id: require('./donors')[0].id,
     live: true,
     // cancelled
     cancelled: true,
@@ -68,6 +69,7 @@ module.exports = [
     updated_at: new Date(),
     amount: 100,
     anonymous: false,
+    donor_id: require('./donors')[0].id,
     campaign_id: require('./campaigns')[0].id,
     // test
     live: false
@@ -78,6 +80,7 @@ module.exports = [
     updated_at: new Date(),
     amount: 100,
     anonymous: false,
+    donor_id: require('./donors')[0].id,
     // uses stripe connect
     campaign_id: require('./campaigns')[3].id,
     live: true
