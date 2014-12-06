@@ -76,7 +76,9 @@ module.exports = function (server) {
               address: {
                 street1: '123 Main St',
                 street2: 'Apt 1A',
-                zip: '10001'
+                zip: '10001',
+                city: 'New York',
+                state: 'NY'
               }
             })
           });

@@ -5,7 +5,7 @@ var Promise     = require('bluebird');
 var _           = require('lodash');
 var createError = require('create-error');
 
-var addressFields = ['street1', 'street2', 'zip'];
+var addressFields = ['street1', 'street2', 'zip', 'city', 'state'];
 
 module.exports = function (bookshelf, stripe) {
   var Payment = bookshelf.Model.extend({
@@ -27,7 +27,9 @@ module.exports = function (bookshelf, stripe) {
         address: Joi.object().required().keys({
           street1: Joi.string().required(),
           street2: Joi.string(),
-          zip: Joi.string().required()
+          zip: Joi.string().required(),
+          city: Joi.string(),
+          state: Joi.string()
         }),
         live: Joi.boolean().default(true)
       }),

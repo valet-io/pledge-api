@@ -28,13 +28,17 @@ module.exports = function (Payment, stripe) {
           address: {
             street1: '123 Main St',
             street2: 'Apt 1A',
-            zip: '10230'
+            zip: '10230',
+            city: 'Urbanville',
+            state: 'NY'
           }
         }))
         .to.deep.equal({
           address_street1: '123 Main St',
           address_street2: 'Apt 1A',
-          address_zip: '10230'
+          address_zip: '10230',
+          address_city: 'Urbanville',
+          address_state: 'NY'
         });
       });
 
@@ -46,13 +50,17 @@ module.exports = function (Payment, stripe) {
         expect(payment.parse({
           address_street1: '123 Main St',
           address_street2: 'Apt 1A',
-          address_zip: '10230'
+          address_zip: '10230',
+          address_city: 'Urbanville',
+          address_state: 'NY'
         }))
         .to.deep.equal({
           address: {
             street1: '123 Main St',
             street2: 'Apt 1A',
-            zip: '10230'
+            zip: '10230',
+            city: 'Urbanville',
+            state: 'NY'
           }
         });
       });
