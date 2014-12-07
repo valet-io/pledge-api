@@ -53,7 +53,7 @@
     "gulp-load-plugins": "~0.5.3",
     "hapi": "~7.5.2",
     "hapi-bookshelf": "~1.0.1",
-    "hapi-raven": "~2.1.0",
+    "hapi-raven": "~2.1.1",
     "hapi-require-https": "~1.0.1",
     "inject-then": "~1.1.0",
     "joi": "~4.6.1",
