@@ -26,7 +26,7 @@ module.exports = function (bookshelf, stripe) {
         processed: Joi.boolean(),
         address: Joi.object().required().keys({
           street1: Joi.string().required(),
-          street2: Joi.string(),
+          street2: Joi.string().allow(''),
           zip: Joi.string().required(),
           city: Joi.string(),
           state: Joi.string()
