@@ -84,15 +84,15 @@ module.exports = function (bookshelf) {
             ]);
           });
       });
-  }))
+  })
   .on('updated', function (pledge) {
     return pledge
       .load(['campaign'])
       .then(function (pledge) {
         var refs = generateRefs(pledge);
-        var amount = ref.child('amount');
+        var amount = refs.pledge.child('amount');
         return Promise.all([
-          Promise.promisify(amount.set, amount)(pledge.get('amount'))
+          Promise.promisify(amount.set, amount)(pledge.get('amount')),
           Promise.promisify(refs.total.transaction, refs.total)(function (total) {
             return total + pledge.get('amount');
           })
