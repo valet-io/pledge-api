@@ -6,11 +6,16 @@ var sinon   = require('sinon');
 
 module.exports = function (server) {
 
-  var Pledge = server.plugins.pledge.Pledge;
-  var Donor  = server.plugins.donor.Donor;
-  var ref    = server.plugins.firebase.ref;
+  var ref = server.plugins.firebase.ref;
+  beforeEach(function () {
+    ref.autoFlush();
+    ref.set(null);
+  });
 
   describe('Pledge', function () {
+
+    var Pledge = server.plugins.pledge.Pledge;
+    var Donor  = server.plugins.donor.Donor;
 
     var pledge;
     beforeEach(function () {
@@ -19,8 +24,6 @@ module.exports = function (server) {
         campaign_id: 'campaignId',
         amount: 5
       });
-      ref.autoFlush();
-      ref.set(null);
       ref.child('campaigns/campaignId/aggregates').set({
         total: 100,
         count: 10
@@ -94,6 +97,26 @@ module.exports = function (server) {
   });
 
   describe('Campaign', function () {
+
+    var Campaign = server.plugins.campaign.Campaign;
+
+    it('creates the campaign with defaults', function () {
+      var campaign = new Campaign({
+        id: 'campaignId'
+      });
+      return campaign.triggerThen('created', campaign)
+        .then(function () {
+          expect(ref.child('campaigns/campaignId').getData()).to.deep.equal({
+            aggregates: {
+              total: 0,
+              count: 0
+            },
+            options: {
+              starting_value: 0
+            }
+          });
+        });
+    });
 
   });
 
