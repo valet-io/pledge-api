@@ -7,7 +7,13 @@ config.validate();
 
 if (config.get('newrelic')) require('newrelic');
 
-var server = new hapi.Server('0.0.0.0', config.get('port'), {
+var pack = new hapi.Pack({
+  app: {
+    config: config
+  }
+});
+
+var server = pack.server('0.0.0.0', config.get('port'), {
   cors: true
 });
 
@@ -17,16 +23,16 @@ function throwIf (err) {
 }
 
 /* istanbul ignore next */
-if (config.get('ssl')) server.pack.register(require('hapi-require-https'), throwIf);
+if (config.get('ssl')) pack.register(require('hapi-require-https'), throwIf);
 
-if (config.get('sentry.dsn')) server.pack.register({
+if (config.get('sentry.dsn')) pack.register({
   plugin: require('hapi-raven'),
   options: {
     dsn: config.get('sentry.dsn')
   }
 }, throwIf);
 
-server.pack.register([
+pack.register([
   {
     plugin: require('good'),
     options: {
@@ -44,7 +50,8 @@ server.pack.register([
   require('./donor'),
   require('./organization'),
   require('./payment'),
-  require('./pledge')
+  require('./pledge'),
+  require('./firebase')
 ], throwIf);
 
 
