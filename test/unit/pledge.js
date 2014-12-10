@@ -1,9 +1,8 @@
 'use strict';
 
-var expect       = require('chai').expect;
-var sinon        = require('sinon');
-var uuid         = require('node-uuid');
-var MockFirebase = require('mockfirebase').MockFirebase;
+var expect = require('chai').expect;
+var sinon  = require('sinon');
+var uuid   = require('node-uuid');
 
 module.exports = function (Pledge, Donor) {
   describe('Pledge', function () {
@@ -84,52 +83,6 @@ module.exports = function (Pledge, Donor) {
           );
       });
 
-    });
-
-    describe('firebase sync', function () {
-
-      var firebase, data;
-      beforeEach(function () {
-        firebase = new MockFirebase('campaign').autoFlush();
-        sinon.stub(pledge, 'related')
-          .withArgs('campaign').returns({
-            firebase: sinon.stub().returns(firebase)
-          })
-          .withArgs('donor').returns(Donor.forge({
-            id: uuid.v4(),
-            name: 'Ben Drucker'
-          }));
-        sinon.stub(pledge, 'load').resolves(pledge);
-        pledge.set(pledge.timestamp());
-        pledge.set('id', uuid.v4());
-        pledge.set('amount', 100);
-        return Pledge.triggerThen('created', pledge)
-          .then(function () {
-            data = firebase.getData();
-          });
-      });
-
-      it('saves the pledge to firebase', function () {
-        expect(data).to.have.property('pledges')
-          .with.property(pledge.id)
-          .that.deep.equals(pledge.toFirebase());
-      });
-
-      it('uses the timestamp as the firebase priority', function () {
-        expect(firebase.child('pledges').child(pledge.id))
-          .to.have.property('priority', pledge.get('created_at').getTime());
-      });
-
-      it('increments the total by the pledge amount', function () {
-        expect(data).to.have.deep.property('aggregates.total')
-          .that.equals(100);
-      });
-
-      it('increments the count', function () {
-        expect(data).to.have.deep.property('aggregates.count')
-          .that.equals(1);
-      });
-      
     });
 
   });
