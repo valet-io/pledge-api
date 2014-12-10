@@ -10,7 +10,7 @@ exports.register = function (plugin, options, next) {
   plugin.expose('ref', new Firebase(plugin.app.config.get('firebase.endpoint')));
   require('./campaign')(plugin);
   require('./pledge')(plugin);
-  // plugin.after(require('./auth'));
+  plugin.after(require('./auth'));
   next();
 };
 

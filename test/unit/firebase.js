@@ -122,6 +122,18 @@ module.exports = function (server) {
 
   describe('Auth', function () {
 
+    it('prevents the server from starting if auth fails', function (done) {
+      var err = new Error();
+      ref.failNext('auth', err);
+      sinon.spy(ref, 'auth');
+      server.pack.app.config.set('firebase.secret', 'fbs');
+      server.start(function (_err_) {
+        expect(ref.auth).to.have.been.calledWith('fbs');
+        expect(err).to.equal(_err_);
+        server.stop(done);
+      });
+    });
+
   });
 
 };

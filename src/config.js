@@ -47,7 +47,12 @@ module.exports = convict({
     endpoint: {
       format: 'url',
       default: null,
-      env: 'firebase'
+      env: 'FIREBASE_ENDPOINT'
+    },
+    secret: {
+      format: String,
+      default: null,
+      env: 'FIREBASE_SECRET'
     }
   },
   sentry: {
