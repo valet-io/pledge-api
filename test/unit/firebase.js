@@ -126,7 +126,7 @@ module.exports = function (server) {
       var err = new Error();
       ref.failNext('auth', err);
       sinon.spy(ref, 'auth');
-      server.pack.app.config.set('firebase.secret', 'fbs');
+      server.settings.app.config.set('firebase.secret', 'fbs');
       server.start(function (_err_) {
         expect(ref.auth).to.have.been.calledWith('fbs');
         expect(err).to.equal(_err_);

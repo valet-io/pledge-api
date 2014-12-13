@@ -2,9 +2,9 @@
 
 var Promise = require('bluebird');
 
-module.exports = function (plugin) {
-  var ref    = plugin.plugins.firebase.ref;
-  var Campaign = plugin.plugins.campaign.Campaign;
+module.exports = function (server) {
+  var ref    = server.plugins.firebase.ref;
+  var Campaign = server.plugins.campaign.Campaign;
 
   Campaign.on('created', function (campaign) {
     return ref.child('campaigns').child(campaign.id).setAsync({

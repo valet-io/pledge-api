@@ -1,10 +1,9 @@
 'use strict';
 
-exports.register = function (plugin, options, next) {
-  plugin.config.route.prefix = '/payments';
-  plugin.dependency(['db', 'pledge', 'stripe']);
-  plugin.expose('Payment', require('./payment')(plugin.plugins.db.bookshelf, plugin.plugins.stripe.stripe));
-  require('./routes')(plugin);
+exports.register = function (server, options, next) {
+  server.dependency(['db', 'pledge', 'stripe']);
+  server.expose('Payment', require('./payment')(server.plugins.db.bookshelf, server.plugins.stripe.stripe));
+  require('./routes')(server);
   next();
 };
 

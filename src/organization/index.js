@@ -1,8 +1,8 @@
 'use strict';
 
-exports.register = function (plugin, options, next) {
-  plugin.dependency(['db', 'stripe']);
-  plugin.expose('Organization', require('./organization')(plugin.plugins.db.bookshelf));
+exports.register = function (server, options, next) {
+  server.dependency(['db', 'stripe']);
+  server.expose('Organization', require('./organization')(server.plugins.db.bookshelf));
   next();
 };
 

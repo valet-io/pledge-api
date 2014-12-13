@@ -3,6 +3,7 @@
 var _    = require('lodash');
 var hapi = require('hapi');
 var Joi  = require('joi');
+var boom = require('boom');
 
 module.exports = function (plugin) {
   var Payment = plugin.plugins.payment.Payment;
@@ -41,7 +42,7 @@ module.exports = function (plugin) {
           })
           .call('code', 201)
           .catch(Payment.CardError, function (err) {
-            var error = hapi.error.badRequest(err.message);
+            var error = boom.badRequest(err.message);
             error.output.statusCode = 402;
             error.reformat();
             error.output.payload.error = 'Card Error';

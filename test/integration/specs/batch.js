@@ -14,7 +14,7 @@ module.exports = function (server) {
       return server.injectThen({
         method: 'post',
         url: '/batch',
-        payload: {
+        payload: JSON.stringify({
           parallel: false,
           requests: [
             {
@@ -37,7 +37,7 @@ module.exports = function (server) {
               }
             }
           ]
-        }
+        })
       })
       .then(function (response) {
         var payload = JSON.parse(response.payload);

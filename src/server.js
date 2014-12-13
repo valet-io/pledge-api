@@ -7,14 +7,17 @@ config.validate();
 
 if (config.get('newrelic')) require('newrelic');
 
-var pack = new hapi.Pack({
+var server = new hapi.Server({
   app: {
     config: config
   }
 });
 
-var server = pack.server('0.0.0.0', config.get('port'), {
-  cors: true
+server.connection({
+  port: config.get('port'),
+  routes: {
+    cors: true
+  }
 });
 
 function throwIf (err) {
@@ -23,18 +26,18 @@ function throwIf (err) {
 }
 
 /* istanbul ignore next */
-if (config.get('ssl')) pack.register(require('hapi-require-https'), throwIf);
+if (config.get('ssl')) server.register(require('hapi-require-https'), throwIf);
 
-if (config.get('sentry.dsn')) pack.register({
-  plugin: require('hapi-raven'),
+if (config.get('sentry.dsn')) server.register({
+  register: require('hapi-raven'),
   options: {
     dsn: config.get('sentry.dsn')
   }
 }, throwIf);
 
-pack.register([
+server.register([
   {
-    plugin: require('good'),
+    register: require('good'),
     options: {
       reporters: [{
         reporter: require('good-console'),
@@ -44,15 +47,40 @@ pack.register([
   },
   require('batch-me-if-you-can'),
   require('inject-then'),
-  require('./db'),
-  require('./stripe'),
-  require('./campaign'),
-  require('./donor'),
-  require('./organization'),
-  require('./payment'),
-  require('./pledge'),
-  require('./firebase')
+  require('./db')
 ], throwIf);
+
+server.register(require('./campaign'), {
+  routes: {
+    prefix: '/campaigns'
+  }
+}, throwIf);
+server.register(require('./donor'), {
+  routes: {
+    prefix: '/donors'
+  }
+}, throwIf);
+server.register(require('./organization'), {
+  routes: {
+    prefix: '/organizations'
+  }
+}, throwIf);
+server.register(require('./stripe'), {
+  routes: {
+    vhost: ['stripe.valet.io', 'stripe-staging.valet.io', 'localhost']
+  }
+}, throwIf);
+server.register(require('./payment'), {
+  routes: {
+    prefix: '/payments'
+  }
+}, throwIf);
+server.register(require('./pledge'), {
+  routes: {
+    prefix: '/pledges'
+  }
+}, throwIf);
+server.register(require('./firebase'), throwIf);
 
 
 module.exports = server;

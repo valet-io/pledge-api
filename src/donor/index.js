@@ -1,10 +1,9 @@
 'use strict';
 
-exports.register = function (plugin, options, next) {
-  plugin.config.route.prefix = '/donors';
-  plugin.dependency('db');
-  plugin.expose('Donor', require('./donor')(plugin.plugins.db.bookshelf));
-  require('./routes')(plugin);
+exports.register = function (server, options, next) {
+  server.dependency('db');
+  server.expose('Donor', require('./donor')(server.plugins.db.bookshelf));
+  require('./routes')(server);
   next();
 };
 

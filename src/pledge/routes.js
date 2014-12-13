@@ -3,9 +3,9 @@
 var Joi = require('joi');
 var _   = require('lodash');
 
-module.exports = function (plugin) {
-  var Pledge = plugin.plugins.pledge.Pledge;
-  plugin.route([
+module.exports = function (server) {
+  var Pledge = server.plugins.pledge.Pledge;
+  server.route([
     {
       method: 'GET',
       path: '/{id}',

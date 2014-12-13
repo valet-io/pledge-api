@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (plugin, next) {
-  var ref = plugin.plugins.firebase.ref;
-  ref.auth(plugin.app.config.get('firebase.secret'), next);
+module.exports = function (server, next) {
+  var ref = server.plugins.firebase.ref;
+  ref.auth(server.settings.app.config.get('firebase.secret'), next);
 };

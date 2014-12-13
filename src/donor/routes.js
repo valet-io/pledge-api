@@ -4,9 +4,9 @@ var Donor = require('./donor');
 var Joi   = require('joi');
 var _     = require('lodash');
 
-module.exports = function (plugin) {
-  var Donor = plugin.plugins.donor.Donor;
-  plugin.route([
+module.exports = function (server) {
+  var Donor = server.plugins.donor.Donor;
+  server.route([
     {
       method: 'POST',
       path: '/',

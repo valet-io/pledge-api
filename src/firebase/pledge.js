@@ -2,9 +2,9 @@
 
 var Promise = require('bluebird');
 
-module.exports = function (plugin) {
-  var ref    = plugin.plugins.firebase.ref;
-  var Pledge = plugin.plugins.pledge.Pledge;
+module.exports = function (server) {
+  var ref    = server.plugins.firebase.ref;
+  var Pledge = server.plugins.pledge.Pledge;
 
   function generateRefs (pledge) {
     var campaign   = ref.child('campaigns').child(pledge.get('campaign_id'));

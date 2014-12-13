@@ -7,9 +7,9 @@ var qs     = require('qs');
 var boom   = require('boom');
 var schema = require('./schema');
 
-module.exports = function (plugin) {
-  var StripeUser = plugin.plugins.stripe.ConnectUser;
-  plugin.route([
+module.exports = function (server) {
+  var StripeUser = server.plugins.stripe.ConnectUser;
+  server.route([
     {
       method: 'GET',
       path: '/callback',
@@ -59,8 +59,9 @@ module.exports = function (plugin) {
     .save(null, {
       method: 'insert'
     })
-    .then(reply)
-    .catch(reply);
+    .bind(reply)
+    .then(reply.continue)
+    .catch(reply.continue);
   }
 };
 

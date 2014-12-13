@@ -81,7 +81,12 @@ module.exports = function (server) {
         })
         .then(function (response) {
           expect(response.statusCode).to.equal(302);
-          return server.injectThen(response.headers.location);
+          return server.injectThen({
+            url: response.headers.location,
+            headers: {
+              host: 'stripe.valet.io'
+            }
+          });
         })
         .then(function (response) {
           expect(response.result).to.contain('Success');

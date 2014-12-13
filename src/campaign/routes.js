@@ -2,9 +2,9 @@
 
 var Joi      = require('joi');
 
-module.exports = function (plugin) {
-  var Campaign = plugin.plugins.campaign.Campaign;
-  plugin.route([
+module.exports = function (server) {
+  var Campaign = server.plugins.campaign.Campaign;
+  server.route([
     {
       method: 'GET',
       path: '/',

@@ -7,11 +7,13 @@ exports.bookshelf = require('bookshelf')(exports.knex)
   .plugin(require('bookshelf-base'))
   .plugin('virtuals');
 
-exports.register = function (plugin, options, next) {
-  plugin.expose('knex', exports.knex);
-  plugin.expose('bookshelf', exports.bookshelf);
-  plugin.register({
-    plugin: require('hapi-bookshelf'),
+exports.bookshelf.Model.prototype.validate = function () {};
+
+exports.register = function (server, options, next) {
+  server.expose('knex', exports.knex);
+  server.expose('bookshelf', exports.bookshelf);
+  server.register({
+    register: require('hapi-bookshelf'),
     options: {
       bookshelf: exports.bookshelf
     }
