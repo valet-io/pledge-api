@@ -7,7 +7,9 @@ var createError = require('create-error');
 
 var addressFields = ['street1', 'street2', 'zip', 'city', 'state'];
 
-module.exports = function (bookshelf, stripe) {
+module.exports = function (bookshelf, server) {
+  var stripe = server.plugins.stripe.stripe;
+  Promise.promisifyAll(server.methods.stripe);
   var Payment = bookshelf.Model.extend({
     tableName: 'payments',
 
@@ -81,13 +83,10 @@ module.exports = function (bookshelf, stripe) {
             }
           };
           var organization = payment.related('pledge').related('campaign').related('organization');
-          var connectToken = organization.related('stripe').get('stripe_access_token');
-          if (connectToken) {
-            return stripe.charges.create(charge, connectToken);
-          }
-          else {
-            return stripe.charges.create(charge);
-          }
+          return server.methods.stripe.keyAsync(organization, payment.get('live'))
+            .then(function (key) {
+              return stripe.charges.create(charge, key);
+            });
         })
         .finally(function () {
           this.set('provider_name', 'stripe');

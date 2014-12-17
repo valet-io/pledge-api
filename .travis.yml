@@ -7,11 +7,6 @@ before_script:
 script:
 - gulp lint
 - gulp test
-env:
-  global:
-  - secure: HQJyiIck8D3KPE5IKwrowrV8aZn80O+hEW02xyLhezYHTJ/Az8hxujH2VgT9StpQGGiI838yjKiqIWfJYbR17A1VMSxWbDnwN62H5RYpJvyWwJpk91f1qayTj0pWZVNsCUNkQ+bPP1a/yhrs2wIJ0kQc96fddMPaXrlsc61Qh8U=
-  - secure: Lm3C3riJTJor2oKf3XVtsVqu7XLha8paYAv4QAXTEJzpaHpND49Rb8/merBRZNpKxq/1CLrHcdg/g/m5MQHdENFOcLdY0uGvFSmal5b6CIIhz9C3Doz4djNlytL3TnqQ19Hphs7M3VDO4HCi3sirQnFod6l1U8k0HscAMAHsXCM=
-  - secure: vrLxzKjzhyjS61uswY7UpmIArRYGoo//ClGhtKoN6QP8l2ywwAeNYlc4ZeFMoBNOqcFTnzcJmXxli33KjbWrzFHmbSZGWgTJc0cy68683UdqUpz8fWb9C4jBH04Y59EUMiD+aE6MVynt9/vn5NrpnmxKhJ3+DAyxhmWmolsdT8U=
 deploy:
 - provider: heroku
   app: valet-io-pledge-dev
@@ -47,3 +42,7 @@ notifications:
   slack:
     secure: ZzSNTvOCbhgU3YZ79SwmZdFsixEcWo4vuYrXrlukt3WhQAs6UGP3L3uekb31NUBgHMoi53q2ZJ3ZJLzwd1QiQbC1zrVZ0NXYj9fjUMErYlYS38LDdcM2FSt4moh+hGwJU6QFiiPnkgZcpkivFF9kUGp1yi8Y8h9ZgAn9VCw9miM=
   email: false
+env:
+  global:
+  - secure: ME+i67tMakpbQj/zvuo7d3oinSOIpZqhd1KBuNd5uAtD5o5643K6t5DnrKeuvBpUTDDJbbILBL1dsQ9LpvI3k8ZZLjp8Gw2n1LDLeMh64o2uewPlI9HejHIV02icFWXoryPaeAbjVYurh04Ad4Nca3Kk+eMGbJHacKndla3gi2E=
+  - secure: hCO6cjL0Ah0RzS/6QWxCEnTfgywANxeu3q9c88fZv/yGRqwa7ISwheBhtX848Kc1PSaT60/6TS4tPcjt+nbd/+/oeJA+5BQJ4xSZpuNgiob+lAD/CmPuiJ5+mkLbnrAGd8B5PLzAAh105Jen5soO7PjqZr+cS7w4yvqK9NRzTcM=

@@ -40,7 +40,12 @@ module.exports = convict({
     key: {
       format: String,
       default: null,
-      env: 'stripe__key'
+      env: 'STRIPE_KEY'
+    },
+    test_key: {
+      format: String,
+      default: null,
+      env: 'STRIPE_TEST_KEY'
     }
   },
   firebase: {
