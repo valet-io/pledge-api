@@ -15,7 +15,6 @@ module.exports = function (server) {
   describe('Pledge', function () {
 
     var Pledge = server.plugins.pledge.Pledge;
-    var Donor  = server.plugins.donor.Donor;
 
     var pledge;
     beforeEach(function () {
@@ -93,7 +92,7 @@ module.exports = function (server) {
                   }
                 }
               });
-          })
+          });
       });
 
     });
