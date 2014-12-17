@@ -7,7 +7,7 @@ module.exports = function (server) {
   var Pledge = server.plugins.pledge.Pledge;
 
   function generateRefs (pledge) {
-    var campaign   = ref.child('campaigns').child(pledge.get('campaign_id'));
+    var campaign   = ref.child('campaigns').child(pledge.get('campaign_id')).child(pledge.get('live') ? 'live' : 'test');
     var aggregates = campaign.child('aggregates');
     return {
       pledge: campaign.child('pledges').child(pledge.id),

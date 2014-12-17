@@ -22,9 +22,14 @@ module.exports = function (server) {
       pledge = new Pledge({
         id: 'pledgeId',
         campaign_id: 'campaignId',
-        amount: 5
+        amount: 5,
+        live: true
       });
-      ref.child('campaigns/campaignId/aggregates').set({
+      ref.child('campaigns/campaignId/live/aggregates').set({
+        total: 100,
+        count: 10
+      });
+      ref.child('campaigns/campaignId/test/aggregates').set({
         total: 100,
         count: 10
       });
@@ -42,7 +47,7 @@ module.exports = function (server) {
         sinon.stub(pledge, 'toFirebase').returns(input);
         return pledge.triggerThen('created', pledge)
           .then(function () {
-            data = ref.getData().campaigns.campaignId;
+            data = ref.getData().campaigns.campaignId.live;
           });
       });
 
@@ -56,7 +61,7 @@ module.exports = function (server) {
       });
 
       it('sets the pledge priority as the timestamp', function () {
-        expect(ref.child('campaigns/campaignId/pledges/pledgeId').priority)
+        expect(ref.child('campaigns/campaignId/live/pledges/pledgeId').priority)
           .to.equal(input.created_at);
       });
 
@@ -70,6 +75,27 @@ module.exports = function (server) {
           .to.have.deep.property('aggregates.count', 11);
       });
 
+      it('handles test pledges', function () {
+        return pledge.set('live', false)
+          .triggerThen('created', pledge)
+          .then(function () {
+            expect(ref.getData().campaigns.campaignId)
+              .to.have.property('test')
+              .and.deep.equal({
+                aggregates: {
+                  total: 105,
+                  count: 11
+                },
+                pledges: {
+                  pledgeId: {
+                    created_at: input.created_at,
+                    amount: 5
+                  }
+                }
+              });
+          })
+      });
+
     });
 
     describe('updated', function () {
@@ -78,7 +104,7 @@ module.exports = function (server) {
       beforeEach(function () {
         return pledge.triggerThen('updated', pledge)
           .then(function () {
-            data = ref.getData().campaigns.campaignId;
+            data = ref.getData().campaigns.campaignId.live;
           });
       });
 
@@ -106,7 +132,7 @@ module.exports = function (server) {
       });
       return campaign.triggerThen('created', campaign)
         .then(function () {
-          expect(ref.child('campaigns/campaignId').getData()).to.deep.equal({
+          var defaults = {
             aggregates: {
               total: 0,
               count: 0
@@ -114,6 +140,10 @@ module.exports = function (server) {
             options: {
               starting_value: 0
             }
+          };
+          expect(ref.child('campaigns/campaignId').getData()).to.deep.equal({
+            live: defaults,
+            test: defaults
           });
         });
     });
