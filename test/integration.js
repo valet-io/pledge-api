@@ -7,6 +7,7 @@ var knex    = server.plugins.db.knex;
 
 var tables = [
   'organizations',
+  'domains',
   'campaigns',
   'donors',
   'pledges',
