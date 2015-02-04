@@ -10,21 +10,11 @@ module.exports = function (server) {
       path: '/{id}',
       handler: function (request, reply) {
         var identifier = request.params.id;
-        var domain;
-        // identifier in path is uuid
-        if (!Joi.string().guid().validate(identifier).error) {
-          domain = new Domain({
-            id: identifier
-          });
-        }
-        // otherwise identifier is the hostname
-        else {
-          domain = new Domain({
-            name: identifier
-          })
-          .where('active', true);
-        }
-        return domain
+        var parameter = !Joi.string().guid().validate(identifier).error ?
+          'id' :
+          'name';
+        return new Domain()
+          .where(parameter, identifier)
           .fetch({
             require: true,
             withRelated: request.query.expand
