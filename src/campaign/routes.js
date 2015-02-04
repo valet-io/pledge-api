@@ -21,7 +21,10 @@ module.exports = function (server) {
       handler: function (request, reply) {
         Campaign
           .where({id: request.params.id})
-          .fetch({require: true})
+          .fetch({
+            require: true,
+            withRelated: request.query.expand
+          })
           .then(reply)
           .catch(reply);
       },
@@ -29,6 +32,9 @@ module.exports = function (server) {
         validate: {
           params: {
             id: Joi.string().guid()
+          },
+          query: {
+            expand: Joi.array().includes(Joi.string())
           }
         },
         cache: {

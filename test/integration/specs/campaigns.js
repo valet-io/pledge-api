@@ -34,6 +34,16 @@ module.exports = function (server) {
           });
       });
 
+      it('can get the campaign with the domain', function () {
+        return server.injectThen('/campaigns/' + campaign.id + '?expand[]=domain')
+          .then(function (response) {
+            expect(response.statusCode).to.equal(200);
+            expect(JSON.parse(response.payload))
+              .to.have.deep.property('domain.id')
+              .with.length(36);
+          });
+      });
+
       it('responds with a 400 for non-uuid', function () {
         return server.injectThen('/campaigns/1')
           .then(function (response) {

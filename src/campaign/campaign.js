@@ -28,6 +28,10 @@ module.exports = function (bookshelf) {
 
     organization: function () {
       return this.belongsTo('Organization');
+    },
+
+    domain: function () {
+      return this.belongsTo('Domain');
     }
 
   }));
