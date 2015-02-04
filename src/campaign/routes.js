@@ -10,21 +10,9 @@ module.exports = function (server) {
       path: '/',
       handler: function (request, reply) {
         Campaign
-          .collection()
-          .query(function (qb) {
-            var host = request.query.host;
-            if (host) qb.where('host', host);
-          })
-          .fetch()
+          .fetchAll()
           .then(reply)
           .catch(reply);
-      },
-      config: {
-        validate: {
-          query: {
-            host: Joi.string().hostname()
-          }
-        }
       }
     },
     {
