@@ -1,26 +1,20 @@
 'use strict';
 
-var Joi      = require('joi');
+var Joi = require('joi');
 
 module.exports = function (server) {
-  var Campaign = server.plugins.campaign.Campaign;
+  var Domain = server.plugins.domain.Domain;
   server.route([
-    {
-      method: 'GET',
-      path: '/',
-      handler: function (request, reply) {
-        Campaign
-          .fetchAll()
-          .then(reply)
-          .catch(reply);
-      }
-    },
     {
       method: 'GET',
       path: '/{id}',
       handler: function (request, reply) {
-        Campaign
-          .where({id: request.params.id})
+        var identifier = request.params.id;
+        var parameter = !Joi.string().guid().validate(identifier).error ?
+          'id' :
+          'name';
+        return new Domain()
+          .where(parameter, identifier)
           .fetch({
             require: true,
             withRelated: request.query.expand
@@ -31,14 +25,14 @@ module.exports = function (server) {
       config: {
         validate: {
           params: {
-            id: Joi.string().guid()
+            id: Joi.alternatives().try(
+              Joi.string().guid(),
+              Joi.string().hostname()
+            )
           },
           query: {
             expand: Joi.array().includes(Joi.string())
           }
-        },
-        cache: {
-          expiresIn: 60 * 60 * 1000
         }
       }
     }

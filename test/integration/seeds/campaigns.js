@@ -1,6 +1,7 @@
 'use strict';
 
-var uuid = require('node-uuid');
+var uuid    = require('node-uuid');
+var domains = require('./domains');
 
 module.exports = [
   {
@@ -8,7 +9,7 @@ module.exports = [
     created_at: new Date(),
     updated_at: new Date(),
     name: 'Simba Gala',
-    host: 'www.ssgala.org',
+    domain_id: domains[0].id,
     payments: true,
     active: true,
     metadata: JSON.stringify({

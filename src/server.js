@@ -50,6 +50,11 @@ server.register([
   require('./db')
 ], throwIf);
 
+server.register(require('./domain'), {
+  routes: {
+    prefix: '/domains'
+  }
+}, throwIf);
 server.register(require('./campaign'), {
   routes: {
     prefix: '/campaigns'
