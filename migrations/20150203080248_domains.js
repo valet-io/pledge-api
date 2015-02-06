@@ -21,7 +21,7 @@ exports.up = function (knex, Promise) {
       t.uuid('domain_id').references('id').inTable('domains');
     })
     .then(function () {
-      return knex.from('campaigns').select('id', 'host');
+      return knex.from('campaigns').select('id', 'host').whereNotNull('host');
     })
     .map(function (campaign) {
       return knex
