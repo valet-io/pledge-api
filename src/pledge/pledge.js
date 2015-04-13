@@ -31,6 +31,10 @@ module.exports = function (bookshelf) {
       return this.belongsTo('Donor');
     },
 
+    payments: function () {
+      return this.hasMany('Payment');
+    },
+
     toFirebase: function () {
       return {
         id: this.id,
